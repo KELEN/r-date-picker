@@ -1,0 +1,26 @@
+.r-date-picker__labels {
+  
+}
+
+$day_item_percent: 100% / 7;
+
+.r-date-picker__title {
+  text-align: center;
+}
+
+.r-date-picker__days-item,
+.r-date-picker__labels-item {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: $day_item_percent;
+  height: 60px;
+  vertical-align: top;
+  user-select: none;
+  cursor: pointer;
+}
+
+.r-date-picker__days-item--grey {
+  color: #e9e9e9;
+}
