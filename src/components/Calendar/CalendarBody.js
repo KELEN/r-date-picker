@@ -12,6 +12,11 @@ export default class CalendarBody extends React.Component {
 
   constructor(props) {
     super(props)
+
+    this.state = {
+      days: []
+    }
+
     this.renderCurrentMonthDays = this.renderCurrentMonthDays.bind(this)
     this.renderCurrentMonth = this.renderCurrentMonth.bind(this)
     this.handleMouseDown = this.handleMouseDown.bind(this)
@@ -34,11 +39,11 @@ export default class CalendarBody extends React.Component {
       )
       start = moment(firstDay).subtract(count, 'days')
     }
-    return emptyDays.map((item, key) => (
+    return emptyDays.map(item => (
       <div
         className="r-date-picker__days-item r-date-picker__days-item--grey" 
         key={ item.key }>
-        { item.num }
+        {/* { item.num } */}
       </div>
     ))
   }
@@ -60,7 +65,7 @@ export default class CalendarBody extends React.Component {
       )
       i++
     }
-    return realDays.map((item, idx) => {
+    return realDays.map(item => {
       const cls = classNames({
         'r-date-picker__days-item': true,
         'r-date-picker__days-item-active': item.active
@@ -76,7 +81,7 @@ export default class CalendarBody extends React.Component {
    */
   renderCurrentMonth = function() {
     const { currDate } = this.props
-    const firstDay = moment().startOf('month')  // the first day of month
+    const firstDay = moment(currDate).startOf('month')  // the first day of month
     const daysInMonth = moment(currDate).daysInMonth()   // total num in month
     const startNum = firstDay.weekday()  // the first weekday
     return [...this.renderLastMonthDays(firstDay, startNum), ...this.renderCurrentMonthDays(firstDay, daysInMonth)]

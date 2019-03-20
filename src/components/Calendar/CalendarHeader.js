@@ -15,7 +15,7 @@ export default class CalendarHeader extends React.Component {
     const { onPrevClick, onNextClick } = this.props
     return (
       <div className="r-date-picker__title">
-      <span onClick={ onPrevClick }>prev</span> { this.props.title } <span onClick={ onNextClick }>next</span>
+        <span onClick={ onPrevClick }>prev</span> { this.props.title } <span onClick={ onNextClick }>next</span>
       </div>
     )
   }

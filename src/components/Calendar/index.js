@@ -25,7 +25,7 @@ class Calendar extends React.Component {
    */
   onPrevClick() {
     this.setState({
-      currDate: moment().subtract(1, 'month')
+      currDate: moment(this.state.currDate).subtract(1, 'month')
     })
   } 
 
