@@ -15,7 +15,7 @@ class CalendarLabel extends React.Component {
   renderLabel(labels) {
     return labels.map((item, idx) => {
       return (
-        <div className="r-date-picker__labels-item" key={idx}>
+        <div className="rdp__labels-item" key={idx}>
           <FormattedMessage id={item} />
         </div>
       )
@@ -25,7 +25,7 @@ class CalendarLabel extends React.Component {
   render() {
     const { labels } = this.props
     return (
-      <div className="r-date-picker__labels ">
+      <div className="rdp__labels ">
         { this.renderLabel(labels) }
       </div>
     )

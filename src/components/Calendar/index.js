@@ -12,11 +12,15 @@ class Calendar extends React.Component {
     selectedDate: PropTypes.object
   }
 
+  static defaultProps = {
+    selectedDate: moment()
+  }
+
   constructor() {
     super()
     this.state = {
       animating: false,
-      currDate: moment()
+      startDate: moment()
     }
     this.onPrevClick = this.onPrevClick.bind(this)
     this.onNextClick = this.onNextClick.bind(this)
@@ -29,11 +33,10 @@ class Calendar extends React.Component {
     if (!this.state.animating) {
       this.setState({
         animating: true,
-        currDate: moment(this.state.currDate).subtract(1, 'month')
+        startDate: moment(this.state.startDate).subtract(1, 'month')
       })
     }
   }
-
 
   /**
    * next btn click
@@ -42,21 +45,34 @@ class Calendar extends React.Component {
     if (!this.state.animating) {
       this.setState({
         animating: true,
-        currDate: moment(this.state.currDate).add(1, 'month')
+        startDate: moment(this.state.startDate).add(1, 'month')
       })
     }
   }
 
   render() {
     const labelKeys = Object.keys(WEEK_DAYS)
-    const { currDate, animating } = this.state
-    const { onDayClick, selectedDate } = this.props
+    const { startDate, animating } = this.state
+    const { 
+      onDateChange, 
+      selectedDate,
+      onDateRangeChange,
+      range
+    } = this.props
 
     return (
-      <div className="r-date-picker__container">
-        <CalendarHeader title={ currDate.format('YYYY-MM-DD') } onPrevClick={ this.onPrevClick } onNextClick={ this.onNextClick } />
+      <div className="rdp__container">
+        <CalendarHeader title={ startDate.format('YYYY-MM-DD') } onPrevClick={ this.onPrevClick } onNextClick={ this.onNextClick } />
         <CalendarLabel labels={ labelKeys } ></CalendarLabel>
-        <CalendarBody isAnimating={ animating } animateEnd={ () => this.setState({ animating: false }) } currDate={ currDate } onDayClick={ onDayClick } selectedDate={ selectedDate }/>
+        <CalendarBody 
+          range={ range }
+          isAnimating={ animating } 
+          animateEnd={ () => this.setState({ animating: false }) } 
+          startDate={ startDate }
+          onDateRangeChange={ onDateRangeChange }
+          onDateChange={ onDateChange } 
+          selectedDate={ selectedDate }
+        />
       </div>
     )
   }

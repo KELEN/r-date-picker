@@ -7,11 +7,14 @@ import { linkTo } from '@storybook/addon-links';
 import { Button, Welcome } from '@storybook/react/demo';
 
 import DatePicker from '../src/index'
+import DateRangePicker from '../src/components/DateRangePicker'
 
-storiesOf('Welcome', module).add('to Storybook', () => <DatePicker showApp={linkTo('Button')} />);
+storiesOf('Date Picker', module)
+  .add('Base', () => <DatePicker showApp={linkTo('Button')} />)
+  .add('Single Date Range', () => <DatePicker onDateRangeChange={ (range) => { console.log(range) } } range={ true } showApp={linkTo('Button')} />)
 
-storiesOf('Button', module)
-  .add('with text', () => <Button onClick={action('clicked')}>Hello Button</Button>)
+storiesOf('Multilple Date Picker', module)
+  .add('Two Calendar', () => <DateRangePicker />)
   .add('with some emoji', () => (
     <Button onClick={action('clicked')}>
       <span role="img" aria-label="so cool">

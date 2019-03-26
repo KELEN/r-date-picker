@@ -1,7 +1,17 @@
 @import './calendar.scss';
 
-.r-date-picker__container {
-  width: 600px;
-  height: 400px;
+.rdp__container {
+  width: 400px;
+  height: 500px;
   overflow: hidden;
+}
+
+.rdp-range__container {
+  width: 800px;
+  height: 500px;
+  overflow: hidden;
+  .rdp__container {
+    width: 50%;
+    display: inline-block;
+  }
 }

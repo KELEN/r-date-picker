@@ -1,15 +1,11 @@
-.r-date-picker__labels {
-  
-}
-
 $day_item_percent: 100% / 7;
 
-.r-date-picker__title {
+.rdp__title {
   text-align: center;
 }
 
-.r-date-picker__days-item,
-.r-date-picker__labels-item {
+.rdp__days-item,
+.rdp__labels-item {
   box-sizing: border-box;
   display: inline-flex;
   align-items: center;
@@ -21,20 +17,20 @@ $day_item_percent: 100% / 7;
   cursor: pointer;
 }
 
-.r-date-picker__days-item-active {
+.rdp__days-item-active {
   background-color: #a5a5a5;
   color: #fff;
 }
 
-.r-date-picker__days-item--grey {
+.rdp__days-item--grey {
   color: #e9e9e9;
 }
 
-.r-date-picker__body {
+.rdp__body {
   position: relative;
 }
 
-.r-date-picker__view {
+.rdp__view {
   position: absolute;
   left: 0;
   top: 0;
@@ -42,26 +38,26 @@ $day_item_percent: 100% / 7;
   height: 100%;
 }
 
-.r-date-picker__view--hidden {
+.rdp__view--hidden {
   visibility: hidden;
 }
 
-.r-date-picker__view:first-child {
+.rdp__view:first-child {
   left: -100%;
   right: auto;
 }
 
-.r-date-picker__view:last-child {
+.rdp__view:last-child {
   right: -100%;
   left: auto;
 }
 
-.r-date-picker__animation-left {
+.rdp__animation-left {
   transition: all 0.4s ease;
   transform: translate3d(-100%, 0, 0)
 }
 
-.r-date-picker__animation-right {
+.rdp__animation-right {
   transition: all 0.4s ease;
   transform: translate3d(100%, 0, 0)
 }

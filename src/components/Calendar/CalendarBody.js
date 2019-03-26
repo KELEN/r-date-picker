@@ -6,14 +6,17 @@ import classNames from 'classname'
 export default class CalendarBody extends React.Component {
 
   static propTypes = {
-    currDate: PropTypes.object.isRequired,
-    onDayClick: PropTypes.func.isRequired,
+    startDate: PropTypes.object.isRequired,
+    onDateChange: PropTypes.func.isRequired,
+    onDateRangeChange: PropTypes.func,   // day range change event
     selectedDate: PropTypes.object,
-    isAnimating: PropTypes.bool.isRequired
+    isAnimating: PropTypes.bool.isRequired,
+    range: PropTypes.bool
   }
 
   static defaultProps = {
-    isAnimating: false
+    isAnimating: false,
+    range: false    // select range date
   }
 
   constructor(props) {
@@ -21,6 +24,9 @@ export default class CalendarBody extends React.Component {
 
     this.state = {
       allDays: [],
+      hoveringDate: null,
+      startDate: null,  // start date
+      endDate: null,    // end date
       focusDate: null,
       moveNext: false,
       movePrev: false
@@ -51,8 +57,8 @@ export default class CalendarBody extends React.Component {
     while (count--) {
       emptyDays.push(
         {
-          num: Number(start.format('DD')),
-          date: start,
+          num: '',
+          date: null,
           key: start.format('YYYYMMDD'),
           inMonth: false
         }
@@ -75,6 +81,8 @@ export default class CalendarBody extends React.Component {
           num: i,
           active: false,
           date: date,
+          isStart: false,
+          isEnd: false,
           key: date.format('YYYYMMDD'),
           inMonth: true
         }
@@ -82,13 +90,6 @@ export default class CalendarBody extends React.Component {
       i++
     }
     return realDays
-  }
-
-  componentDidMount() {
-    const allDays = this.getAllDays(this.props.currDate)
-    this.setState({
-      allDays: allDays
-    })
   }
 
   getAllDays(currDate) {
@@ -99,10 +100,17 @@ export default class CalendarBody extends React.Component {
     return [prevMonthDays,currMonthDays, nextMonthDays]
   }
 
+  componentDidMount() {
+    const allDays = this.getAllDays(this.props.startDate)
+    this.setState({
+      allDays: allDays
+    })
+  }
+
   componentWillReceiveProps(nextProps) {
-    if (nextProps.currDate !== this.props.currDate) {
+    if (nextProps.startDate !== this.props.startDate) {
       // next date no equal current date recalculate days
-      if (nextProps.currDate.isBefore(this.props.currDate)) {
+      if (nextProps.startDate.isBefore(this.props.startDate)) {
         // prev
         this.setState({
           movePrev: true,
@@ -118,13 +126,62 @@ export default class CalendarBody extends React.Component {
     }
     if (nextProps.selectedDate) {
       this.setState({
-        focusDate: nextProps.selectedDate
+        startDate: nextProps.selectedDate
       })
     }
   }
 
   handleMouseDown(e, date) {
-    this.props.onDayClick(e, date)
+    const { startDate, endDate } = this.state
+    const { range, onDateRangeChange } = this.props
+
+    if (range) {
+      if (startDate && endDate) {
+        this.setState({
+          startDate: date,
+          endDate: null
+        })
+      } else {
+        if (!startDate) {
+          this.setState({
+            startDate: date
+          })
+        } else {
+          if (date.date.isBefore(startDate.date)) {
+            this.setState({
+              startDate: date,
+              endDate: startDate
+            })
+            onDateRangeChange && onDateRangeChange({
+              startDate: date,
+              endDate: startDate
+            })
+          } else {
+            this.setState({
+              endDate: date
+            })
+            onDateRangeChange && onDateRangeChange({
+              startDate: startDate,
+              endDate: date
+            })
+          }
+        }
+      }
+    } else {
+      this.setState({
+        startDate: date
+      })
+    }
+  }
+
+  handleMouseEnter(e, date) {
+    const { startDate } = this.state
+    const { range } = this.props
+    if (range && startDate) {
+      this.setState({
+        hoveringDate: date
+      })
+    }
   }
 
   transitionContainerRef(ref) {
@@ -133,8 +190,8 @@ export default class CalendarBody extends React.Component {
 
   transitionEndHandle(e) {
     const { movePrev, moveNext } = this.state
-    const { currDate, animateEnd } = this.props
-    const allDays = this.getAllDays(currDate)
+    const { startDate, animateEnd } = this.props
+    const allDays = this.getAllDays(startDate)
     const currAllDays = this.state.allDays
 
     if (movePrev) {
@@ -168,23 +225,53 @@ export default class CalendarBody extends React.Component {
 
   render() {
     const {
-      focusDate,
+      startDate,
+      endDate,
       allDays,
       movePrev,
       moveNext
     } = this.state
 
-    const { isAnimating } = this.props
+    const { 
+      isAnimating,
+      range
+    } = this.props
 
     const renderDays = (days) => {
       return days.map(item => {
+
+        if (item.date) {
+          // only handle item has date
+          if (startDate && endDate) {
+            item.isStart = startDate.date.isSame(item.date)
+            item.isEnd = endDate.date.isSame(item.date)
+            item.active = startDate.date.isSame(item.date) || endDate.date.isSame(item.date) || (item.date.isAfter(startDate.date) && item.date.isBefore(endDate.date))
+          } else {
+            item.isStart = startDate && startDate.date.isSame(item.date)
+            item.active = startDate && startDate.date.isSame(item.date)
+            item.isEnd = endDate && startDate.date.isSame(item.date)
+          }
+        
+        } else {
+          item.active = false
+        }
+
         const cls = classNames({
-          'r-date-picker__days-item--grey': !item.inMonth,
-          'r-date-picker__days-item': true,
-          'r-date-picker__days-item-active': focusDate ? item.key === focusDate.key : false
+          'rdp__days-item--grey': !item.inMonth,
+          'rdp__days-item': true,
+          'rdp__days-item-active--start': item.isStart,
+          'rdp__days-item-active--end': item.isEnd,
+          'rdp__days-item-active': item.isStart || item.isEnd || item.active
         })
         return (
-          <div onMouseDown={ () => this.handleMouseDown(event, item) } data-label={ item.dayStr } className={ cls } key={ item.key }>{ item.num }</div>
+          <div 
+            className={ cls }
+            key={ item.key }
+            data-label={ item.dayStr }  
+            onMouseDown={ () => item.inMonth && this.handleMouseDown(event, item) } 
+            onMouseEnter={ () => range && item.inMonth && this.handleMouseEnter(event, item) }>
+            { item.num }
+          </div>
         )
       })
     }
@@ -194,8 +281,8 @@ export default class CalendarBody extends React.Component {
         // base on key format is { YYYYMMDD }
         const key = Object.keys(pageDays)[0]
         const cls = classNames({
-          'r-date-picker__view': true,
-          'r-date-picker__view--hidden': !isAnimating && idx !== 1  // the middle is visible
+          'rdp__view': true,
+          'rdp__view--hidden': !isAnimating && idx !== 1  // the middle is visible
         })
         return (
           <div className={ cls } key={ key }>
@@ -206,9 +293,9 @@ export default class CalendarBody extends React.Component {
     }
 
     const cls = classNames({
-      'r-date-picker__animation-left': isAnimating && moveNext,
-      'r-date-picker__animation-right': isAnimating && movePrev,
-      'r-date-picker__body': true
+      'rdp__animation-left': isAnimating && moveNext,
+      'rdp__animation-right': isAnimating && movePrev,
+      'rdp__body': true
     })
 
     return (

@@ -1,9 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import './styles/index.scss'
+import DatePicker from './components/DatePicker'
 import { IntlProvider, addLocaleData } from 'react-intl'
 import en from './languages/en'
-import DatePicker from './components/DatePicker'
 addLocaleData([{ en: en }])
 
 export default class extends React.Component {
@@ -28,7 +28,7 @@ export default class extends React.Component {
   render() {
     return (
       <IntlProvider locale="en" messages={ en }>
-        <DatePicker />
+        <DatePicker { ...this.props } />
       </IntlProvider>
     )
   }
