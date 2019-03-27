@@ -1,7 +1,14 @@
 $day_item_percent: 100% / 7;
 
 .rdp__title {
+  height: 40px;
+  display: flex;
+  align-items: center;
   text-align: center;
+}
+
+.rdp__title-center {
+  flex: 1;
 }
 
 .rdp__days-item,
@@ -10,16 +17,41 @@ $day_item_percent: 100% / 7;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: $day_item_percent;
+  width: 60px;
   height: 60px;
   vertical-align: top;
   user-select: none;
   cursor: pointer;
 }
 
-.rdp__days-item-active {
-  background-color: #a5a5a5;
+.rdp__days-item-active,
+.rdp__days-item-active--start,
+.rdp__days-item-active--end,
+.rdp__days-item-active--single,
+.rdb__days-item-active--connect {
+  background-color: #4D9DE0;
   color: #fff;
+  border-radius: 50%;
+}
+
+.rdp__days-item-active--single {
+  border-radius: 50% !important;
+}
+
+.rdp__days-item-active--start {
+  border-radius: 50% 0 0 50%;
+}
+
+.rdp__days-item-active--end {
+  border-radius: 0 50% 50% 0;
+}
+
+.rdp__days-item-active--start.rdp__days-item-active--end {
+  border-radius: 50%;
+}
+
+.rdb__days-item-active--connect {
+  border-radius: initial;
 }
 
 .rdp__days-item--grey {
@@ -60,4 +92,36 @@ $day_item_percent: 100% / 7;
 .rdp__animation-right {
   transition: all 0.4s ease;
   transform: translate3d(100%, 0, 0)
+}
+
+.rdp__labels,
+.rdp-days__row {
+  display: flex;
+  justify-content: space-between;
+}
+
+.rdp-days__row {
+  margin: 10px 0;
+}
+
+.rdp__prev-btn,
+.rdp__next-btn {
+  width: 16px;
+  height: 16px;
+  background: {
+    size: cover;
+    repeat: no-repeat;
+    position: center;
+  }
+  cursor: pointer;
+}
+
+.rdp__prev-btn {
+  float: left;
+  background-image: url('../images/prev.png')
+}
+
+.rdp__next-btn {
+  float: right;
+  background-image: url('../images/next.png')
 }

@@ -9,11 +9,13 @@ import CalendarBody from './CalendarBody'
 class Calendar extends React.Component {
 
   static propType = {
-    selectedDate: PropTypes.object
+    // if array, range default 
+    // if object single defautl
+    defaultDate: PropTypes.oneOfType([PropTypes.object, PropTypes.array])
   }
 
   static defaultProps = {
-    selectedDate: moment()
+    defaultDate: null
   }
 
   constructor() {
@@ -55,23 +57,25 @@ class Calendar extends React.Component {
     const { startDate, animating } = this.state
     const { 
       onDateChange, 
-      selectedDate,
+      defaultDate,
       onDateRangeChange,
-      range
+      range,
+      itemRender
     } = this.props
 
     return (
       <div className="rdp__container">
-        <CalendarHeader title={ startDate.format('YYYY-MM-DD') } onPrevClick={ this.onPrevClick } onNextClick={ this.onNextClick } />
+        <CalendarHeader title={ startDate.format('YYYY-MM') } onPrevClick={ this.onPrevClick } onNextClick={ this.onNextClick } />
         <CalendarLabel labels={ labelKeys } ></CalendarLabel>
         <CalendarBody 
           range={ range }
           isAnimating={ animating } 
           animateEnd={ () => this.setState({ animating: false }) } 
           startDate={ startDate }
+          itemRender={ itemRender }
           onDateRangeChange={ onDateRangeChange }
           onDateChange={ onDateChange } 
-          selectedDate={ selectedDate }
+          defaultDate={ defaultDate }
         />
       </div>
     )

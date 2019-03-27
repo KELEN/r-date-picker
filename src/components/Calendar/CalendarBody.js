@@ -6,12 +6,11 @@ import classNames from 'classname'
 export default class CalendarBody extends React.Component {
 
   static propTypes = {
-    startDate: PropTypes.object.isRequired,
-    onDateChange: PropTypes.func.isRequired,
-    onDateRangeChange: PropTypes.func,   // day range change event
-    selectedDate: PropTypes.object,
-    isAnimating: PropTypes.bool.isRequired,
-    range: PropTypes.bool
+    onDateChange: PropTypes.func,    // date change event
+    isAnimating: PropTypes.bool.isRequired,     // if body is animating
+    onDateRangeChange: PropTypes.func,          // day range change event
+    range: PropTypes.bool,                      // select day range
+    itemRender: PropTypes.func                  // day item render function
   }
 
   static defaultProps = {
@@ -23,19 +22,25 @@ export default class CalendarBody extends React.Component {
     super(props)
 
     this.state = {
-      allDays: [],
+      allDays: this.getAllDays(props.startDate),
       hoveringDate: null,
-      startDate: null,  // start date
-      endDate: null,    // end date
+      startDate: null,             // start date
+      endDate: null,                            // end date
       focusDate: null,
       moveNext: false,
       movePrev: false
     }
 
+    if (props.range && Array.isArray(props.defaultDate)) {
+      this.state.startDate = props.defaultDate[0]
+      this.state.endDate = props.defaultDate[1]
+    } else {
+      this.state.startDate = props.defaultDate
+    }
+
     this.renderCurrentMonthDays = this.renderCurrentMonthDays.bind(this)
     this.handleMouseDown = this.handleMouseDown.bind(this)
 
-    this.transitionContainerRef = this.transitionContainerRef.bind(this)
     this.transitionEndHandle = this.transitionEndHandle.bind(this)
   }
 
@@ -81,6 +86,7 @@ export default class CalendarBody extends React.Component {
           num: i,
           active: false,
           date: date,
+          connect: false,
           isStart: false,
           isEnd: false,
           key: date.format('YYYYMMDD'),
@@ -101,10 +107,7 @@ export default class CalendarBody extends React.Component {
   }
 
   componentDidMount() {
-    const allDays = this.getAllDays(this.props.startDate)
-    this.setState({
-      allDays: allDays
-    })
+    
   }
 
   componentWillReceiveProps(nextProps) {
@@ -124,9 +127,10 @@ export default class CalendarBody extends React.Component {
         })
       }
     }
-    if (nextProps.selectedDate) {
+
+    if (!nextProps.range) {
       this.setState({
-        startDate: nextProps.selectedDate
+        startDate: nextProps.defaultDate
       })
     }
   }
@@ -147,23 +151,17 @@ export default class CalendarBody extends React.Component {
             startDate: date
           })
         } else {
-          if (date.date.isBefore(startDate.date)) {
+          if (date.isBefore(startDate)) {
             this.setState({
               startDate: date,
               endDate: startDate
             })
-            onDateRangeChange && onDateRangeChange({
-              startDate: date,
-              endDate: startDate
-            })
+            onDateRangeChange && onDateRangeChange([date, startDate])
           } else {
             this.setState({
               endDate: date
             })
-            onDateRangeChange && onDateRangeChange({
-              startDate: startDate,
-              endDate: date
-            })
+            onDateRangeChange && onDateRangeChange([startDate, date])
           }
         }
       }
@@ -177,15 +175,12 @@ export default class CalendarBody extends React.Component {
   handleMouseEnter(e, date) {
     const { startDate } = this.state
     const { range } = this.props
+    // only handle range select
     if (range && startDate) {
       this.setState({
         hoveringDate: date
       })
     }
-  }
-
-  transitionContainerRef(ref) {
-    this.transitionContainer = ref
   }
 
   transitionEndHandle(e) {
@@ -227,6 +222,7 @@ export default class CalendarBody extends React.Component {
     const {
       startDate,
       endDate,
+      hoveringDate,
       allDays,
       movePrev,
       moveNext
@@ -234,43 +230,76 @@ export default class CalendarBody extends React.Component {
 
     const { 
       isAnimating,
-      range
+      range,
+      itemRender
     } = this.props
 
-    const renderDays = (days) => {
+    const renderRowDays = (days) => {
       return days.map(item => {
-
-        if (item.date) {
-          // only handle item has date
-          if (startDate && endDate) {
-            item.isStart = startDate.date.isSame(item.date)
-            item.isEnd = endDate.date.isSame(item.date)
-            item.active = startDate.date.isSame(item.date) || endDate.date.isSame(item.date) || (item.date.isAfter(startDate.date) && item.date.isBefore(endDate.date))
-          } else {
-            item.isStart = startDate && startDate.date.isSame(item.date)
-            item.active = startDate && startDate.date.isSame(item.date)
-            item.isEnd = endDate && startDate.date.isSame(item.date)
-          }
-        
-        } else {
-          item.active = false
-        }
-
         const cls = classNames({
           'rdp__days-item--grey': !item.inMonth,
           'rdp__days-item': true,
           'rdp__days-item-active--start': item.isStart,
           'rdp__days-item-active--end': item.isEnd,
-          'rdp__days-item-active': item.isStart || item.isEnd || item.active
+          'rdb__days-item-active--connect': item.connect,
+          'rdp__days-item-active--single': !range && item.active
         })
+
         return (
           <div 
             className={ cls }
             key={ item.key }
             data-label={ item.dayStr }  
-            onMouseDown={ () => item.inMonth && this.handleMouseDown(event, item) } 
+            onMouseDown={ () => item.inMonth && this.handleMouseDown(event, item.date) } 
             onMouseEnter={ () => range && item.inMonth && this.handleMouseEnter(event, item) }>
-            { item.num }
+            { itemRender ? itemRender(item) : item.num  }
+          </div>
+        )
+      })
+    }
+
+    const renderDays = (days) => {
+      const rowArray = []
+      let arr = []
+      days.forEach((item, idx) => {
+        if (item.date) { // only handle item has date
+          if (startDate && endDate) {
+            item.isStart = startDate.isSame(item.date)
+            item.isEnd = endDate.isSame(item.date)
+            item.active = startDate.isSame(item.date) || endDate.isSame(item.date)
+            item.connect = item.date.isAfter(startDate) && item.date.isBefore(endDate)
+          } else if (startDate && hoveringDate) {
+            // handle hoving date
+            if (hoveringDate.date.isAfter(startDate)) {
+              item.isStart = startDate.isSame(item.date)
+              item.isEnd = hoveringDate.date.isSame(item.date)
+              item.connect = item.date.isAfter(startDate) && item.date.isBefore(hoveringDate.date)
+            } else {
+              item.isStart = hoveringDate.date.isSame(item.date)
+              item.isEnd = startDate.isSame(item.date)
+              item.connect = item.date.isBefore(startDate) && item.date.isAfter(hoveringDate.date)
+            }
+            item.active = startDate.isSame(item.date) || hoveringDate.date.isSame(item.date)
+          } else {
+            item.isStart = startDate && startDate.isSame(item.date)
+            item.active = startDate && startDate.isSame(item.date)
+            item.isEnd = endDate && startDate.isSame(item.date)
+          }
+        } else {
+          item.active = false
+        }
+
+        if (idx > 0 && idx % 7 === 0) {
+          // new row
+          rowArray.push(arr)
+          arr = []
+        }
+        arr.push(item)
+      })
+      return rowArray.map((rowDays, idx) => {
+        return (
+          <div className="rdp-days__row" key={idx}>
+            { renderRowDays(rowDays) }
           </div>
         )
       })
@@ -299,7 +328,7 @@ export default class CalendarBody extends React.Component {
     })
 
     return (
-      <div ref={ this.transitionContainerRef } className={ cls } onTransitionEnd={ this.transitionEndHandle }>
+      <div className={ cls } onTransitionEnd={ this.transitionEndHandle }>
         { renderAllDays(allDays) }
       </div>
     )

@@ -15,7 +15,9 @@ export default class CalendarHeader extends React.Component {
     const { onPrevClick, onNextClick } = this.props
     return (
       <div className="rdp__title">
-        <span onClick={ onPrevClick }>prev</span> { this.props.title } <span onClick={ onNextClick }>next</span>
+        <span className="rdp__prev-btn" onClick={ onPrevClick }></span> 
+        <span className="rdp__title-center">{ this.props.title }</span>
+        <span className="rdp__next-btn" onClick={ onNextClick }></span>
       </div>
     )
   }

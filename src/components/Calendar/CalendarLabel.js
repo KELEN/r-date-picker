@@ -25,7 +25,7 @@ class CalendarLabel extends React.Component {
   render() {
     const { labels } = this.props
     return (
-      <div className="rdp__labels ">
+      <div className="rdp__labels">
         { this.renderLabel(labels) }
       </div>
     )
