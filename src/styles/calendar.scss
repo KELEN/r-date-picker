@@ -72,6 +72,7 @@ $day_item_percent: 100% / 7;
 
 .rdp__view--hidden {
   visibility: hidden;
+  pointer-events: none;
 }
 
 .rdp__view:first-child {

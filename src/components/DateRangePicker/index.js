@@ -9,7 +9,9 @@ addLocaleData([{ en: en }])
 class DateRangePicker extends React.Component {
 
   static propTypes = {
-    defaultValue: PropTypes.array.isRequired
+    defaultValue: PropTypes.array.isRequired,
+    min: PropTypes.object,
+    max: PropTypes.object
   }
 
   static defaultProps = {
@@ -21,6 +23,8 @@ class DateRangePicker extends React.Component {
     this.state = {
       startDate: props.defaultValue[0],
       endDate: props.defaultValue[1],
+      min: props.min,
+      max: props.max,
       hoveringDate: null
     }
 
@@ -30,39 +34,43 @@ class DateRangePicker extends React.Component {
 
   onDateChange(event, date) {
     const { startDate, endDate } = this.state
-    console.log(startDate, endDate)
     if (startDate && endDate) {
       this.setState({
         startDate: date,
-        endDate: null
-      }) 
+        endDate: null,
+        hoveringDate: null
+      })
     } else if (startDate && !endDate) {
       if (startDate.isAfter(date)) {
         this.setState({
           startDate: date,
-          endDate: startDate
+          endDate: startDate,
+          hoveringDate: null
         })
       } else {
         this.setState({
           endDate: date
         })
       }
-     
     } else {
       this.setState({
-        startDate: date
+        startDate: date,
+        hoveringDate: null
       })
     }
   }
 
   onHoveringDateChange(event, date) {
     const { startDate, endDate } = this.state
-    if (!endDate) {
+
+    if (startDate && endDate) return
+
+    if (startDate && !endDate) {
       // handle hover event
       if (startDate.isAfter(date)) {
         this.setState({
-          startDate: date,
-          hoveringDate: startDate
+          startDate: null,
+          endDate: startDate
         })
       } else {
         this.setState({
@@ -70,32 +78,47 @@ class DateRangePicker extends React.Component {
         })
       }
     }
+    if (!startDate && endDate) {
+      if (endDate.isBefore(date)) {
+        this.setState({
+          startDate: endDate,
+          endDate: null
+        })
+      }
+    }
+    this.setState({
+      hoveringDate: date
+    })
   }
 
   render() {
     const { startDate, endDate, hoveringDate } = this.state
+    const { min, max } = this.props
 
-    console.log(startDate && startDate.format('YYYYMMDD'), endDate && endDate.format('YYYYMMDD'))
-
+    console.log(startDate && startDate.format('YYYYMMDD'), endDate && endDate.format('YYYYMMDD'), hoveringDate && hoveringDate.format('YYYYMMDD'))
     return (
       <IntlProvider locale="en" messages={ en }>
         <div className="rdp-range__container">
-          <Calendar
-            { ...this.props }
-            max={ endDate }
-            range={ true }
-            defaultDate={ [ startDate, endDate || hoveringDate ] }
-            onHoveringDateChange={ this.onHoveringDateChange }
-            onDateChange={ this.onDateChange }
-          />
-          <Calendar
-            { ...this.props }
-            range={ true }
-            min={ endDate && endDate.clone().add(1, 'month') }
-            defaultDate={ [ startDate, endDate || hoveringDate ] }
-            onHoveringDateChange={ this.onHoveringDateChange }
-            onDateChange={ this.onDateChange } 
-          />
+          <div className="rdp-range__calendar rdp-range__left">
+            <Calendar
+              { ...this.props }
+              max={ min }
+              range={ true }
+              defaultDate={ [ startDate || hoveringDate, endDate || hoveringDate ] }
+              onHoveringDateChange={ this.onHoveringDateChange }
+              onDateChange={ this.onDateChange }
+            />
+          </div>
+          <div className="rdp-range__calendar rdp-range__right">
+            <Calendar
+              { ...this.props }
+              range={ true }
+              min={ startDate && startDate.clone().add(1, 'month') }
+              defaultDate={ [ startDate || hoveringDate, endDate || hoveringDate ] }
+              onHoveringDateChange={ this.onHoveringDateChange }
+              onDateChange={ this.onDateChange } 
+            />
+            </div>
           </div>
       </IntlProvider>
     )

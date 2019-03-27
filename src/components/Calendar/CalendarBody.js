@@ -2,6 +2,7 @@ import React from 'react'
 import moment from 'moment'
 import PropTypes from 'prop-types'
 import classNames from 'classname'
+import { isSameDay, isSameDefaultDays } from '../../utils/timer'
 
 export default class CalendarBody extends React.Component {
 
@@ -159,16 +160,20 @@ export default class CalendarBody extends React.Component {
       }
     }
 
-    if (Array.isArray(defaultDate)) {
-      this.setState({
-        startDate: defaultDate[0],
-        endDate: defaultDate[1]
-      })
-    } else {
-      this.setState({
-        startDate: defaultDate
-      })
+    if (!isSameDefaultDays(defaultDate, this.props.defaultDate)) {
+      if (Array.isArray(defaultDate)) {
+        this.setState({
+          startDate: defaultDate[0],
+          endDate: defaultDate[1],
+          hoveringDate: null
+        })
+      } else {
+        this.setState({
+          startDate: defaultDate
+        })
+      }
     }
+    
   }
 
   handleMouseDown(e, date) {
@@ -308,8 +313,7 @@ export default class CalendarBody extends React.Component {
             item.isEnd = endDate.isSame(item.date)
             item.active = startDate.isSame(item.date) || endDate.isSame(item.date)
             item.connect = item.date.isAfter(startDate) && item.date.isBefore(endDate)
-          } else if (startDate && hoveringDate) {
-            // handle hoving date
+          } else if (startDate && hoveringDate) { // handle hoving date
             if (hoveringDate.isAfter(startDate)) {
               item.isStart = startDate.isSame(item.date)
               item.isEnd = hoveringDate.isSame(item.date)
@@ -323,7 +327,8 @@ export default class CalendarBody extends React.Component {
           } else {
             item.isStart = startDate && startDate.isSame(item.date)
             item.active = startDate && startDate.isSame(item.date)
-            item.isEnd = endDate && startDate.isSame(item.date)
+            item.isEnd = endDate && endDate.isSame(item.date)
+            item.connect = false
           }
         } else {
           item.active = false

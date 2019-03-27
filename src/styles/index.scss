@@ -9,11 +9,14 @@
 }
 
 .rdp-range__container {
-  width: 800px;
   height: 500px;
   overflow: hidden;
   .rdp__container {
-    width: 50%;
     display: inline-block;
   }
+}
+
+.rdp-range__calendar {
+  display: inline-block;
+  margin: 0 10px;
 }

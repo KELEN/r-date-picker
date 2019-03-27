@@ -6,7 +6,7 @@ import { linkTo } from '@storybook/addon-links';
 
 import { Button, Welcome } from '@storybook/react/demo';
 import moment from 'moment'
-import DatePicker from '../src/index'
+import DatePicker from '../src/components/DatePicker'
 import DateRangePicker from '../src/components/DateRangePicker'
 
 storiesOf('Date Picker', module)
@@ -58,6 +58,6 @@ storiesOf('Date Picker', module)
 storiesOf('Multilple Date Picker', module)
   .add('Two Calendar', () => {
     return (
-      <DateRangePicker defaultValue={ [moment('2019-03-15'), moment('2019-03-28') ] }/>
+      <DateRangePicker defaultValue={ [moment('2019-03-15'), moment('2019-03-28') ] } min={ moment('2019-01-01') } max={ moment('2019-05-01') }/>
     )
   })
