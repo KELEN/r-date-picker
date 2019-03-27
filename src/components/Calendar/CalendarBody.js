@@ -6,6 +6,7 @@ import classNames from 'classname'
 export default class CalendarBody extends React.Component {
 
   static propTypes = {
+    onHoveringDateChange: PropTypes.func,
     onDateChange: PropTypes.func,    // date change event
     isAnimating: PropTypes.bool.isRequired,     // if body is animating
     onDateRangeChange: PropTypes.func,          // day range change event
@@ -31,7 +32,7 @@ export default class CalendarBody extends React.Component {
       movePrev: false
     }
 
-    if (props.range && Array.isArray(props.defaultDate)) {
+    if (Array.isArray(props.defaultDate)) {
       this.state.startDate = props.defaultDate[0]
       this.state.endDate = props.defaultDate[1]
     } else {
@@ -47,15 +48,21 @@ export default class CalendarBody extends React.Component {
   getMonthDays(startOfMonth) {
     const daysInMonth = startOfMonth.daysInMonth()   // total num in month
     const startNum = startOfMonth.weekday()  // the first weekday
+    const nextMonth = startOfMonth.clone().add(1, 'month')
+    const endNum = 7 - nextMonth.weekday()
     return {
-      [startOfMonth.format('YYYYMMDD')]: [...this.renderLastMonthDays(startOfMonth, startNum), ...this.renderCurrentMonthDays(startOfMonth, daysInMonth)]
+      [startOfMonth.format('YYYYMMDD')]: [
+        ...this.renderPrevMonthDays(startOfMonth, startNum), 
+        ...this.renderCurrentMonthDays(startOfMonth, daysInMonth),
+        ...this.renderNextMonthDays(nextMonth.startOf('month'), endNum)
+      ]
     }
   }
 
   /**
    * render last month
    */
-  renderLastMonthDays(firstDay, count) {
+  renderPrevMonthDays(firstDay, count) {
     const emptyDays = []
     let start = moment(firstDay).subtract(count, 'days')
     let i = -1
@@ -98,6 +105,31 @@ export default class CalendarBody extends React.Component {
     return realDays
   }
 
+  /**
+   * render next month days
+   * @param {*} start 
+   * @param {*} count 
+   */
+  renderNextMonthDays(start, count) {
+    const emptyDays = []
+    let i = 1
+    start = moment(start).add(i, 'days')
+    while (count--) {
+      emptyDays.push(
+        {
+          num: '',
+          date: null,
+          start: start,
+          key: start.format('YYYYMMDD'),
+          inMonth: false
+        }
+      )
+      i += 1
+      start = moment(start).add(i, 'days')
+    }
+    return emptyDays
+  }
+
   getAllDays(currDate) {
     const currMonth = moment(currDate).startOf('month')
     const prevMonthDays = this.getMonthDays(currMonth.clone().subtract(1, 'months'))
@@ -106,11 +138,10 @@ export default class CalendarBody extends React.Component {
     return [prevMonthDays,currMonthDays, nextMonthDays]
   }
 
-  componentDidMount() {
-    
-  }
-
   componentWillReceiveProps(nextProps) {
+
+    const { defaultDate } = nextProps
+
     if (nextProps.startDate !== this.props.startDate) {
       // next date no equal current date recalculate days
       if (nextProps.startDate.isBefore(this.props.startDate)) {
@@ -128,16 +159,23 @@ export default class CalendarBody extends React.Component {
       }
     }
 
-    if (!nextProps.range) {
+    if (Array.isArray(defaultDate)) {
       this.setState({
-        startDate: nextProps.defaultDate
+        startDate: defaultDate[0],
+        endDate: defaultDate[1]
+      })
+    } else {
+      this.setState({
+        startDate: defaultDate
       })
     }
   }
 
   handleMouseDown(e, date) {
     const { startDate, endDate } = this.state
-    const { range, onDateRangeChange } = this.props
+    const { range, onDateChange, onDateRangeChange } = this.props
+
+    onDateChange && onDateChange(e, date)
 
     if (range) {
       if (startDate && endDate) {
@@ -174,13 +212,14 @@ export default class CalendarBody extends React.Component {
 
   handleMouseEnter(e, date) {
     const { startDate } = this.state
-    const { range } = this.props
+    const { range, onHoveringDateChange } = this.props
     // only handle range select
     if (range && startDate) {
       this.setState({
         hoveringDate: date
       })
     }
+    onHoveringDateChange && onHoveringDateChange(e, date)
   }
 
   transitionEndHandle(e) {
@@ -241,17 +280,18 @@ export default class CalendarBody extends React.Component {
           'rdp__days-item': true,
           'rdp__days-item-active--start': item.isStart,
           'rdp__days-item-active--end': item.isEnd,
-          'rdb__days-item-active--connect': item.connect,
-          'rdp__days-item-active--single': !range && item.active
+          'rdp__days-item-active--single': !endDate && item.isStart && !range,
+          'rdb__days-item-active--connect': item.connect
         })
 
         return (
           <div 
             className={ cls }
             key={ item.key }
-            data-label={ item.dayStr }  
+            data-label={ item.dayStr }
+            data-key={ item.key }
             onMouseDown={ () => item.inMonth && this.handleMouseDown(event, item.date) } 
-            onMouseEnter={ () => range && item.inMonth && this.handleMouseEnter(event, item) }>
+            onMouseEnter={ () => range && item.inMonth && this.handleMouseEnter(event, item.date) }>
             { itemRender ? itemRender(item) : item.num  }
           </div>
         )
@@ -270,16 +310,16 @@ export default class CalendarBody extends React.Component {
             item.connect = item.date.isAfter(startDate) && item.date.isBefore(endDate)
           } else if (startDate && hoveringDate) {
             // handle hoving date
-            if (hoveringDate.date.isAfter(startDate)) {
+            if (hoveringDate.isAfter(startDate)) {
               item.isStart = startDate.isSame(item.date)
-              item.isEnd = hoveringDate.date.isSame(item.date)
-              item.connect = item.date.isAfter(startDate) && item.date.isBefore(hoveringDate.date)
+              item.isEnd = hoveringDate.isSame(item.date)
+              item.connect = item.date.isAfter(startDate) && item.date.isBefore(hoveringDate)
             } else {
-              item.isStart = hoveringDate.date.isSame(item.date)
+              item.isStart = hoveringDate.isSame(item.date)
               item.isEnd = startDate.isSame(item.date)
-              item.connect = item.date.isBefore(startDate) && item.date.isAfter(hoveringDate.date)
+              item.connect = item.date.isBefore(startDate) && item.date.isAfter(hoveringDate)
             }
-            item.active = startDate.isSame(item.date) || hoveringDate.date.isSame(item.date)
+            item.active = startDate.isSame(item.date) || hoveringDate.isSame(item.date)
           } else {
             item.isStart = startDate && startDate.isSame(item.date)
             item.active = startDate && startDate.isSame(item.date)
@@ -288,7 +328,6 @@ export default class CalendarBody extends React.Component {
         } else {
           item.active = false
         }
-
         if (idx > 0 && idx % 7 === 0) {
           // new row
           rowArray.push(arr)
@@ -296,6 +335,11 @@ export default class CalendarBody extends React.Component {
         }
         arr.push(item)
       })
+
+      // last row
+      if (arr.length) {
+        rowArray.push(arr)
+      }
       return rowArray.map((rowDays, idx) => {
         return (
           <div className="rdp-days__row" key={idx}>

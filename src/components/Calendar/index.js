@@ -11,18 +11,37 @@ class Calendar extends React.Component {
   static propType = {
     // if array, range default 
     // if object single defautl
+    min: PropTypes.object,
+    max: PropTypes.object,
     defaultDate: PropTypes.oneOfType([PropTypes.object, PropTypes.array])
   }
 
   static defaultProps = {
+    min: null,
+    max: null,
     defaultDate: null
   }
 
-  constructor() {
-    super()
+  constructor(props) {
+    super(props)
+
+    let startDate = moment()
+    let { min, max } = props
+    if (min) {
+      if (min.isAfter(startDate)) {
+        startDate = min
+      }
+    }
+
+    if (max) {
+      if (max.isBefore(startDate)) {
+        startDate = max
+      }
+    }
+    
     this.state = {
       animating: false,
-      startDate: moment()
+      startDate: startDate    // default is today
     }
     this.onPrevClick = this.onPrevClick.bind(this)
     this.onNextClick = this.onNextClick.bind(this)
@@ -32,7 +51,12 @@ class Calendar extends React.Component {
    * prev btn click
    */
   onPrevClick() {
+    const { min } = this.props
     if (!this.state.animating) {
+      const prevMonth = moment(this.state.startDate).subtract(1, 'month')
+      if (min && min.isAfter(prevMonth)) {
+        return
+      }
       this.setState({
         animating: true,
         startDate: moment(this.state.startDate).subtract(1, 'month')
@@ -44,10 +68,15 @@ class Calendar extends React.Component {
    * next btn click
    */
   onNextClick() {
+    const { max } = this.props
     if (!this.state.animating) {
+      const nextMonth = moment(this.state.startDate).add(1, 'month')
+      if (max && max.isBefore(nextMonth)) {
+        return
+      }
       this.setState({
         animating: true,
-        startDate: moment(this.state.startDate).add(1, 'month')
+        startDate: nextMonth
       })
     }
   }
@@ -58,6 +87,7 @@ class Calendar extends React.Component {
     const { 
       onDateChange, 
       defaultDate,
+      onHoveringDateChange,
       onDateRangeChange,
       range,
       itemRender
@@ -73,6 +103,7 @@ class Calendar extends React.Component {
           animateEnd={ () => this.setState({ animating: false }) } 
           startDate={ startDate }
           itemRender={ itemRender }
+          onHoveringDateChange={ onHoveringDateChange }
           onDateRangeChange={ onDateRangeChange }
           onDateChange={ onDateChange } 
           defaultDate={ defaultDate }
