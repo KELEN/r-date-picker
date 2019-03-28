@@ -2,7 +2,7 @@ import React from 'react'
 import Calendar from '../Calendar'
 import { IntlProvider, addLocaleData } from 'react-intl'
 import en from '../../languages/en'
-import moment from 'moment'
+import moment, { max } from 'moment'
 import PropTypes from 'prop-types'
 addLocaleData([{ en: en }])
 
@@ -10,8 +10,8 @@ class DateRangePicker extends React.Component {
 
   static propTypes = {
     defaultValue: PropTypes.array.isRequired,
-    min: PropTypes.object,
-    max: PropTypes.object
+    minMonth: PropTypes.object,
+    maxMonth: PropTypes.object
   }
 
   static defaultProps = {
@@ -23,89 +23,122 @@ class DateRangePicker extends React.Component {
     this.state = {
       startDate: props.defaultValue[0],
       endDate: props.defaultValue[1],
-      min: props.min,
-      max: props.max,
-      hoveringDate: null
+      hoveringDate: null,
+      isHovering: false,
+
+      leftMaxMonth: moment(),
+      rightMinMonth: moment().add(1, 'month'),
+
+      startMonth: moment(),
+      endMonth: moment().add(1, 'month')
     }
 
+    this.onStartMonthChange = this.onStartMonthChange.bind(this)
+    this.onEndMonthChange = this.onEndMonthChange.bind(this)
     this.onHoveringDateChange = this.onHoveringDateChange.bind(this)
     this.onDateChange = this.onDateChange.bind(this)
   }
 
+  onStartMonthChange(date) {
+    this.setState({
+      rightMinMonth: date.clone().add(1, 'month')
+    })
+  }
+
+  onEndMonthChange(date) {
+    this.setState({
+      leftMaxMonth: date.clone().subtract(1, 'month')
+    })
+    console.log(this.state.leftMaxMonth.format('YYYY-MM-DD'))
+  }
+
   onDateChange(event, date) {
     const { startDate, endDate } = this.state
-    if (startDate && endDate) {
+    if (!startDate && !endDate) {
       this.setState({
         startDate: date,
-        endDate: null,
-        hoveringDate: null
+        isHovering: true
       })
-    } else if (startDate && !endDate) {
-      if (startDate.isAfter(date)) {
+    } else if (!startDate) {
+      this.setState({
+        startDate: date,
+        isHovering: !endDate
+      })
+    } else if (!endDate) {
+      if (date.isBefore(startDate)) {
         this.setState({
           startDate: date,
           endDate: startDate,
-          hoveringDate: null
+          isHovering: !startDate
         })
       } else {
         this.setState({
-          endDate: date
+          endDate: date,
+          isHovering: !startDate
         })
       }
     } else {
       this.setState({
         startDate: date,
+        endDate: null,
+        isHovering: true,
         hoveringDate: null
       })
     }
   }
 
   onHoveringDateChange(event, date) {
-    const { startDate, endDate } = this.state
-
-    if (startDate && endDate) return
-
-    if (startDate && !endDate) {
-      // handle hover event
-      if (startDate.isAfter(date)) {
+    const { startDate, endDate, isHovering } = this.state
+    const { onHoveringDateChange } = this.props
+    if (isHovering) {
+      this.setState({
+        hoveringDate: date
+      })
+      if (startDate && startDate.isAfter(date)) {
         this.setState({
           startDate: null,
           endDate: startDate
         })
-      } else {
-        this.setState({
-          hoveringDate: date
-        })
-      }
-    }
-    if (!startDate && endDate) {
-      if (endDate.isBefore(date)) {
+      } else if (endDate && endDate.isBefore(date)) {
         this.setState({
           startDate: endDate,
           endDate: null
         })
       }
     }
-    this.setState({
-      hoveringDate: date
-    })
+    onHoveringDateChange && onHoveringDateChange(event, date)
   }
 
   render() {
-    const { startDate, endDate, hoveringDate } = this.state
-    const { min, max } = this.props
+    const { 
+      startDate,
+      endDate,
+      startMonth,
+      endMonth,
+      hoveringDate,
+      leftMaxMonth,
+      rightMinMonth
+    } = this.state
 
-    console.log(startDate && startDate.format('YYYYMMDD'), endDate && endDate.format('YYYYMMDD'), hoveringDate && hoveringDate.format('YYYYMMDD'))
+    const {
+      minMonth,
+      maxMonth
+    } = this.props
+
     return (
       <IntlProvider locale="en" messages={ en }>
         <div className="rdp-range__container">
           <div className="rdp-range__calendar rdp-range__left">
             <Calendar
               { ...this.props }
-              max={ min }
               range={ true }
-              defaultDate={ [ startDate || hoveringDate, endDate || hoveringDate ] }
+              minMonth={ minMonth }
+              maxMonth={ leftMaxMonth }
+              startDate={ startDate || hoveringDate }
+              endDate={ endDate || hoveringDate }
+              currentMonth={ startMonth }
               onHoveringDateChange={ this.onHoveringDateChange }
+              onMonthChange={ this.onStartMonthChange }
               onDateChange={ this.onDateChange }
             />
           </div>
@@ -113,9 +146,13 @@ class DateRangePicker extends React.Component {
             <Calendar
               { ...this.props }
               range={ true }
-              min={ startDate && startDate.clone().add(1, 'month') }
-              defaultDate={ [ startDate || hoveringDate, endDate || hoveringDate ] }
+              minMonth={ rightMinMonth }
+              maxMonth={ maxMonth }
+              startDate={ startDate || hoveringDate }
+              endDate={ endDate || hoveringDate }
+              currentMonth={ endMonth }
               onHoveringDateChange={ this.onHoveringDateChange }
+              onMonthChange={ this.onEndMonthChange }
               onDateChange={ this.onDateChange } 
             />
             </div>

@@ -1,7 +1,7 @@
 @import './calendar.scss';
 
 .rdp__container {
-  width: 420px;
+  width: 280px;
   height: 500px;
   overflow: hidden;
   font-size: 14px;
@@ -11,6 +11,7 @@
 .rdp-range__container {
   height: 500px;
   overflow: hidden;
+  white-space: nowrap;
   .rdp__container {
     display: inline-block;
   }

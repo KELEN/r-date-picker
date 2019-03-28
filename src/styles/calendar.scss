@@ -17,8 +17,8 @@ $day_item_percent: 100% / 7;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 60px;
-  height: 60px;
+  width: 40px;
+  height: 40px;
   vertical-align: top;
   user-select: none;
   cursor: pointer;
@@ -70,9 +70,10 @@ $day_item_percent: 100% / 7;
   height: 100%;
 }
 
-.rdp__view--hidden {
+.rdp--hidden {
   visibility: hidden;
   pointer-events: none;
+  opacity: 0;
 }
 
 .rdp__view:first-child {
@@ -102,7 +103,7 @@ $day_item_percent: 100% / 7;
 }
 
 .rdp-days__row {
-  margin: 10px 0;
+  margin: 4px 0;
 }
 
 .rdp__prev-btn,

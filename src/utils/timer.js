@@ -6,7 +6,7 @@ import moment from 'moment'
  * @param {*} b  moment object
  */
 export function isSameDay(a, b) {
-  return a && b && moment(a).isSame(moment(b), 'day')
+  return Boolean(a && b && moment(a).isSame(moment(b), 'day'))
 }
 
 /**
@@ -14,14 +14,33 @@ export function isSameDay(a, b) {
  * @param {*} a 
  * @param {*} b 
  */
-export function isSameDefaultDays(a, b) {
+export function isSameDays(a, b) {
   if (Array.isArray(a) && Array.isArray(b)) {
     for (let i = 0; i < a.length; i++) {
       if (!isSameDay(a[i], b[i])) {
         return false
       }
+      return true
     }
   } else {
     return isSameDay(a, b)
   }
+}
+
+/**
+ * 
+ * @param {*} start 
+ * @param {*} end 
+ */
+export function isMonthAfter(start, end) {
+  return Boolean(start && end && start.isAfter(end, 'month'))
+}
+
+/**
+ * 
+ * @param {*} start 
+ * @param {*} end 
+ */
+export function isMonthBefore(start, end) {
+  return Boolean(start && end && start.isBefore(end, 'month'))
 }

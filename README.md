@@ -22,7 +22,7 @@
 | max | moment object  |  moment('2019-04-01')  | 可以切换的最大日历 |
 | defaultDate  | moment对象或者moment数组 | moment('2019-04-01') | 默认选中值，对象是选中单个值，数组是选择范围 |
 | range | bool | true/false | 是否选择范围 |
-|  | | |
+| onMonthChange | function | | 月改变事件 |
 | onDateChange | function | | 日期选择回调 |
 | onDateRangeChange | function |  | 范围选择回调 |
 | itemRender | function |  | 自定义渲染项 |
