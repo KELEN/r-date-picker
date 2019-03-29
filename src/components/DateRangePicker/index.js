@@ -63,6 +63,7 @@ class DateRangePicker extends React.Component {
 
   onDateChange(event, date) {
     const { startDate, endDate } = this.state
+    const { onDateRangeChange } = this.props
     if (!startDate && !endDate) {
       this.setState({
         startDate: date,
@@ -73,6 +74,7 @@ class DateRangePicker extends React.Component {
         startDate: date,
         isHovering: !endDate
       })
+      onDateRangeChange && onDateRangeChange([date, endDate])
     } else if (!endDate) {
       if (date.isBefore(startDate)) {
         this.setState({
@@ -80,11 +82,13 @@ class DateRangePicker extends React.Component {
           endDate: startDate,
           isHovering: !startDate
         })
+        onDateRangeChange && onDateRangeChange([date, startDate])
       } else {
         this.setState({
           endDate: date,
           isHovering: !startDate
         })
+        onDateRangeChange && onDateRangeChange([startDate, date])
       }
     } else {
       this.setState({

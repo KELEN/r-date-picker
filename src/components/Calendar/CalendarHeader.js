@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classname'
-import { formatMessage } from 'react-intl'
+import { injectIntl, FormattedMessage } from 'react-intl'
 
 export default class CalendarHeader extends React.Component {
 
@@ -23,26 +23,13 @@ export default class CalendarHeader extends React.Component {
 
   constructor(props) {
     super(props)
-    this.state = {
-      title: this.intlTitleFormat(props.currentMonth)
-    }
   }
 
   intlTitleFormat(date) {
     return date.format('YYYYMMDD'); //date.format(`YYYY${ formatMessage({ id: "year", defaultMessage: '-' }) }MM${ formatMessage({ id: "month", defaultMessage: '' }) }DD${ formatMessage({ id: 'day', defaultMessage: '-' }) }`)
   }
 
-  componentWillReceiveProps(nextProps) {
-    this.setState({
-      title: this.intlTitleFormat(nextProps.currentMonth)
-    })
-  }
-
   render() {
-
-    const {
-      title
-    } = this.state
 
     const {
       onPrevClick,
@@ -50,7 +37,8 @@ export default class CalendarHeader extends React.Component {
       hideNextBtn,
       hidePrevBtn,
       renderPrevBtn,
-      renderNextBtn
+      renderNextBtn,
+      currentMonth
     } = this.props
 
     const prevBtncls = classNames({
@@ -63,12 +51,20 @@ export default class CalendarHeader extends React.Component {
       'rdp--hidden': hideNextBtn
     })
 
+    const year = currentMonth.get('year'), month = currentMonth.get('month') + 1, day = currentMonth.get('day')
+
+    const TitleFormat = injectIntl(({year, month, day, intl}) => {
+      return `${year}${intl.formatMessage({id: 'year'})}${month}${intl.formatMessage({ id: 'month' })}${day}${intl.formatMessage({ id: 'day', defaultMessage: '' })}`
+    })
+
     return (
       <div className="rdp__title">
         <span className={ prevBtncls } onClick={ onPrevClick }>
           { renderPrevBtn && renderPrevBtn() }
         </span>   
-        <span className="rdp__title-center">{ title }</span>
+        <span className="rdp__title-center">
+          <TitleFormat year={ year } month={ month } day={ day } />
+        </span>
         <span className={ nextBtnCls } onClick={ onNextClick }>
           { renderNextBtn && renderNextBtn() }
         </span>

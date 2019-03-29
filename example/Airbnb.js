@@ -8,19 +8,40 @@ class Airbnb extends React.Component {
   constructor() {
     super()
     this.state = {
-      selectedDate: moment()
+      selectRange: []
     }
+    this.onDateRangeChange = this.onDateRangeChange.bind(this)
+  }
+
+  onDateRangeChange(range) {
+    this.setState({
+      selectRange: range
+    })
   }
 
   render() {
+
     const { 
       selectedDate,
     } = this.state
+
+    const formatArray = (arr) => {
+      let str = ''
+      if (arr[0]) str += arr[0].format('YYYY-MM-DD')
+      else str += 'XXXX-XX-XX'
+      str += ' to '
+      if (arr[1]) str += arr[1].format('YYYY-MM-DD')
+      else str += 'XXXX-XX-XX'
+      return str
+    }
+
     return (
       <div>
+        <h3>{ formatArray(this.state.selectRange) }</h3>
         <DateRangePicker
           className="airbnb-example"
           defaultDate={ selectedDate }
+          onDateRangeChange={ this.onDateRangeChange }
           renderPrevBtn={ () => {
             return <svg className="navigate-btn" focusable="false" viewBox="0 0 1000 1000"><path d="M336.2 274.5l-210.1 210h805.4c13 0 23 10 23 23s-10 23-23 23H126.1l210.1 210.1c11 11 11 21 0 32-5 5-10 7-16 7s-11-2-16-7l-249.1-249c-11-11-11-21 0-32l249.1-249.1c21-21.1 53 10.9 32 32z"></path></svg>
           }}

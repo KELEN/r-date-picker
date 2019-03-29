@@ -99,6 +99,7 @@ export default class extends React.Component {
           startDate: date,
           isHovering: !endDate
         })
+        onDateRangeChange && onDateRangeChange([date, endDate])
       } else if (!endDate) {
         if (date.isBefore(startDate)) {
           this.setState({
@@ -106,11 +107,13 @@ export default class extends React.Component {
             endDate: startDate,
             isHovering: !startDate
           })
+          onDateRangeChange && onDateRangeChange([date, startDate])
         } else {
           this.setState({
             endDate: date,
             isHovering: !startDate
           })
+          onDateRangeChange && onDateRangeChange([startDate, date])
         }
       } else {
         this.setState({

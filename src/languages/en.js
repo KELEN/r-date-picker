@@ -24,9 +24,9 @@ export const CALENDAR_MONTHS = {
 }
 
 export const COMMON = {
-  year: 'Y',
-  month: 'M',
-  day: 'D'
+  year: '-',
+  month: '-',
+  day: ' '
 }
 
 
