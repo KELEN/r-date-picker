@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classname'
+import { formatMessage } from 'react-intl'
 
 export default class CalendarHeader extends React.Component {
 
@@ -9,7 +10,9 @@ export default class CalendarHeader extends React.Component {
     hideNextBtn: PropTypes.bool.isRequired,
     onPrevClick: PropTypes.func.isRequired,
     onNextClick: PropTypes.func.isRequired,
-    currentMonth: PropTypes.object.isRequired
+    currentMonth: PropTypes.object.isRequired,
+    renderPrevBtn: PropTypes.func,
+    renderNextBtn: PropTypes.func
   }
 
   static defaultProps = {
@@ -21,13 +24,17 @@ export default class CalendarHeader extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      title: props.currentMonth.format('YYYY-MM-DD')
+      title: this.intlTitleFormat(props.currentMonth)
     }
+  }
+
+  intlTitleFormat(date) {
+    return date.format('YYYYMMDD'); //date.format(`YYYY${ formatMessage({ id: "year", defaultMessage: '-' }) }MM${ formatMessage({ id: "month", defaultMessage: '' }) }DD${ formatMessage({ id: 'day', defaultMessage: '-' }) }`)
   }
 
   componentWillReceiveProps(nextProps) {
     this.setState({
-      title: nextProps.currentMonth.format('YYYY-MM-DD')
+      title: this.intlTitleFormat(nextProps.currentMonth)
     })
   }
 
@@ -41,7 +48,9 @@ export default class CalendarHeader extends React.Component {
       onPrevClick,
       onNextClick,
       hideNextBtn,
-      hidePrevBtn
+      hidePrevBtn,
+      renderPrevBtn,
+      renderNextBtn
     } = this.props
 
     const prevBtncls = classNames({
@@ -56,9 +65,13 @@ export default class CalendarHeader extends React.Component {
 
     return (
       <div className="rdp__title">
-        <span className={ prevBtncls } onClick={ onPrevClick }></span> 
+        <span className={ prevBtncls } onClick={ onPrevClick }>
+          { renderPrevBtn && renderPrevBtn() }
+        </span>   
         <span className="rdp__title-center">{ title }</span>
-        <span className={ nextBtnCls } onClick={ onNextClick }></span>
+        <span className={ nextBtnCls } onClick={ onNextClick }>
+          { renderNextBtn && renderNextBtn() }
+        </span>
       </div>
     )
   }

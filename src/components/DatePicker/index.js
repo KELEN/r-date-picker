@@ -5,11 +5,18 @@ import Calendar from '../Calendar'
 import '../../styles/index.scss'
 import { IntlProvider, addLocaleData } from 'react-intl'
 import en from '../../languages/en'
-addLocaleData([{ en: en }])
+import zh_CN from '../../languages/zh-CN'
+
+const messages = {
+  en: en,
+  cn: zh_CN
+}
 
 export default class extends React.Component {
 
   static propTypes = {
+    onDateRangeChange: PropTypes.func,
+    // init visible current month, default is current month
     currentMonth: PropTypes.object
   }
 
@@ -20,16 +27,8 @@ export default class extends React.Component {
   constructor(props) {
     super(props)
 
-    let { currentMonth, minMonth, maxMonth } = props
+    const { currentMonth } = props
     let startDate, endDate;
-    
-    if (minMonth && minMonth.isAfter(currentMonth)) {
-      currentMonth = minMonth
-    }
-
-    if (maxMonth && maxMonth.isBefore(currentMonth)) {
-      currentMonth = maxMonth
-    }
 
     if (Array.isArray(props.defaultDate)) {
       // range date
@@ -47,7 +46,7 @@ export default class extends React.Component {
       hidePrevBtn: false,
       hideNextBtn: false,
       isHovering: false,             // is hovering status
-      currentMonth: currentMonth    // default is today
+      currentMonth: currentMonth     // default is today
     }
 
     this.onDateChange = this.onDateChange.bind(this)
@@ -88,7 +87,7 @@ export default class extends React.Component {
    */
   onDateChange(event, date) {
     const { startDate, endDate } = this.state
-    const { range, onDateChange } = this.props
+    const { range, onDateChange, onDateRangeChange } = this.props
     if (range) {
       if (!startDate && !endDate) {
         this.setState({
@@ -137,8 +136,12 @@ export default class extends React.Component {
       hoveringDate
     } = this.state
 
+    const { 
+      language = 'cn'
+    } = this.props
+
     return (
-      <IntlProvider locale="en" messages={ en }>
+      <IntlProvider locale='en' messages={ messages[language] }>
         <Calendar
           { ...this.props }
           startDate={ startDate || hoveringDate }

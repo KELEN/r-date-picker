@@ -44,3 +44,27 @@ export function isMonthAfter(start, end) {
 export function isMonthBefore(start, end) {
   return Boolean(start && end && start.isBefore(end, 'month'))
 }
+
+/**
+ * is same month
+ * @param {*} start 
+ * @param {*} end 
+ */
+export function isSameMonth(start, end) {
+  return Boolean(start && end && start.isSame(end, 'month'))
+}
+
+/**
+ * get the first day of month
+ */
+export function getFirstDayOfMonth(date) {
+  return date && moment(date).startOf('month')
+}
+
+/**
+ * get the last day of month
+ * @param {*} date 
+ */
+export function getLastDayOfMonth(date) {
+  return date && moment(date).endOf('month') 
+}

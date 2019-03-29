@@ -2,7 +2,7 @@ import React from 'react'
 import moment from 'moment'
 import PropTypes from 'prop-types'
 import classNames from 'classname'
-import { isSameDay } from '../../utils/timer'
+import { isSameDay, isMonthBefore, isMonthAfter } from '../../utils/timer'
 
 export default class CalendarBody extends React.Component {
 
@@ -130,7 +130,8 @@ export default class CalendarBody extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.currentMonth !== this.props.currentMonth) {
+
+    if (!isSameDay(nextProps.currentMonth, this.props.currentMonth)) {
       // next date no equal current date recalculate days
       if (nextProps.currentMonth.isBefore(this.props.currentMonth)) {
         // prev
@@ -143,6 +144,13 @@ export default class CalendarBody extends React.Component {
         this.setState({
           movePrev: false,
           moveNext: true
+        })
+      }
+
+      // set current month not by prev or next btn
+      if (!nextProps.isAnimating) {
+        this.setState({
+          allDays: this.getAllDays(nextProps.currentMonth)
         })
       }
     }

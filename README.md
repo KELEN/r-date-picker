@@ -22,10 +22,13 @@
 | max | moment object  |  moment('2019-04-01')  | 可以切换的最大日历 |
 | defaultDate  | moment对象或者moment数组 | moment('2019-04-01') | 默认选中值，对象是选中单个值，数组是选择范围 |
 | range | bool | true/false | 是否选择范围 |
+| language | string | cn | cn/en | 
 | onMonthChange | function | | 月改变事件 |
 | onDateChange | function | | 日期选择回调 |
 | onDateRangeChange | function |  | 范围选择回调 |
 | itemRender | function |  | 自定义渲染项 |
+| renderPrevBtn | function | | 渲染上一页按钮 |
+| renderNextBtn | function | | 渲染下一页按钮 |
 
 ##### itemRender属性
 
@@ -71,3 +74,13 @@
 npm i
 npm run start
 ```
+
+### Avaiable
+
+- [x] 单日历选择日期
+- [x] 单日历选择范围
+- [x] 两个日历选择范围
+- [x] 个性化修改样式
+- [ ] 范围限制
+- [ ] 范围限制选择
+- [x] 国际化支持，只支持英文和中文

@@ -1,21 +1,29 @@
 import React from 'react'
 import Calendar from '../Calendar'
 import { IntlProvider, addLocaleData } from 'react-intl'
-import en from '../../languages/en'
-import moment, { max } from 'moment'
+import moment, { lang } from 'moment'
 import PropTypes from 'prop-types'
-addLocaleData([{ en: en }])
+import en_US from '../../languages/en'
+import zh_CN from '../../languages/zh-CN'
+import classNames from 'classname'
+
+const messages = {
+  en: en_US,
+  zh_CN: zh_CN
+}
 
 class DateRangePicker extends React.Component {
 
   static propTypes = {
     defaultValue: PropTypes.array.isRequired,
-    minMonth: PropTypes.object,
-    maxMonth: PropTypes.object
+    minDate: PropTypes.object,
+    maxDate: PropTypes.object
   }
 
   static defaultProps = {
-    defaultValue: []
+    defaultValue: [],
+    minDate: null,
+    maxDate: null
   }
 
   constructor(props) {
@@ -26,8 +34,8 @@ class DateRangePicker extends React.Component {
       hoveringDate: null,
       isHovering: false,
 
-      leftMaxMonth: moment(),
-      rightMinMonth: moment().add(1, 'month'),
+      leftMaxDate: moment(),
+      rightMinDate: moment().add(1, 'month'),
 
       startMonth: moment(),
       endMonth: moment().add(1, 'month')
@@ -41,15 +49,16 @@ class DateRangePicker extends React.Component {
 
   onStartMonthChange(date) {
     this.setState({
-      rightMinMonth: date.clone().add(1, 'month')
+      startMonth: date,
+      rightMinDate: date.clone().add(1, 'month')
     })
   }
 
   onEndMonthChange(date) {
     this.setState({
-      leftMaxMonth: date.clone().subtract(1, 'month')
+      endMonth: date,
+      leftMaxDate: date.clone().subtract(1, 'month')
     })
-    console.log(this.state.leftMaxMonth.format('YYYY-MM-DD'))
   }
 
   onDateChange(event, date) {
@@ -116,24 +125,32 @@ class DateRangePicker extends React.Component {
       startMonth,
       endMonth,
       hoveringDate,
-      leftMaxMonth,
-      rightMinMonth
+      leftMaxDate,
+      rightMinDate
     } = this.state
 
     const {
-      minMonth,
-      maxMonth
+      minDate,
+      maxDate,
+      className,
+      language = 'zh_CN'
     } = this.props
 
+
+    const cls = classNames({
+      [className]: !!className,
+      'rdp-range__container': true
+    })
+
     return (
-      <IntlProvider locale="en" messages={ en }>
-        <div className="rdp-range__container">
+      <IntlProvider locale="en" messages={ messages[language] }>
+        <div className={ cls }>
           <div className="rdp-range__calendar rdp-range__left">
             <Calendar
               { ...this.props }
               range={ true }
-              minMonth={ minMonth }
-              maxMonth={ leftMaxMonth }
+              minDate={ minDate }
+              maxDate={ leftMaxDate }
               startDate={ startDate || hoveringDate }
               endDate={ endDate || hoveringDate }
               currentMonth={ startMonth }
@@ -146,8 +163,8 @@ class DateRangePicker extends React.Component {
             <Calendar
               { ...this.props }
               range={ true }
-              minMonth={ rightMinMonth }
-              maxMonth={ maxMonth }
+              minDate={ rightMinDate }
+              maxDate={ maxDate }
               startDate={ startDate || hoveringDate }
               endDate={ endDate || hoveringDate }
               currentMonth={ endMonth }

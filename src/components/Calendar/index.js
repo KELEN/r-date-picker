@@ -1,59 +1,43 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import moment from 'moment'
+import moment, { max } from 'moment'
 import { WEEK_DAYS } from '../../languages/en'
 import CalendarHeader from './CalendarHeader'
 import CalendarLabel from './CalendarLabel'
 import CalendarBody from './CalendarBody'
-import { isMonthAfter, isMonthBefore   } from '../../utils/timer'
+import { isMonthAfter, isMonthBefore, getFirstDayOfMonth, getLastDayOfMonth, isSameDay, isSameMonth   } from '../../utils/timer'
 
 class Calendar extends React.Component {
 
   static propType = {
-    // view month
+    // visible view month
     currentMonth: PropTypes.object,
     // start of range date or single date
     startDate: PropTypes.object,
     // end of range date
     endDate: PropTypes.object,
     // min month limit
-    minMonth: PropTypes.object,        
+    minDate: PropTypes.object,        
     // min month limit
-    maxMonth: PropTypes.object,
+    maxDate: PropTypes.object,
     // month change event
     onMonthChange: PropTypes.func
   }
 
   static defaultProps = {
-    minMonth: null,
-    maxMonth: null,
+    minDate: null,
+    maxDate: null,
     startDate: null,
-    endDate: null
+    endDate: null,
+    currentMonth: moment()
   }
 
   constructor(props) {
     super(props)
 
-    let currentMonth = props.currentMonth
-    let { minMonth, maxMonth } = props
-    
-    if (minMonth) {
-      if (minMonth.isAfter(currentMonth)) {
-        currentMonth = minMonth
-      }
-    }
-
-    if (maxMonth) {
-      if (maxMonth.isBefore(currentMonth)) {
-        currentMonth = maxMonth
-      }
-    }
-    
     this.state = {
       animating: false,
-      hidePrevBtn: false,
-      hideNextBtn: false,
-      currentMonth: currentMonth    // default is today
+      currentMonth: props.currentMonth    // default is today
     }
 
     this.onPrevClick = this.onPrevClick.bind(this)
@@ -61,20 +45,48 @@ class Calendar extends React.Component {
   }
 
   /**
+   * check hide next btn
+   * @param {*} currentMonth 
+   * @param {*} maxDate 
+   */
+  checkIfHideNextBtn(currentMonth, maxDate) {
+    if (!maxDate) return false
+    const nextMonth = currentMonth.clone().add(1, 'month')
+    if (isMonthAfter(nextMonth, maxDate) || isSameDay(currentMonth, maxDate)) {
+      return true
+    } else {
+      return false
+    }
+  }
+
+  /**
+   * check hide prev btn
+   * @param {*} currentMonth 
+   * @param {*} minDate 
+   */
+  checkIfHidePrevBtn(currentMonth, minDate) {
+    if (!minDate) return false
+    const prevMonth = currentMonth.clone().subtract(1, 'month')
+    if (isMonthBefore(prevMonth, minDate) || isSameDay(currentMonth, minDate)) {
+      return true
+    } else {
+      return false
+    }
+  }
+
+  /**
    * prev btn click
    */
   onPrevClick() {
-    const { minMonth, maxMonth, onMonthChange } = this.props
+    const { minDate, onMonthChange } = this.props
     const { currentMonth, animating } = this.state
     if (!animating) {
       const prevMonth = moment(currentMonth).subtract(1, 'month')
-      if (!isMonthAfter(minMonth, prevMonth)) {
+      if (!isMonthAfter(getFirstDayOfMonth(minDate), getFirstDayOfMonth(prevMonth))) {
         onMonthChange && onMonthChange(prevMonth.clone())
         this.setState({
           animating: true,  
-          currentMonth: prevMonth,
-          hidePrevBtn: isMonthAfter(minMonth, prevMonth.clone().subtract(1, 'month')),
-          hideNextBtn: isMonthBefore(maxMonth, prevMonth)
+          currentMonth: prevMonth
         })
       }
     }
@@ -84,35 +96,67 @@ class Calendar extends React.Component {
    * next btn click
    */
   onNextClick() {
-    const { minMonth, maxMonth, onMonthChange } = this.props
+    const { maxDate, onMonthChange } = this.props
     const { currentMonth, animating } = this.state
     if (!animating) {
       const nextMonth = moment(currentMonth).add(1, 'month')
-      if (!isMonthBefore(maxMonth, nextMonth)) {
+      if (!isMonthBefore(getLastDayOfMonth(maxDate), getLastDayOfMonth(nextMonth))) {
         onMonthChange && onMonthChange(nextMonth.clone())
         this.setState({
           animating: true,
-          currentMonth: nextMonth,
-          hidePrevBtn: isMonthAfter(minMonth, nextMonth),
-          hideNextBtn: isMonthBefore(maxMonth, nextMonth.clone().add(1, 'month'))
+          currentMonth: nextMonth
         })
       }
     }
   }
 
+  componentWillReceiveProps(nextProps) {
+    const { minDate: nextMinDate, maxDate: nextMaxDate, currentMonth: nextCurrentMonth } = nextProps
+    const { currentMonth } = this.state
+
+    if (nextMinDate && isMonthBefore(currentMonth, nextMinDate)) {
+      this.setState({
+        currentMonth: nextMinDate
+      })
+    }
+
+    if (nextMaxDate && isMonthAfter(currentMonth, nextMaxDate)) {
+      this.setState({
+        currentMonth: nextMaxDate
+      })
+    }
+
+    if (nextMaxDate && nextMinDate && isSameDay(nextMaxDate, nextMinDate)) {
+      this.setState({
+        currentMonth: nextMaxDate
+      })
+    }
+  }
+
   render() {
+
     const labelKeys = Object.keys(WEEK_DAYS)
 
     const {
       currentMonth,
-      animating,
-      hidePrevBtn,
-      hideNextBtn
+      animating
     } = this.state
+
+    const {
+      minDate,
+      maxDate,
+      renderPrevBtn,
+      renderNextBtn
+    } = this.props
+
+    const hidePrevBtn = this.checkIfHidePrevBtn(currentMonth, minDate)
+    const hideNextBtn = this.checkIfHideNextBtn(currentMonth, maxDate)
 
     return (
       <div className="rdp__container">
         <CalendarHeader 
+          renderNextBtn={ renderNextBtn }
+          renderPrevBtn={ renderPrevBtn }
           currentMonth={ currentMonth }
           hidePrevBtn={ hidePrevBtn }
           hideNextBtn={ hideNextBtn }
