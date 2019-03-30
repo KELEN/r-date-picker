@@ -34,8 +34,8 @@ class DateRangePicker extends React.Component {
       hoveringDate: null,
       isHovering: false,
 
-      leftMaxDate: moment(),
-      rightMinDate: moment().add(1, 'month'),
+      leftMaxDate: moment().endOf('month'),
+      rightMinDate: moment().add(1, 'month').startOf('month'),
 
       startMonth: moment(),
       endMonth: moment().add(1, 'month')
@@ -50,14 +50,14 @@ class DateRangePicker extends React.Component {
   onStartMonthChange(date) {
     this.setState({
       startMonth: date,
-      rightMinDate: date.clone().add(1, 'month')
+      rightMinDate: date.clone().add(1, 'month').startOf('month')
     })
   }
 
   onEndMonthChange(date) {
     this.setState({
       endMonth: date,
-      leftMaxDate: date.clone().subtract(1, 'month')
+      leftMaxDate: date.clone().subtract(1, 'month').endOf('month')
     })
   }
 
@@ -139,7 +139,6 @@ class DateRangePicker extends React.Component {
       className,
       language = 'zh_CN'
     } = this.props
-
 
     const cls = classNames({
       [className]: !!className,

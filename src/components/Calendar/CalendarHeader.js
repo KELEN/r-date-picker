@@ -51,10 +51,10 @@ export default class CalendarHeader extends React.Component {
       'rdp--hidden': hideNextBtn
     })
 
-    const year = currentMonth.get('year'), month = currentMonth.get('month') + 1, day = currentMonth.get('day')
+    const year = currentMonth.get('year'), month = currentMonth.get('month') + 1
 
     const TitleFormat = injectIntl(({year, month, day, intl}) => {
-      return `${year}${intl.formatMessage({id: 'year'})}${month}${intl.formatMessage({ id: 'month' })}${day}${intl.formatMessage({ id: 'day', defaultMessage: '' })}`
+      return `${year}${intl.formatMessage({id: 'year'})}${month}${intl.formatMessage({ id: 'month' })}`
     })
 
     return (
@@ -63,7 +63,7 @@ export default class CalendarHeader extends React.Component {
           { renderPrevBtn && renderPrevBtn() }
         </span>   
         <span className="rdp__title-center">
-          <TitleFormat year={ year } month={ month } day={ day } />
+          <TitleFormat year={ year } month={ month } />
         </span>
         <span className={ nextBtnCls } onClick={ onNextClick }>
           { renderNextBtn && renderNextBtn() }

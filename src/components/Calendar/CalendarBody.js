@@ -2,11 +2,14 @@ import React from 'react'
 import moment from 'moment'
 import PropTypes from 'prop-types'
 import classNames from 'classname'
-import { isSameDay, isMonthBefore, isMonthAfter } from '../../utils/timer'
+import { isSameDay, isMonthBefore, isMonthAfter, isDayBefore, isDayAfter, dateDisabled } from '../../utils/timer'
 
 export default class CalendarBody extends React.Component {
 
   static propTypes = {
+    minDate: PropTypes.object,
+    maxDate: PropTypes.object,
+    disabledDates: PropTypes.array,
     currentMonth: PropTypes.object,
     onHoveringDateChange: PropTypes.func,
     onDateChange: PropTypes.func,    // date change event
@@ -18,6 +21,7 @@ export default class CalendarBody extends React.Component {
 
   static defaultProps = {
     isAnimating: false,
+    disabledDates: [],
     range: false    // select range date
   }
 
@@ -87,6 +91,7 @@ export default class CalendarBody extends React.Component {
           connect: false,
           isStart: false,
           isEnd: false,
+          isDisable: false,
           key: date.format('YYYYMMDD'),
           inMonth: true
         }
@@ -213,13 +218,17 @@ export default class CalendarBody extends React.Component {
       endDate,
       isAnimating,
       range,
-      itemRender
+      itemRender,
+      minDate,
+      maxDate,
+      disabledDates
     } = this.props
+
 
     const renderRowDays = (days) => {
       return days.map(item => {
         const cls = classNames({
-          'rdp__days-item--grey': !item.inMonth,
+          'rdp__days-item--grey': !item.inMonth || item.isDisable,
           'rdp__days-item': true,
           'rdp__days-item-active--start': item.isStart,
           'rdp__days-item-active--end': item.isEnd,
@@ -227,14 +236,17 @@ export default class CalendarBody extends React.Component {
           'rdb__days-item-active--connect': item.connect
         })
 
+        const disableDownEvent = !item.isDisable && item.inMonth
+        const disableHoverEvent = !range && item.inMonth
+
         return (
           <div 
             className={ cls }
             key={ item.key }
             data-label={ item.dayStr }
             data-key={ item.key }
-            onMouseDown={ () => item.inMonth && this.handleMouseDown(event, item.date) } 
-            onMouseEnter={ () => range && item.inMonth && this.handleMouseEnter(event, item.date) }>
+            onMouseDown={ () => disableDownEvent && this.handleMouseDown(event, item.date) } 
+            onMouseEnter={ () => disableHoverEvent && this.handleMouseEnter(event, item.date) }>
             { itemRender ? itemRender(item) : item.num  }
           </div>
         )
@@ -246,6 +258,7 @@ export default class CalendarBody extends React.Component {
       let arr = []
       days.forEach((item, idx) => {
         if (item.date) { // only handle item has date
+          item.isDisable = isDayBefore(item.date, minDate) || isDayAfter(item.date, maxDate) || dateDisabled(disabledDates, item.date)
           if (startDate && endDate) {
             item.isStart = startDate.isSame(item.date)
             item.isEnd = endDate.isSame(item.date)

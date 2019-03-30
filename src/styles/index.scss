@@ -1,15 +1,20 @@
 @import './calendar.scss';
 
+
+body {
+  font-family: Circular, PingFang-SC, "Hiragino Sans GB", 微软雅黑, "Microsoft YaHei", "Heiti SC" !important;
+}
+
 .rdp__container {
   width: 280px;
-  height: 500px;
+  height: 400px;
   overflow: hidden;
   font-size: 14px;
   user-select: none;
 }
 
 .rdp-range__container {
-  height: 500px;
+  height: 400px;
   overflow: hidden;
   white-space: nowrap;
   .rdp__container {
