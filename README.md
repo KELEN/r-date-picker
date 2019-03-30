@@ -4,7 +4,7 @@
 
 ## [demo](https://kelen.github.io/r-date-picker/)
 
-
+![AirbnbStyle](https://raw.githubusercontent.com/KELEN/r-date-picker/master/example/images/airbnb-style.png "AirbnbStyle")
 
 ## Introduce
 
