@@ -2,10 +2,8 @@ import React from 'react'
 import DatePicker from '../src/components/DatePicker'
 import moment from 'moment'
 import './style.scss'
-import { getLast7Days } from '../src/utils/timer'
 
 export default class SimpleDatePicker extends React.Component {
-
 
   constructor() {
     super()
@@ -47,9 +45,9 @@ export default class SimpleDatePicker extends React.Component {
   }
 
   render() {
-    const { 
-      selectedDate, 
-      minDate, 
+    const {
+      selectedDate,
+      minDate,
       maxDate,
       disabledDates
     } = this.state

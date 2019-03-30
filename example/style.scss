@@ -1,3 +1,17 @@
+button {
+  border: none;
+  outline: none;
+  border-radius: 4px;
+  margin: 10px;
+  padding: 8px;
+  cursor: pointer;
+  color: #FFF;
+  background-color: #4D9DE0;
+}
+
+button:hover {
+  background-color: #3895e0;
+}
 
 .op-bar {
   background-color: #f5f5f5;

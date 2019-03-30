@@ -6,6 +6,7 @@ import PropTypes from 'prop-types'
 import en_US from '../../languages/en'
 import zh_CN from '../../languages/zh-CN'
 import classNames from 'classname'
+import {isSameDays} from "../../utils/timer";
 
 const messages = {
   en: en_US,
@@ -100,6 +101,25 @@ class DateRangePicker extends React.Component {
     }
   }
 
+  componentWillReceiveProps(nextProps) {
+    const { onDateRangeChange } = this.props
+    let startDate, endDate
+    if (nextProps.defaultDate && !isSameDays(this.props.defaultDate, nextProps.defaultDate)) {
+      if (Array.isArray(nextProps.defaultDate)) {
+        // range date
+        startDate = nextProps.defaultDate[0]
+        endDate = nextProps.defaultDate[1]
+      } else {
+        startDate = nextProps.defaultDate
+      }
+      this.setState({
+        startDate: startDate,
+        endDate: endDate
+      })
+      onDateRangeChange && onDateRangeChange([ startDate, endDate ])
+    }
+  }
+
   onHoveringDateChange(event, date) {
     const { startDate, endDate, isHovering } = this.state
     const { onHoveringDateChange } = this.props
@@ -123,7 +143,7 @@ class DateRangePicker extends React.Component {
   }
 
   render() {
-    const { 
+    const {
       startDate,
       endDate,
       startMonth,
@@ -173,7 +193,7 @@ class DateRangePicker extends React.Component {
               currentMonth={ endMonth }
               onHoveringDateChange={ this.onHoveringDateChange }
               onMonthChange={ this.onEndMonthChange }
-              onDateChange={ this.onDateChange } 
+              onDateChange={ this.onDateChange }
             />
             </div>
           </div>

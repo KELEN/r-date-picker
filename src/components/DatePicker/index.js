@@ -6,6 +6,7 @@ import '../../styles/index.scss'
 import { IntlProvider, addLocaleData } from 'react-intl'
 import en from '../../languages/en'
 import zh_CN from '../../languages/zh-CN'
+import {isSameDays} from "../../utils/timer";
 
 const messages = {
   en: en,
@@ -15,13 +16,16 @@ const messages = {
 export default class extends React.Component {
 
   static propTypes = {
+    // default selected dates
+    defaultDate: PropTypes.oneOfType([ PropTypes.object, PropTypes.array ]),
     onDateRangeChange: PropTypes.func,
     // init visible current month, default is current month
     currentMonth: PropTypes.object
   }
 
   static defaultProps = {
-    currentMonth: moment()
+    currentMonth: moment(),
+    defaultDate: null
   }
 
   constructor(props) {
@@ -37,7 +41,7 @@ export default class extends React.Component {
     } else {
       startDate = props.defaultDate
     }
-    
+
     this.state = {
       animating: false,
       startDate: startDate,
@@ -55,8 +59,8 @@ export default class extends React.Component {
 
   /**
    * hovering day item
-   * @param {*} event 
-   * @param {*} date 
+   * @param {*} event
+   * @param {*} date
    */
   onHoveringDateChange(event, date) {
     const { startDate, endDate, isHovering } = this.state
@@ -82,8 +86,8 @@ export default class extends React.Component {
 
   /**
    * date change
-   * @param {*} event 
-   * @param {*} date 
+   * @param {*} event
+   * @param {*} date
    */
   onDateChange(event, date) {
     const { startDate, endDate } = this.state
@@ -131,15 +135,34 @@ export default class extends React.Component {
     onDateChange && onDateChange(event, date)
   }
 
+  componentWillReceiveProps(nextProps) {
+    const { onDateRangeChange } = this.props
+    let startDate, endDate
+    if (nextProps.defaultDate && !isSameDays(this.props.defaultDate, nextProps.defaultDate)) {
+      if (Array.isArray(nextProps.defaultDate)) {
+        // range date
+        startDate = nextProps.defaultDate[0]
+        endDate = nextProps.defaultDate[1]
+      } else {
+        startDate = nextProps.defaultDate
+      }
+      this.setState({
+        startDate: startDate,
+        endDate: endDate
+      })
+      onDateRangeChange && onDateRangeChange([ startDate, endDate ])
+    }
+  }
+
   render() {
 
-    const { 
+    const {
       startDate,
       endDate,
       hoveringDate
     } = this.state
 
-    const { 
+    const {
       language = 'cn'
     } = this.props
 

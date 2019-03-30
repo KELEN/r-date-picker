@@ -5,7 +5,7 @@ import { WEEK_DAYS } from '../../languages/en'
 import CalendarHeader from './CalendarHeader'
 import CalendarLabel from './CalendarLabel'
 import CalendarBody from './CalendarBody'
-import { isMonthAfter, isMonthBefore, getFirstDayOfMonth, getLastDayOfMonth, isSameDay, isSameMonth   } from '../../utils/timer'
+import { isMonthAfter, isMonthBefore, getFirstDayOfMonth, getLastDayOfMonth, isSameDay } from '../../utils/timer'
 
 class Calendar extends React.Component {
 
@@ -17,7 +17,7 @@ class Calendar extends React.Component {
     // end of range date
     endDate: PropTypes.object,
     // min month limit
-    minDate: PropTypes.object,        
+    minDate: PropTypes.object,
     // min month limit
     maxDate: PropTypes.object,
     // month change event
@@ -42,36 +42,29 @@ class Calendar extends React.Component {
 
     this.onPrevClick = this.onPrevClick.bind(this)
     this.onNextClick = this.onNextClick.bind(this)
+    this.checkIfHideNextBtn = this.checkIfHideNextBtn.bind(this)
   }
 
   /**
    * check hide next btn
-   * @param {*} currentMonth 
-   * @param {*} maxDate 
+   * @param {*} currentMonth
+   * @param {*} maxDate
    */
   checkIfHideNextBtn(currentMonth, maxDate) {
     if (!maxDate) return false
     const nextMonth = currentMonth.clone().add(1, 'month')
-    if (isMonthAfter(nextMonth, maxDate) || isSameDay(currentMonth, maxDate)) {
-      return true
-    } else {
-      return false
-    }
+    return !!(isMonthAfter(nextMonth, maxDate) || isSameDay(currentMonth, maxDate));
   }
 
   /**
    * check hide prev btn
-   * @param {*} currentMonth 
-   * @param {*} minDate 
+   * @param {*} currentMonth
+   * @param {*} minDate
    */
   checkIfHidePrevBtn(currentMonth, minDate) {
     if (!minDate) return false
     const prevMonth = currentMonth.clone().subtract(1, 'month')
-    if (isMonthBefore(prevMonth, minDate) || isSameDay(currentMonth, minDate)) {
-      return true
-    } else {
-      return false
-    }
+    return !!(isMonthBefore(prevMonth, minDate) || isSameDay(currentMonth, minDate));
   }
 
   /**
@@ -85,7 +78,7 @@ class Calendar extends React.Component {
       if (!isMonthAfter(getFirstDayOfMonth(minDate), getFirstDayOfMonth(prevMonth))) {
         onMonthChange && onMonthChange(prevMonth.clone())
         this.setState({
-          animating: true,  
+          animating: true,
           currentMonth: prevMonth
         })
       }
@@ -154,7 +147,7 @@ class Calendar extends React.Component {
 
     return (
       <div className="rdp__container">
-        <CalendarHeader 
+        <CalendarHeader
           renderNextBtn={ renderNextBtn }
           renderPrevBtn={ renderPrevBtn }
           currentMonth={ currentMonth }
@@ -163,13 +156,11 @@ class Calendar extends React.Component {
           onPrevClick={ this.onPrevClick }
           onNextClick={ this.onNextClick }
         />
-        <CalendarLabel 
-          labels={ labelKeys } 
-        ></CalendarLabel>
+        <CalendarLabel labels={labelKeys} />
         <CalendarBody
           { ...this.props }
           isAnimating={ animating }
-          animateEnd={ () => this.setState({ animating: false }) } 
+          animateEnd={ () => this.setState({ animating: false }) }
           currentMonth={ currentMonth }
         />
       </div>

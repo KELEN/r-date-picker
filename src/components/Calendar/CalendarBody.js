@@ -47,7 +47,7 @@ export default class CalendarBody extends React.Component {
     const endNum = 7 - nextMonth.weekday()
     return {
       [startOfMonth.format('YYYYMMDD')]: [
-        ...this.renderPrevMonthDays(startOfMonth, startNum), 
+        ...this.renderPrevMonthDays(startOfMonth, startNum),
         ...this.renderCurrentMonthDays(startOfMonth, daysInMonth),
         ...this.renderNextMonthDays(nextMonth.startOf('month'), endNum)
       ]
@@ -67,7 +67,8 @@ export default class CalendarBody extends React.Component {
           num: '',
           date: null,
           key: start.format('YYYYMMDD'),
-          inMonth: false
+          inMonth: false,
+          isDisable: true,
         }
       )
       start = moment(firstDay).subtract(count, 'days')
@@ -103,8 +104,8 @@ export default class CalendarBody extends React.Component {
 
   /**
    * render next month days
-   * @param {*} start 
-   * @param {*} count 
+   * @param {*} start
+   * @param {*} count
    */
   renderNextMonthDays(start, count) {
     const emptyDays = []
@@ -117,7 +118,8 @@ export default class CalendarBody extends React.Component {
           date: null,
           start: start,
           key: start.format('YYYYMMDD'),
-          inMonth: false
+          inMonth: false,
+          isDisable: true
         }
       )
       i += 1
@@ -189,8 +191,8 @@ export default class CalendarBody extends React.Component {
       }, () => {
         animateEnd()
       })
-    } 
-    
+    }
+
     if (moveNext) {
       // next
       currAllDays.shift()
@@ -213,7 +215,7 @@ export default class CalendarBody extends React.Component {
       moveNext
     } = this.state
 
-    const { 
+    const {
       startDate,
       endDate,
       isAnimating,
@@ -230,23 +232,23 @@ export default class CalendarBody extends React.Component {
         const cls = classNames({
           'rdp__days-item--grey': !item.inMonth || item.isDisable,
           'rdp__days-item': true,
+          'rdb__days-item-active--connect': item.connect,
           'rdp__days-item-active--start': item.isStart,
           'rdp__days-item-active--end': item.isEnd,
-          'rdp__days-item-active--single': !endDate && item.isStart && !range,
-          'rdb__days-item-active--connect': item.connect
+          'rdp__days-item-active--single': !endDate && item.isStart && !range
         })
 
         const disableDownEvent = !item.isDisable && item.inMonth
-        const disableHoverEvent = !range && item.inMonth
+        const allowHoverEvent = range && item.inMonth && !item.isDisable
 
         return (
-          <div 
+          <div
             className={ cls }
             key={ item.key }
             data-label={ item.dayStr }
             data-key={ item.key }
-            onMouseDown={ () => disableDownEvent && this.handleMouseDown(event, item.date) } 
-            onMouseEnter={ () => disableHoverEvent && this.handleMouseEnter(event, item.date) }>
+            onMouseDown={ () => disableDownEvent && this.handleMouseDown(event, item.date) }
+            onMouseEnter={ () => allowHoverEvent && this.handleMouseEnter(event, item.date) }>
             { itemRender ? itemRender(item) : item.num  }
           </div>
         )
@@ -260,10 +262,10 @@ export default class CalendarBody extends React.Component {
         if (item.date) { // only handle item has date
           item.isDisable = isDayBefore(item.date, minDate) || isDayAfter(item.date, maxDate) || dateDisabled(disabledDates, item.date)
           if (startDate && endDate) {
-            item.isStart = startDate.isSame(item.date)
-            item.isEnd = endDate.isSame(item.date)
-            item.active = startDate.isSame(item.date) || endDate.isSame(item.date)
-            item.connect = item.date.isAfter(startDate) && item.date.isBefore(endDate)
+            item.isStart = isSameDay(startDate, item.date)
+            item.isEnd = isSameDay(endDate, item.date)
+            item.active = isSameDay(startDate, item.date) || isSameDay(endDate, item.date)
+            item.connect = isDayAfter(item.date, startDate) && isDayBefore(item.date, endDate)
           } else {
             item.isStart =  isSameDay(startDate, item.date)
             item.active = isSameDay(startDate, item.date)

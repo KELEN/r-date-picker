@@ -17,7 +17,7 @@ storiesOf('Date Picker', module)
   .add('Base', () =>  <SimpleDatePicker /> )
   .add('Single Date Range', () =>  <SingleDateRange /> )
   .add('Custom Render', () => <CustomDatePicker showApp={linkTo('Button')} />)
-  .add('Intl', () => <IntlDatePicker /> )
+  .add('International ', () => <IntlDatePicker /> )
 
 storiesOf('Multilple Date Picker', module)
   .add('Two Calendar', () => {
@@ -31,4 +31,4 @@ storiesOf('Custom style', module)
     return (
       <Airbnb />
     )
-  })  
+  })
