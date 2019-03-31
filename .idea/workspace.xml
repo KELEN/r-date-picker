@@ -2,22 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="39fc7dfe-feeb-4270-916d-a6f391360b14" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/components/Calendar/EnhanceCalendar.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/test.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/example/Airbnb.js" beforeDir="false" afterPath="$PROJECT_DIR$/example/Airbnb.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/example/Airbnb.scss" beforeDir="false" afterPath="$PROJECT_DIR$/example/Airbnb.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/example/SingleDateRange.js" beforeDir="false" afterPath="$PROJECT_DIR$/example/ShowDateRanges.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/Calendar/CalendarBody.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Calendar/CalendarBody.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/DatePicker/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/DatePicker/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/DateRangePicker/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/DateRangePicker/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/styles/calendar.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/styles/calendar.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/styles/index.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/styles/index.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utils/timer.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/timer.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/stories/index.stories.js" beforeDir="false" afterPath="$PROJECT_DIR$/stories/index.stories.js" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -94,7 +79,7 @@
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
             <state split_layout="SPLIT">
               <first_editor relative-caret-position="144">
-                <caret line="87" column="21" lean-forward="true" selection-start-line="87" selection-start-column="21" selection-end-line="87" selection-end-column="21" />
+                <caret line="87" column="21" selection-start-line="87" selection-start-column="21" selection-end-line="87" selection-end-column="21" />
               </first_editor>
               <second_editor />
             </state>
@@ -110,11 +95,32 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Airbnb.scss" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Airbnb.scss" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/example/Airbnb.scss">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="81">
               <caret line="3" column="17" selection-start-line="3" selection-start-column="17" selection-end-line="3" selection-end-column="17" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="index.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/components/DatePicker/index.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-162">
+              <caret line="29" column="9" selection-start-line="29" selection-start-column="4" selection-end-line="29" selection-end-column="9" />
+              <folding>
+                <element signature="e#0#25#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="package.json" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/package.json">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="675">
+              <caret line="31" column="24" lean-forward="true" selection-start-line="31" selection-start-column="24" selection-end-line="31" selection-end-column="24" />
             </state>
           </provider>
         </entry>
@@ -217,7 +223,7 @@
       <path value="$PROJECT_DIR$/package.json" />
     </packageJsonPaths>
   </component>
-  <component name="ProjectFrameBounds" extendedState="7">
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="648" />
     <option name="y" value="99" />
     <option name="width" value="1023" />
@@ -351,26 +357,25 @@
       <option name="presentableId" value="Default" />
       <updated>1553932377722</updated>
       <workItem from="1553932379508" duration="3756000" />
-      <workItem from="1553995521285" duration="10590000" />
+      <workItem from="1553995521285" duration="12351000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="14346000" />
+    <option name="totallyTimeSpent" value="16107000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="2575" height="1415" extended-state="6" />
-    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.20322962" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.20322962" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Event Log" order="7" side_tool="true" />
       <window_info id="npm" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Version Control" order="7" />
-      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.32858273" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.32858273" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info anchor="bottom" id="Terminal" order="7" weight="0.2628662" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="7" visible="true" weight="0.2628662" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -472,16 +477,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/DatePicker/index.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="299">
-          <caret line="29" column="9" selection-start-line="29" selection-start-column="4" selection-end-line="29" selection-end-column="9" />
-          <folding>
-            <element signature="e#0#25#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/components/Calendar/CalendarBody.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="488">
@@ -550,7 +545,7 @@
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="SPLIT">
           <first_editor relative-caret-position="144">
-            <caret line="87" column="21" lean-forward="true" selection-start-line="87" selection-start-column="21" selection-end-line="87" selection-end-column="21" />
+            <caret line="87" column="21" selection-start-line="87" selection-start-column="21" selection-end-line="87" selection-end-column="21" />
           </first_editor>
           <second_editor />
         </state>
@@ -574,6 +569,23 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="81">
           <caret line="3" column="17" selection-start-line="3" selection-start-column="17" selection-end-line="3" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/DatePicker/index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-162">
+          <caret line="29" column="9" selection-start-line="29" selection-start-column="4" selection-end-line="29" selection-end-column="9" />
+          <folding>
+            <element signature="e#0#25#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/package.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="675">
+          <caret line="31" column="24" lean-forward="true" selection-start-line="31" selection-start-column="24" selection-end-line="31" selection-end-column="24" />
         </state>
       </provider>
     </entry>
