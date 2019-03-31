@@ -5,26 +5,7 @@ import classNames from 'classname'
 import { isSameDay, isMonthBefore, isMonthAfter, isDayBefore, isDayAfter, dateDisabled } from '../../utils/timer'
 import { checkInRange } from '../../utils/timer'
 
-export default class CalendarBody extends React.Component {
-
-  static propTypes = {
-    minDate: PropTypes.object,
-    maxDate: PropTypes.object,
-    disabledDates: PropTypes.array,
-    currentMonth: PropTypes.object,
-    onHoveringDateChange: PropTypes.func,
-    onDateChange: PropTypes.func,    // date change event
-    isAnimating: PropTypes.bool.isRequired,     // if body is animating
-    onDateRangeChange: PropTypes.func,          // day range change event
-    range: PropTypes.bool,                      // select day range
-    itemRender: PropTypes.func                  // day item render function
-  }
-
-  static defaultProps = {
-    isAnimating: false,
-    disabledDates: [],
-    range: false    // select range date
-  }
+class CalendarBody extends React.Component {
 
   constructor(props) {
     super(props)
@@ -342,3 +323,27 @@ export default class CalendarBody extends React.Component {
     )
   }
 }
+
+const propTypes = {
+  minDate: PropTypes.object,
+  maxDate: PropTypes.object,
+  disabledDates: PropTypes.array,
+  currentMonth: PropTypes.object,
+  onHoveringDateChange: PropTypes.func,
+  onDateChange: PropTypes.func,    // date change event
+  isAnimating: PropTypes.bool.isRequired,     // if body is animating
+  onDateRangeChange: PropTypes.func,          // day range change event
+  range: PropTypes.bool,                      // select day range
+  itemRender: PropTypes.func                  // day item render function
+}
+
+const defaultProps = {
+  isAnimating: false,
+  disabledDates: [],
+  range: false    // select range date
+}
+
+CalendarBody.propTypes = propTypes
+CalendarBody.defaultProps = defaultProps
+
+export default CalendarBody

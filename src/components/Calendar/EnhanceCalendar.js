@@ -4,7 +4,6 @@ import React from 'react'
  * EnhanceCalendar to handle select state
  * @param WrapComponent
  * @param options  range: if select range
- * @returns {{new(*=): {onHoveringDateChange(*, *): void, render(): *, onDateChange(*, *): void}, prototype: {onHoveringDateChange(*, *): void, render(): *, onDateChange(*, *): void}}}
  * @constructor
  */
 const EnhanceCalendar = (WrapComponent, options = {}) => {

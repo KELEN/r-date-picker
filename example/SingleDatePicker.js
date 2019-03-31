@@ -1,5 +1,5 @@
 import React from 'react'
-import { DatePicker } from '../index'
+import DatePicker from '../src/components/DatePicker'
 import moment from 'moment'
 import './style.scss'
 

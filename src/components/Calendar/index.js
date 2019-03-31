@@ -9,29 +9,6 @@ import { isMonthAfter, isMonthBefore, getFirstDayOfMonth, getLastDayOfMonth, isS
 
 class Calendar extends React.Component {
 
-  static propType = {
-    // visible view month
-    currentMonth: PropTypes.object,
-    // start of range date or single date
-    startDate: PropTypes.object,
-    // end of range date
-    endDate: PropTypes.object,
-    // min month limit
-    minDate: PropTypes.object,
-    // min month limit
-    maxDate: PropTypes.object,
-    // month change event
-    onMonthChange: PropTypes.func
-  }
-
-  static defaultProps = {
-    minDate: null,
-    maxDate: null,
-    startDate: null,
-    endDate: null,
-    currentMonth: moment()
-  }
-
   constructor(props) {
     super(props)
 
@@ -167,5 +144,29 @@ class Calendar extends React.Component {
     )
   }
 }
+
+Calendar.propType = {
+  // visible view month
+  currentMonth: PropTypes.object,
+  // start of range date or single date
+  startDate: PropTypes.object,
+  // end of range date
+  endDate: PropTypes.object,
+  // min month limit
+  minDate: PropTypes.object,
+  // min month limit
+  maxDate: PropTypes.object,
+  // month change event
+  onMonthChange: PropTypes.func
+}
+
+Calendar.defaultProps = {
+  minDate: null,
+  maxDate: null,
+  startDate: null,
+  endDate: null,
+  currentMonth: moment()
+}
+
 
 export default Calendar

@@ -1,14 +1,12 @@
 import React from 'react'
 import Calendar from '../Calendar'
-import { IntlProvider, addLocaleData } from 'react-intl'
+import { IntlProvider } from 'react-intl'
 import moment, { lang } from 'moment'
 import PropTypes from 'prop-types'
 import en_US from '../../languages/en'
 import zh_CN from '../../languages/zh-CN'
 import classNames from 'classname'
-import {isSameDays} from "../../utils/timer";
 import EnhanceCalendar from '../Calendar/EnhanceCalendar'
-import DatePicker from '../DatePicker'
 
 const messages = {
   en: en_US,
@@ -16,18 +14,6 @@ const messages = {
 }
 
 class DateRangePicker extends React.Component {
-
-  static propTypes = {
-    defaultValue: PropTypes.array.isRequired,
-    minDate: PropTypes.object,
-    maxDate: PropTypes.object
-  }
-
-  static defaultProps = {
-    defaultValue: [],
-    minDate: null,
-    maxDate: null
-  }
 
   constructor(props) {
     super(props)
@@ -111,6 +97,18 @@ class DateRangePicker extends React.Component {
       </IntlProvider>
     )
   }
+}
+
+DateRangePicker.propTypes = {
+  defaultValue: PropTypes.array.isRequired,
+  minDate: PropTypes.object,
+  maxDate: PropTypes.object
+}
+
+DateRangePicker.defaultProps = {
+  defaultValue: [],
+  minDate: null,
+  maxDate: null
 }
 
 export default EnhanceCalendar(DateRangePicker, { range: true })

@@ -2,7 +2,6 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import moment from 'moment'
 import Calendar from '../Calendar'
-import '../../styles/index.scss'
 import { IntlProvider } from 'react-intl'
 import en from '../../languages/en'
 import zh_CN from '../../languages/zh-CN'
@@ -14,21 +13,6 @@ const messages = {
 }
 
 class DatePicker extends React.Component {
-
-  static propTypes = {
-    // default selected dates
-    defaultDate: PropTypes.oneOfType([ PropTypes.object, PropTypes.array ]),
-    // init visible current month, default is current month
-    currentMonth: PropTypes.object,
-	  // set range
-	  ranges: PropTypes.array
-  }
-
-  static defaultProps = {
-    currentMonth: moment(),
-    defaultDate: null,
-	  ranges: []
-  }
 
   constructor(props) {
     super(props)
@@ -56,6 +40,21 @@ class DatePicker extends React.Component {
       </IntlProvider>
     )
   }
+}
+
+DatePicker.propTypes = {
+  // default selected dates
+  defaultDate: PropTypes.oneOfType([ PropTypes.object, PropTypes.array ]),
+  // init visible current month, default is current month
+  currentMonth: PropTypes.object,
+  // set range
+  ranges: PropTypes.array
+}
+
+DatePicker.defaultProps = {
+  currentMonth: moment(),
+  defaultDate: null,
+  ranges: []
 }
 
 export default EnhanceCalendar(DatePicker)

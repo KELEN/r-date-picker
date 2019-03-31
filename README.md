@@ -15,6 +15,28 @@
  - 支持国际化
  - 不是table渲染，灵活配置样式，通过class覆盖即可
 
+## How to use
+
+### install
+
+```
+npm i r-date-picker
+```
+
+### use module
+
+```
+import { DatePicker } from 'r-date-picker'
+import { DateRangePicker } from 'r-date-picker'
+```
+
+### import index.scss
+
+```
+import 'r-date-picker/src/styles/index.scss'
+```
+
+
 ### DatePicker
 
 ```javascript
@@ -38,7 +60,7 @@
 | renderPrevBtn | function | | 渲染上一页按钮 |
 | renderNextBtn | function | | 渲染下一页按钮 |
 
-##### itemRender属性
+#### itemRender属性
 
 自定义渲染项，可以绘制头像，绘制任意除了数字以外的其他信息，值是一个函数
 
@@ -81,7 +103,7 @@
 ```
 
 
-### Custom styles class
+## Custom styles class
 
 | 类名 |  说明  |
 | ------------ | ------------ |
@@ -101,13 +123,13 @@
 | rdp__days-item-active--range-end | 范围结束 |
 
 
-### Development
+## Development
 ```bash
 npm i
 npm run start
 ```
 
-### Avaiable
+## Avaiable
 
 - [x] 单日历选择日期
 - [x] 单日历选择范围

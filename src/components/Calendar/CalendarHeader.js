@@ -3,23 +3,7 @@ import PropTypes from 'prop-types'
 import classNames from 'classname'
 import { injectIntl, FormattedMessage } from 'react-intl'
 
-export default class CalendarHeader extends React.Component {
-
-  static propTypes = {
-    hidePrevBtn: PropTypes.bool.isRequired,
-    hideNextBtn: PropTypes.bool.isRequired,
-    onPrevClick: PropTypes.func.isRequired,
-    onNextClick: PropTypes.func.isRequired,
-    currentMonth: PropTypes.object.isRequired,
-    renderPrevBtn: PropTypes.func,
-    renderNextBtn: PropTypes.func
-  }
-
-  static defaultProps = {
-    hidePrevBtn: false,
-    hideNextBtn: false,
-    currentMonth: PropTypes.object
-  }
+class CalendarHeader extends React.Component {
 
   constructor(props) {
     super(props)
@@ -72,3 +56,26 @@ export default class CalendarHeader extends React.Component {
     )
   }
 }
+
+
+const propTypes = {
+  hidePrevBtn: PropTypes.bool.isRequired,
+  hideNextBtn: PropTypes.bool.isRequired,
+  onPrevClick: PropTypes.func.isRequired,
+  onNextClick: PropTypes.func.isRequired,
+  currentMonth: PropTypes.object.isRequired,
+  renderPrevBtn: PropTypes.func,
+  renderNextBtn: PropTypes.func
+}
+
+const defaultProps = {
+  hidePrevBtn: false,
+  hideNextBtn: false,
+  currentMonth: PropTypes.object
+}
+
+
+CalendarHeader.propTypes = propTypes
+CalendarHeader.defaultProps = defaultProps
+
+export default CalendarHeader

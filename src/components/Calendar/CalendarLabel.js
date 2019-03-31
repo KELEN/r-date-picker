@@ -4,14 +4,6 @@ import { FormattedMessage } from 'react-intl'
 
 class CalendarLabel extends React.Component {
 
-  static propTypes = {
-    labels: PropTypes.array
-  }
-
-  constructor(props) {
-    super(props)
-  }
-
   renderLabel(labels) {
     return labels.map((item, idx) => {
       return (
@@ -30,6 +22,10 @@ class CalendarLabel extends React.Component {
       </div>
     )
   }
+}
+
+CalendarLabel.propTypes = {
+  labels: PropTypes.array
 }
 
 export default CalendarLabel
