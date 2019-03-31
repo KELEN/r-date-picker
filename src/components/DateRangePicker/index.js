@@ -7,6 +7,8 @@ import en_US from '../../languages/en'
 import zh_CN from '../../languages/zh-CN'
 import classNames from 'classname'
 import {isSameDays} from "../../utils/timer";
+import EnhanceCalendar from '../Calendar/EnhanceCalendar'
+import DatePicker from '../DatePicker'
 
 const messages = {
   en: en_US,
@@ -30,22 +32,15 @@ class DateRangePicker extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      startDate: props.defaultValue[0],
-      endDate: props.defaultValue[1],
-      hoveringDate: null,
       isHovering: false,
-
       leftMaxDate: moment().endOf('month'),
       rightMinDate: moment().add(1, 'month').startOf('month'),
-
       startMonth: moment(),
       endMonth: moment().add(1, 'month')
     }
 
     this.onStartMonthChange = this.onStartMonthChange.bind(this)
     this.onEndMonthChange = this.onEndMonthChange.bind(this)
-    this.onHoveringDateChange = this.onHoveringDateChange.bind(this)
-    this.onDateChange = this.onDateChange.bind(this)
   }
 
   onStartMonthChange(date) {
@@ -62,98 +57,18 @@ class DateRangePicker extends React.Component {
     })
   }
 
-  onDateChange(event, date) {
-    const { startDate, endDate } = this.state
-    const { onDateRangeChange } = this.props
-    if (!startDate && !endDate) {
-      this.setState({
-        startDate: date,
-        isHovering: true
-      })
-    } else if (!startDate) {
-      this.setState({
-        startDate: date,
-        isHovering: !endDate
-      })
-      onDateRangeChange && onDateRangeChange([date, endDate])
-    } else if (!endDate) {
-      if (date.isBefore(startDate)) {
-        this.setState({
-          startDate: date,
-          endDate: startDate,
-          isHovering: !startDate
-        })
-        onDateRangeChange && onDateRangeChange([date, startDate])
-      } else {
-        this.setState({
-          endDate: date,
-          isHovering: !startDate
-        })
-        onDateRangeChange && onDateRangeChange([startDate, date])
-      }
-    } else {
-      this.setState({
-        startDate: date,
-        endDate: null,
-        isHovering: true,
-        hoveringDate: null
-      })
-    }
-  }
-
-  componentWillReceiveProps(nextProps) {
-    const { onDateRangeChange } = this.props
-    let startDate, endDate
-    if (nextProps.defaultDate && !isSameDays(this.props.defaultDate, nextProps.defaultDate)) {
-      if (Array.isArray(nextProps.defaultDate)) {
-        // range date
-        startDate = nextProps.defaultDate[0]
-        endDate = nextProps.defaultDate[1]
-      } else {
-        startDate = nextProps.defaultDate
-      }
-      this.setState({
-        startDate: startDate,
-        endDate: endDate
-      })
-      onDateRangeChange && onDateRangeChange([ startDate, endDate ])
-    }
-  }
-
-  onHoveringDateChange(event, date) {
-    const { startDate, endDate, isHovering } = this.state
-    const { onHoveringDateChange } = this.props
-    if (isHovering) {
-      this.setState({
-        hoveringDate: date
-      })
-      if (startDate && startDate.isAfter(date)) {
-        this.setState({
-          startDate: null,
-          endDate: startDate
-        })
-      } else if (endDate && endDate.isBefore(date)) {
-        this.setState({
-          startDate: endDate,
-          endDate: null
-        })
-      }
-    }
-    onHoveringDateChange && onHoveringDateChange(event, date)
-  }
-
   render() {
     const {
-      startDate,
-      endDate,
       startMonth,
       endMonth,
-      hoveringDate,
       leftMaxDate,
       rightMinDate
     } = this.state
 
     const {
+	    startDate,
+	    endDate,
+	    hoveringDate,
       minDate,
       maxDate,
       className,
@@ -177,9 +92,7 @@ class DateRangePicker extends React.Component {
               startDate={ startDate || hoveringDate }
               endDate={ endDate || hoveringDate }
               currentMonth={ startMonth }
-              onHoveringDateChange={ this.onHoveringDateChange }
               onMonthChange={ this.onStartMonthChange }
-              onDateChange={ this.onDateChange }
             />
           </div>
           <div className="rdp-range__calendar rdp-range__right">
@@ -191,15 +104,13 @@ class DateRangePicker extends React.Component {
               startDate={ startDate || hoveringDate }
               endDate={ endDate || hoveringDate }
               currentMonth={ endMonth }
-              onHoveringDateChange={ this.onHoveringDateChange }
               onMonthChange={ this.onEndMonthChange }
-              onDateChange={ this.onDateChange }
             />
-            </div>
           </div>
+        </div>
       </IntlProvider>
     )
   }
 }
 
-export default DateRangePicker
+export default EnhanceCalendar(DateRangePicker, { range: true })

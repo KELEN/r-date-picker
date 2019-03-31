@@ -3,6 +3,7 @@ import moment from 'moment'
 import PropTypes from 'prop-types'
 import classNames from 'classname'
 import { isSameDay, isMonthBefore, isMonthAfter, isDayBefore, isDayAfter, dateDisabled } from '../../utils/timer'
+import { checkInRange } from '../../utils/timer'
 
 export default class CalendarBody extends React.Component {
 
@@ -32,6 +33,10 @@ export default class CalendarBody extends React.Component {
       allDays: this.getAllDays(props.currentMonth),
       moveNext: false,
       movePrev: false
+    }
+
+    if (props.ranges) {
+	    this.checkInRange = checkInRange(props.ranges)
     }
 
     this.renderCurrentMonthDays = this.renderCurrentMonthDays.bind(this)
@@ -229,13 +234,17 @@ export default class CalendarBody extends React.Component {
 
     const renderRowDays = (days) => {
       return days.map(item => {
+
         const cls = classNames({
           'rdp__days-item--grey': !item.inMonth || item.isDisable,
           'rdp__days-item': true,
           'rdb__days-item-active--connect': item.connect,
           'rdp__days-item-active--start': item.isStart,
           'rdp__days-item-active--end': item.isEnd,
-          'rdp__days-item-active--single': !endDate && item.isStart && !range
+          'rdp__days-item-active--single': !endDate && item.isStart && !range,
+	        'rdp__days-item-active--range-start': item.isRangeStart,
+	        'rdp__days-item-active--range-end': item.isRangeEnd,
+	        'rdp__days-item-active--range-connect': item.isInRange,
         })
 
         const disableDownEvent = !item.isDisable && item.inMonth
@@ -260,6 +269,14 @@ export default class CalendarBody extends React.Component {
       let arr = []
       days.forEach((item, idx) => {
         if (item.date) { // only handle item has date
+
+        	if (this.checkInRange) {
+		        const checkRangeRet = this.checkInRange(item.date)
+		        item.isRangeStart = checkRangeRet.isRangeStart
+		        item.isInRange = checkRangeRet.isInRange
+		        item.isRangeEnd = checkRangeRet.isRangeEnd
+	        }
+
           item.isDisable = isDayBefore(item.date, minDate) || isDayAfter(item.date, maxDate) || dateDisabled(disabledDates, item.date)
           if (startDate && endDate) {
             item.isStart = isSameDay(startDate, item.date)

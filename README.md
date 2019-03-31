@@ -28,7 +28,7 @@
 | minDate | moment object  |  moment('2019-04-01')  | 可以切换的最小日历 |
 | maxDate | moment object  |  moment('2019-04-01')  | 可以切换的最大日历 |
 | defaultDate  | moment对象或者moment数组 | moment('2019-04-01') | 默认选中值，对象是选中单个值，数组是选择范围 |
-| range | bool | true/false | 是否选择范围 |
+| ranges | array | [[]] | 二维数组，[[moment('2019-03-21'), moment('2019-03-25')], [moment('2019-03-10'), moment('2019-03-10')], [moment('2019-03-1'), moment('2019-03-4')]] |
 | language | string | cn | cn/en | 
 | disabledDates | array | ['2019-04-11', '2019-04-22'] | 禁止选择的日期数组 |
 | onMonthChange | function | | 月改变事件 |
@@ -79,6 +79,27 @@
   defaultDate={ this.state.defaultDate } 
 />
 ```
+
+
+### Custom styles class
+
+| 类名 |  说明  |
+| ------------ | ------------ |
+| rdp__container | 容器 |
+| range__container | 范围选择容器 |
+| rdp__prev-btn | 左按钮 |
+| rdp__next-btn | 右按钮 |
+| rdp-days__row | 日历行 | 
+| rdp__days-item | 日历day项 |
+| rdp__days-item-active--single | 选中 |
+| rdp__days-item-active | 选中激活 |
+| rdp__days-item-active--start | 选中开始 |
+| rdp__days-item-active--start | 选中连接 |
+| rdp__days-item-active--end | 选中结束 |
+| rdp__days-item-active--range-start | 范围开始 |
+| rdp__days-item-active--range-connect | 范围连接 |
+| rdp__days-item-active--range-end | 范围结束 |
+
 
 ### Development
 ```bash

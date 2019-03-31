@@ -1,4 +1,27 @@
-import moment from 'moment'
+import Moment from 'moment'
+import { extendMoment } from 'moment-range'
+const moment = extendMoment(Moment)
+
+/**
+ * check date in ranges
+ * @param ranges
+ * @returns {Function}
+ */
+export function checkInRange(ranges) {
+	const mRanges = ranges.map(r => {
+		return moment.range.apply(null, r)
+	})
+	return function(date) {
+		const inRange = mRanges.find(range => {
+			return range.contains(date)
+		})
+		return {
+			isInRange: !!inRange,
+			isRangeStart: Boolean(inRange && isSameDay(inRange.start, date)),
+			isRangeEnd: Boolean(inRange && isSameDay(inRange.end, date)),
+		}
+	}
+}
 
 /**
  * check if same day
