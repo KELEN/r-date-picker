@@ -1,6 +1,6 @@
 {
   "name": "r-date-picker",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "react date picker",
   "main": "index.js",
   "scripts": {
@@ -22,6 +22,8 @@
     "@babel/plugin-proposal-class-properties": "^7.4.0",
     "@babel/plugin-proposal-export-default-from": "^7.2.0",
     "@babel/plugin-syntax-dynamic-import": "^7.2.0",
+    "@babel/preset-flow": "^7.0.0",
+    "@babel/preset-react": "^7.0.0",
     "@storybook/addon-actions": "^5.0.3",
     "@storybook/addon-links": "^5.0.3",
     "@storybook/react": "^5.0.3",
