@@ -5,7 +5,7 @@ import classNames from 'classname'
 import { isSameDay, isMonthBefore, isMonthAfter, isDayBefore, isDayAfter, dateDisabled } from '../../utils/timer'
 import { checkInRange } from '../../utils/timer'
 
-class CalendarBody extends React.Component {
+class CalendarBody extends React.PureComponent {
 
   constructor(props) {
     super(props)
@@ -209,7 +209,8 @@ class CalendarBody extends React.Component {
       itemRender,
       minDate,
       maxDate,
-      disabledDates
+      disabledDates,
+      selectable
     } = this.props
 
 
@@ -228,7 +229,7 @@ class CalendarBody extends React.Component {
 	        'rdp__days-item-active--range-connect': item.isInRange,
         })
 
-        const disableDownEvent = !item.isDisable && item.inMonth
+        const allowDownEvent = !item.isDisable && item.inMonth && selectable
         const allowHoverEvent = range && item.inMonth && !item.isDisable
 
         return (
@@ -237,7 +238,7 @@ class CalendarBody extends React.Component {
             key={ item.key }
             data-label={ item.dayStr }
             data-key={ item.key }
-            onMouseDown={ () => disableDownEvent && this.handleMouseDown(event, item.date) }
+            onMouseDown={ () => allowDownEvent && this.handleMouseDown(event, item.date) }
             onMouseEnter={ () => allowHoverEvent && this.handleMouseEnter(event, item.date) }>
             { itemRender ? itemRender(item) : item.num  }
           </div>
@@ -334,11 +335,13 @@ const propTypes = {
   isAnimating: PropTypes.bool.isRequired,     // if body is animating
   onDateRangeChange: PropTypes.func,          // day range change event
   range: PropTypes.bool,                      // select day range
-  itemRender: PropTypes.func                  // day item render function
+  itemRender: PropTypes.func,                 // day item render function
+  selectable: PropTypes.bool                   // if selectable
 }
 
 const defaultProps = {
   isAnimating: false,
+  selectable: true,
   disabledDates: [],
   range: false    // select range date
 }

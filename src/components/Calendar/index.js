@@ -7,7 +7,7 @@ import CalendarLabel from './CalendarLabel'
 import CalendarBody from './CalendarBody'
 import { isMonthAfter, isMonthBefore, getFirstDayOfMonth, getLastDayOfMonth, isSameDay } from '../../utils/timer'
 
-class Calendar extends React.Component {
+class Calendar extends React.PureComponent {
 
   constructor(props) {
     super(props)

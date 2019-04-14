@@ -47,6 +47,7 @@ import 'r-date-picker/src/styles/index.scss'
 
 | 属性 | 值类型 | 例子 | 说明 |
 | ------------ | ------------ | ------------ | -- |
+| selectable | boolean | selectable={false} | 是否可选择，默认true |
 | minDate | moment object  |  moment('2019-04-01')  | 可以切换的最小日历 |
 | maxDate | moment object  |  moment('2019-04-01')  | 可以切换的最大日历 |
 | defaultDate  | moment对象或者moment数组 | moment('2019-04-01') | 默认选中值，对象是选中单个值，数组是选择范围 |
