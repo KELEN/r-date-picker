@@ -11,14 +11,15 @@ body {
   font-size: 14px;
   user-select: none;
   margin: 20px;
-  padding: 20px;
+  box-sizing: border-box;
   box-shadow: 0 0 10px 4px rgba(0, 0, 0, 0.2)
 }
 
 .rdp-range__container {
-  width: 760px;
-  height: 400px;
+  width: 690px;
+  height: 366px;
   overflow: hidden;
+  box-sizing: border-box;
   white-space: nowrap;
   box-shadow: 0 0 10px 4px rgba(0, 0, 0, 0.2);
   .rdp__container {

@@ -160,37 +160,40 @@ class CalendarBody extends React.PureComponent {
   }
 
   transitionEndHandle(e) {
-    const { movePrev, moveNext } = this.state
-    const { currentMonth, animateEnd } = this.props
-    const allDays = this.getAllDays(currentMonth)
-    const currAllDays = this.state.allDays
-
-    if (movePrev) {
-      // prev
-      currAllDays.pop()
-      currAllDays.unshift(allDays.shift())
-
-      this.setState({
-        movePrev: false,
-        moveNext: false,
-        allDays: currAllDays
-      }, () => {
-        animateEnd()
-      })
-    }
-
-    if (moveNext) {
-      // next
-      currAllDays.shift()
-      currAllDays.push(allDays.pop())
-
-      this.setState({
-        movePrev: false,
-        moveNext: false,
-        allDays: currAllDays
-      }, () => {
-        animateEnd()
-      })
+    console.log(e.propertyName === '')
+    if (e.propertyName == 'transform') {
+      const { movePrev, moveNext } = this.state
+      const { currentMonth, animateEnd } = this.props
+      const allDays = this.getAllDays(currentMonth)
+      const currAllDays = this.state.allDays
+  
+      if (movePrev) {
+        // prev
+        currAllDays.pop()
+        currAllDays.unshift(allDays.shift())
+  
+        this.setState({
+          movePrev: false,
+          moveNext: false,
+          allDays: currAllDays
+        }, () => {
+          animateEnd()
+        })
+      }
+  
+      if (moveNext) {
+        // next
+        currAllDays.shift()
+        currAllDays.push(allDays.pop())
+  
+        this.setState({
+          movePrev: false,
+          moveNext: false,
+          allDays: currAllDays
+        }, () => {
+          animateEnd()
+        })
+      }
     }
   }
 

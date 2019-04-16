@@ -19,6 +19,7 @@ $day_item_percent: 100% / 7;
   justify-content: center;
   width: 40px;
   height: 40px;
+  box-sizing: border-box;
   vertical-align: top;
   user-select: none;
   cursor: pointer;
@@ -104,12 +105,12 @@ $day_item_percent: 100% / 7;
 }
 
 .rdp__animation-left {
-  transition: all 0.4s ease;
-  transform: translate3d(-100%, 0, 0)
+  transition: transform 0.4s ease;
+  transform: translate3d(-100%, 0, 0);
 }
 
 .rdp__animation-right {
-  transition: all 0.4s ease;
+  transition: transform 0.4s ease;
   transform: translate3d(100%, 0, 0)
 }
 
