@@ -103,6 +103,26 @@ import 'r-date-picker/src/styles/index.scss'
 />
 ```
 
+### 可选项
+
+| 属性 | 值类型 | 例子 | 说明 |
+| ------------ | ------------ | ------------ | -- |
+| single | boolean | single={ true } | 单个日历选范围 |
+| selectable | boolean | selectable={false} | 是否可选择，默认true |
+| minDate | moment object  |  moment('2019-04-01')  | 可以切换的最小日历 |
+| maxDate | moment object  |  moment('2019-04-01')  | 可以切换的最大日历 |
+| defaultDate  | moment对象或者moment数组 | moment('2019-04-01') | 默认选中值，对象是选中单个值，数组是选择范围 |
+| ranges | array | [[]] | 二维数组，[[moment('2019-03-21'), moment('2019-03-25')], [moment('2019-03-10'), moment('2019-03-10')], [moment('2019-03-1'), moment('2019-03-4')]] |
+| language | string | cn | cn/en | 
+| disabledDates | array | ['2019-04-11', '2019-04-22'] | 禁止选择的日期数组 |
+| onMonthChange | function | | 月改变事件 |
+| onDateChange | function | | 日期选择回调 |
+| onDateRangeChange | function |  | 范围选择回调 |
+| itemRender | function |  | 自定义渲染项 |
+| renderPrevBtn | function | | 渲染上一页按钮 |
+| renderNextBtn | function | | 渲染下一页按钮 |
+
+
 
 ## Custom styles class
 

@@ -160,7 +160,6 @@ class CalendarBody extends React.PureComponent {
   }
 
   transitionEndHandle(e) {
-    console.log(e.propertyName === '')
     if (e.propertyName == 'transform') {
       const { movePrev, moveNext } = this.state
       const { currentMonth, animateEnd } = this.props
