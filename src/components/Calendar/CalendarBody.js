@@ -333,12 +333,12 @@ const propTypes = {
   disabledDates: PropTypes.array,
   currentMonth: PropTypes.object,
   onHoveringDateChange: PropTypes.func,
-  onDateChange: PropTypes.func,    // date change event
+  onDateChange: PropTypes.func,               // date change event
   isAnimating: PropTypes.bool.isRequired,     // if body is animating
   onDateRangeChange: PropTypes.func,          // day range change event
   range: PropTypes.bool,                      // select day range
   itemRender: PropTypes.func,                 // day item render function
-  selectable: PropTypes.bool                   // if selectable
+  selectable: PropTypes.bool                  // if selectable
 }
 
 const defaultProps = {

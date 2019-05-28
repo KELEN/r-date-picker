@@ -24,6 +24,7 @@ export default class IntlDatePicker extends React.Component {
   render() {
     return (
       <div>
+        <h3>国际化日历</h3>
         <select onChange={ this.handleLanguageChange }>
           <option value="cn">中文</option>
           <option value="en">英文</option>

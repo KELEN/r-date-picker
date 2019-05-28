@@ -14,6 +14,7 @@ export default class SelectablePicker extends React.Component {
   render() {
     return (
       <div>
+        <h3>纯展示日历</h3>
         <DatePicker selectable={false} />
       </div>
     )
