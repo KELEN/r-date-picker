@@ -97,6 +97,7 @@ class DateRangePicker extends React.Component {
               </div>
             </div>
             : 
+            <div className={ cls }>
               <Calendar
                 { ...this.props }
                 range={ true }
@@ -107,7 +108,8 @@ class DateRangePicker extends React.Component {
                 currentMonth={ endMonth }
                 onMonthChange={ this.onEndMonthChange }
               />
-            }
+            </div>
+          }
       </IntlProvider>
     )
   }

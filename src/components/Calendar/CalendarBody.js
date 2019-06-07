@@ -22,8 +22,8 @@ class CalendarBody extends React.PureComponent {
 
     this.renderCurrentMonthDays = this.renderCurrentMonthDays.bind(this)
     this.handleMouseDown = this.handleMouseDown.bind(this)
-
     this.transitionEndHandle = this.transitionEndHandle.bind(this)
+    this.handleClick = this.handleClick.bind(this)
   }
 
   getMonthDays(startOfMonth) {
@@ -149,8 +149,17 @@ class CalendarBody extends React.PureComponent {
     }
   }
 
+  handleClick(e, date) {
+    const {
+      onDateClick
+    } = this.props;
+    onDateClick && onDateClick(e, date);
+  }
+
   handleMouseDown(e, date) {
-    const { onDateChange } = this.props
+    const { 
+      onDateChange
+    } = this.props
     onDateChange && onDateChange(e, date)
   }
 
@@ -240,6 +249,7 @@ class CalendarBody extends React.PureComponent {
             key={ item.key }
             data-label={ item.dayStr }
             data-key={ item.key }
+            onClick={ () => this.handleClick(event, item.date) }
             onMouseDown={ () => allowDownEvent && this.handleMouseDown(event, item.date) }
             onMouseEnter={ () => allowHoverEvent && this.handleMouseEnter(event, item.date) }>
             { itemRender ? itemRender(item) : item.num  }
@@ -338,7 +348,8 @@ const propTypes = {
   onDateRangeChange: PropTypes.func,          // day range change event
   range: PropTypes.bool,                      // select day range
   itemRender: PropTypes.func,                 // day item render function
-  selectable: PropTypes.bool                  // if selectable
+  selectable: PropTypes.bool,                 // if selectable
+  onDateClick: PropTypes.func                 // date click event
 }
 
 const defaultProps = {

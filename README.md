@@ -55,6 +55,7 @@ import 'r-date-picker/src/styles/index.scss'
 | language | string | cn | cn/en | 
 | disabledDates | array | ['2019-04-11', '2019-04-22'] | 禁止选择的日期数组 |
 | onMonthChange | function | | 月改变事件 |
+| onDateClick | function | 日期点击事件 | 
 | onDateChange | function | | 日期选择回调 |
 | onDateRangeChange | function |  | 范围选择回调 |
 | itemRender | function |  | 自定义渲染项 |
@@ -116,6 +117,7 @@ import 'r-date-picker/src/styles/index.scss'
 | language | string | cn | cn/en | 
 | disabledDates | array | ['2019-04-11', '2019-04-22'] | 禁止选择的日期数组 |
 | onMonthChange | function | | 月改变事件 |
+| onDateClick | function | 日期点击事件 | 
 | onDateChange | function | | 日期选择回调 |
 | onDateRangeChange | function |  | 范围选择回调 |
 | itemRender | function |  | 自定义渲染项 |
