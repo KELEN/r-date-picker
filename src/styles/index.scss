@@ -5,28 +5,26 @@ body {
 }
 
 .rdp__container {
-  width: 280px;
-  height: 350px;
+  max-width: 100%;
   overflow: hidden;
   font-size: 14px;
   user-select: none;
-  margin: 20px;
   box-sizing: border-box;
 }
 
 .rdp-range__container {
-  width: 690px;
-  height: 366px;
   overflow: hidden;
   box-sizing: border-box;
   white-space: nowrap;
   .rdp__container {
     display: inline-block;
     box-shadow: none;
+    vertical-align: top;
   }
 }
 
 .rdp-range__calendar {
+  max-width: 50%;
   display: inline-block;
-  margin: 0 10px;
+  vertical-align: top;
 }

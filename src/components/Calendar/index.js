@@ -14,12 +14,28 @@ class Calendar extends React.PureComponent {
 
     this.state = {
       animating: false,
+      bodyWidth: 0,                       // width of container
       currentMonth: props.currentMonth    // default is today
     }
 
     this.onPrevClick = this.onPrevClick.bind(this)
     this.onNextClick = this.onNextClick.bind(this)
     this.checkIfHideNextBtn = this.checkIfHideNextBtn.bind(this)
+  }
+
+  componentDidMount() {
+    this.resizeHandle = function() {
+      if (this.container) {
+        this.setState({
+          bodyWidth: this.container.offsetWidth
+        })
+      }
+    }.bind(this)
+    window.addEventListener('resize', this.resizeHandle)
+  }
+  
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.resizeHandle)
   }
 
   /**
@@ -109,7 +125,8 @@ class Calendar extends React.PureComponent {
 
     const {
       currentMonth,
-      animating
+      animating,
+      bodyWidth
     } = this.state
 
     const {
@@ -123,7 +140,17 @@ class Calendar extends React.PureComponent {
     const hideNextBtn = this.checkIfHideNextBtn(currentMonth, maxDate)
 
     return (
-      <div className="rdp__container">
+      <div
+        className="rdp__container"
+        ref={(container) => {
+          if (container) {
+            this.container = container;
+            this.setState({
+              bodyWidth: this.container.offsetWidth
+            })
+          }
+        }}
+      >
         <CalendarHeader
           renderNextBtn={ renderNextBtn }
           renderPrevBtn={ renderPrevBtn }
@@ -137,6 +164,7 @@ class Calendar extends React.PureComponent {
         <CalendarBody
           { ...this.props }
           isAnimating={ animating }
+          bodyWidth={ bodyWidth }
           animateEnd={ () => this.setState({ animating: false }) }
           currentMonth={ currentMonth }
         />

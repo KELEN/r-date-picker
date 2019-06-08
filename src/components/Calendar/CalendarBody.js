@@ -89,14 +89,16 @@ class CalendarBody extends React.PureComponent {
   }
 
   /**
-   * render next month days
+   * render next month empty days
    * @param {*} start
    * @param {*} count
    */
   renderNextMonthDays(start, count) {
     const emptyDays = []
+    if (count >= 7) {
+      return emptyDays;
+    }
     let i = 1
-    start = moment(start).add(i, 'days')
     while (count--) {
       emptyDays.push(
         {
@@ -108,8 +110,8 @@ class CalendarBody extends React.PureComponent {
           isDisable: true
         }
       )
+      start = moment(start).add(1, 'd')
       i += 1
-      start = moment(start).add(i, 'days')
     }
     return emptyDays
   }
@@ -132,7 +134,9 @@ class CalendarBody extends React.PureComponent {
           movePrev: true,
           moveNext: false
         })
-      } else {
+      }
+
+      if (nextProps.currentMonth.isAfter(this.props.currentMonth)) {
         // next
         this.setState({
           movePrev: false,
@@ -221,7 +225,8 @@ class CalendarBody extends React.PureComponent {
       minDate,
       maxDate,
       disabledDates,
-      selectable
+      selectable,
+      bodyWidth
     } = this.props
 
 
@@ -329,8 +334,22 @@ class CalendarBody extends React.PureComponent {
       'rdp__body': true
     })
 
+    let translateX = 0;
+    if (movePrev) {
+      translateX = bodyWidth;
+    }
+    if (moveNext) {
+      translateX = -bodyWidth;
+    }
+
+    const bodyStyle = {
+      width: bodyWidth * 3,
+      left: -bodyWidth,
+      transform: isAnimating && `translateX(${translateX}px)`
+    }
+
     return (
-      <div className={ cls } onTransitionEnd={ this.transitionEndHandle }>
+      <div className={ cls } style={bodyStyle} onTransitionEnd={ this.transitionEndHandle }>
         { renderAllDays(allDays) }
       </div>
     )

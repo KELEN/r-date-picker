@@ -78,14 +78,13 @@ $day_item_percent: 100% / 7;
 
 .rdp__body {
   position: relative;
+  display: flex;
 }
 
 .rdp__view {
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
+  display: inline-block;
+  vertical-align: top;
+  flex: 1;
 }
 
 .rdp--hidden {
@@ -94,30 +93,18 @@ $day_item_percent: 100% / 7;
   opacity: 0;
 }
 
-.rdp__view:first-child {
-  left: -100%;
-  right: auto;
-}
-
-.rdp__view:last-child {
-  right: -100%;
-  left: auto;
-}
-
 .rdp__animation-left {
   transition: transform 0.4s ease;
-  transform: translate3d(-100%, 0, 0);
 }
 
 .rdp__animation-right {
   transition: transform 0.4s ease;
-  transform: translate3d(100%, 0, 0);
 }
 
 .rdp__labels,
 .rdp-days__row {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
 }
 
 .rdp-days__row {

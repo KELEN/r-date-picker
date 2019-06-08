@@ -34,7 +34,7 @@ export default class SimpleDatePicker extends React.Component {
 
   setMaxDate() {
     this.setState({
-      maxDate: moment('2019-06-01')
+      maxDate: moment('2019-05-01')
     })
   }
 
@@ -56,7 +56,7 @@ export default class SimpleDatePicker extends React.Component {
         <h3>选中的日期: { selectedDate.format('YYYY-MM-DD') }</h3>
         <div className='op-bar'>
           <button onClick={ this.setMinDate }>设置最小日期为2019-02-12</button>
-          <button onClick={ this.setMaxDate }>设置最大日期为2019-06-01</button>
+          <button onClick={ this.setMaxDate }>设置最大日期为2019-05-01</button>
           <button onClick={ this.setLimit }>禁止选择2019-03-15, 2019-03-21</button>
           <button onClick={ this.resetLimit }>取消限制</button>
         </div>

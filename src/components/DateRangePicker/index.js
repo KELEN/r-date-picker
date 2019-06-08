@@ -76,7 +76,7 @@ class DateRangePicker extends React.Component {
                   { ...this.props }
                   range={ true }
                   minDate={ minDate }
-                  maxDate={ leftMaxDate }
+                  maxDate={ moment.min(maxDate, leftMaxDate) }
                   startDate={ startDate || hoveringDate }
                   endDate={ endDate || hoveringDate }
                   currentMonth={ startMonth }
@@ -87,7 +87,7 @@ class DateRangePicker extends React.Component {
                 <Calendar
                   { ...this.props }
                   range={ true }
-                  minDate={ rightMinDate }
+                  minDate={ moment.min(maxDate, rightMinDate) }
                   maxDate={ maxDate }
                   startDate={ startDate || hoveringDate }
                   endDate={ endDate || hoveringDate }
