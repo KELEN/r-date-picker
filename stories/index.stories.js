@@ -30,7 +30,7 @@ storiesOf('Multilple Date Picker', module)
   })
   .add('Two Calendar', () => {
     return (
-      <DateRangePicker minDate={ moment() } maxDate={ moment().add(2, 'month') }/>
+      <DateRangePicker minDate={ moment() }/>
     )
   })
 

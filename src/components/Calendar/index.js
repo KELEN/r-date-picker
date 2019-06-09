@@ -20,7 +20,6 @@ class Calendar extends React.PureComponent {
 
     this.onPrevClick = this.onPrevClick.bind(this)
     this.onNextClick = this.onNextClick.bind(this)
-    this.checkIfHideNextBtn = this.checkIfHideNextBtn.bind(this)
   }
 
   componentDidMount() {
