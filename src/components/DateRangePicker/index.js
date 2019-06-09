@@ -1,7 +1,7 @@
 import React from 'react'
 import Calendar from '../Calendar'
 import { IntlProvider } from 'react-intl'
-import moment, { lang } from 'moment'
+import moment from 'moment'
 import PropTypes from 'prop-types'
 import en_US from '../../languages/en'
 import zh_CN from '../../languages/zh-CN'

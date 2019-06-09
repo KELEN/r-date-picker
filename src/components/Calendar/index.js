@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import moment, { max } from 'moment'
+import moment from 'moment'
 import { WEEK_DAYS } from '../../languages/en'
 import CalendarHeader from './CalendarHeader'
 import CalendarLabel from './CalendarLabel'

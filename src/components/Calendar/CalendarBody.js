@@ -2,7 +2,7 @@ import React from 'react'
 import moment from 'moment'
 import PropTypes from 'prop-types'
 import classNames from 'classname'
-import { isSameDay, isMonthBefore, isMonthAfter, isDayBefore, isDayAfter, dateDisabled } from '../../utils/timer'
+import { isSameDay, isDayBefore, isDayAfter, dateDisabled } from '../../utils/timer'
 import { checkInRange } from '../../utils/timer'
 
 class CalendarBody extends React.PureComponent {
