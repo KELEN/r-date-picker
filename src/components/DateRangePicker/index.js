@@ -82,7 +82,7 @@ class DateRangePicker extends React.Component {
                   maxDate={ leftMax }
                   startDate={ startDate || hoveringDate }
                   endDate={ endDate || hoveringDate }
-                  currentMonth={ startMonth }
+                  defaultValue={ startMonth }
                   onMonthChange={ this.onStartMonthChange }
                 />
               </div>
@@ -94,7 +94,7 @@ class DateRangePicker extends React.Component {
                   maxDate={ maxDate }
                   startDate={ startDate || hoveringDate }
                   endDate={ endDate || hoveringDate }
-                  currentMonth={ endMonth }
+                  defaultValue={ endMonth }
                   onMonthChange={ this.onEndMonthChange }
                 />
               </div>
@@ -108,7 +108,7 @@ class DateRangePicker extends React.Component {
                 maxDate={ maxDate }
                 startDate={ startDate || hoveringDate }
                 endDate={ endDate || hoveringDate }
-                currentMonth={ endMonth }
+                defaultValue={ endMonth }
                 onMonthChange={ this.onEndMonthChange }
               />
             </div>

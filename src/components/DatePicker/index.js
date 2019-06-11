@@ -16,9 +16,9 @@ class DatePicker extends React.Component {
 
   constructor(props) {
     super(props)
-    const { currentMonth } = props
+    const { defaultValue } = props
     this.state = {
-      currentMonth: currentMonth     // default is today
+      defaultValue: defaultValue     // default is today
     }
   }
 
@@ -46,15 +46,16 @@ DatePicker.propTypes = {
   // default selected dates
   defaultDate: PropTypes.oneOfType([ PropTypes.object, PropTypes.array ]),
   // init visible current month, default is current month
-  currentMonth: PropTypes.object,
+  defaultValue: PropTypes.object,
   // set range
   ranges: PropTypes.array
 }
 
 DatePicker.defaultProps = {
-  currentMonth: moment(),
+  defaultValue: moment(),
   defaultDate: null,
-  ranges: []
+  ranges: [],
+  dateOnly: false
 }
 
 export default EnhanceCalendar(DatePicker)

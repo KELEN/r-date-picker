@@ -60,13 +60,27 @@ export default class SimpleDatePicker extends React.Component {
           <button onClick={ this.setLimit }>禁止选择2019-03-15, 2019-03-21</button>
           <button onClick={ this.resetLimit }>取消限制</button>
         </div>
-        <DatePicker
-          minDate={ minDate && moment(minDate) }
-          maxDate={ maxDate && moment(maxDate) }
-          disabledDates={ disabledDates }
-          defaultDate={ selectedDate }
-          onDateChange={ (event, date) => this.setState({ selectedDate: date }) }
-        />
+        <div className="fl">
+          <h3 className="text-center">normal datepicker</h3>
+          <DatePicker
+            minDate={ minDate && moment(minDate) }
+            maxDate={ maxDate && moment(maxDate) }
+            disabledDates={ disabledDates }
+            defaultDate={ selectedDate }
+            onDateChange={ (event, date) => this.setState({ selectedDate: date }) }
+          />
+        </div>
+        <div className="fl">
+          <h3 className="text-center">disable select month</h3>
+          <DatePicker
+            minDate={ minDate && moment(minDate) }
+            maxDate={ maxDate && moment(maxDate) }
+            disabledDates={ disabledDates }
+            defaultDate={ selectedDate }
+            dateOnly
+            onDateChange={ (event, date) => this.setState({ selectedDate: date }) }
+          />
+        </div>
       </div>
     )
   }

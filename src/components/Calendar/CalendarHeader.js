@@ -1,12 +1,11 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classname'
-import { injectIntl, FormattedMessage } from 'react-intl'
 
-function intlTitleFormat(date) {
-  return date.format('YYYYMMDD'); //date.format(`YYYY${ formatMessage({ id: "year", defaultMessage: '-' }) }MM${ formatMessage({ id: "month", defaultMessage: '' }) }DD${ formatMessage({ id: 'day', defaultMessage: '-' }) }`)
-}
-
+/**
+ * Calendar Header
+ * @param {*} props 
+ */
 const CalendarHeader = (props) => {
   
   const {
@@ -15,8 +14,7 @@ const CalendarHeader = (props) => {
     hideNextBtn,
     hidePrevBtn,
     renderPrevBtn,
-    renderNextBtn,
-    currentMonth
+    renderNextBtn
   } = props;
 
   const prevBtncls = classNames({
@@ -29,19 +27,13 @@ const CalendarHeader = (props) => {
     'rdp--hidden': hideNextBtn
   })
 
-  const year = currentMonth.get('year'), month = currentMonth.get('month') + 1
-
-  const TitleFormat = injectIntl(({year, month, day, intl}) => {
-    return `${year}${intl.formatMessage({id: 'year'})}${month}${intl.formatMessage({ id: 'month' })}`
-  })
-
   return (
     <div className="rdp__title">
       <span className={ prevBtncls } onClick={ onPrevClick }>
         { renderPrevBtn && renderPrevBtn() }
       </span>   
       <span className="rdp__title-center">
-        <TitleFormat year={ year } month={ month } />
+        { props.children }
       </span>
       <span className={ nextBtnCls } onClick={ onNextClick }>
         { renderNextBtn && renderNextBtn() }
@@ -53,9 +45,8 @@ const CalendarHeader = (props) => {
 const propTypes = {
   hidePrevBtn: PropTypes.bool.isRequired,
   hideNextBtn: PropTypes.bool.isRequired,
-  onPrevClick: PropTypes.func.isRequired,
-  onNextClick: PropTypes.func.isRequired,
-  currentMonth: PropTypes.object.isRequired,
+  onPrevClick: PropTypes.func,
+  onNextClick: PropTypes.func,
   renderPrevBtn: PropTypes.func,
   renderNextBtn: PropTypes.func
 }
@@ -63,7 +54,7 @@ const propTypes = {
 const defaultProps = {
   hidePrevBtn: false,
   hideNextBtn: false,
-  currentMonth: PropTypes.object
+  defaultValue: PropTypes.object
 }
 
 CalendarHeader.propTypes = propTypes

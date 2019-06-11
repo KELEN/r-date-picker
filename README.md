@@ -134,7 +134,7 @@ import 'r-date-picker/src/styles/index.scss'
 | range__container | 范围选择容器 |
 | rdp__prev-btn | 左按钮 |
 | rdp__next-btn | 右按钮 |
-| rdp-days__row | 日历行 | 
+| rdp__days-row | 日历行 | 
 | rdp__days-item | 日历day项 |
 | rdp__days-item-active--single | 选中 |
 | rdp__days-item-active | 选中激活 |

@@ -10,6 +10,7 @@ import CustomDatePicker from '../example/CustomDatePicker'
 import IntlDatePicker from '../example/IntlDatePicker'
 import SelectablePicker from '../example/SelectablePicker'
 import Airbnb from '../example/Airbnb'
+import MonthPicker from '../src/components/MonthPicker'
 
 storiesOf('Date Picker', module)
   .add('Base', () =>  <SimpleDatePicker /> )
@@ -31,8 +32,7 @@ storiesOf('Multilple Date Picker', module)
   })
 
 storiesOf('Custom style', module)
-  .add('Airbnb style', () => {
-    return (
-      <Airbnb />
-    )
-  })
+  .add('Airbnb style', () => <Airbnb /> )
+
+storiesOf('Month Picker', module)
+  .add('Month Picker', () => <MonthPicker style={{ width: 300, height: 320 }} onMonthChange={(val) => console.log(val.format('YYYY-MM-DD'))}/>)

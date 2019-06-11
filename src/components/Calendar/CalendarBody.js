@@ -2,6 +2,7 @@ import React from 'react'
 import moment from 'moment'
 import PropTypes from 'prop-types'
 import classNames from 'classname'
+import { FormattedMessage } from 'react-intl'
 import { isSameDay, isDayBefore, isDayAfter, dateDisabled } from '../../utils/timer'
 import { checkInRange } from '../../utils/timer'
 
@@ -11,7 +12,7 @@ class CalendarBody extends React.PureComponent {
     super(props)
 
     this.state = {
-      allDays: this.getAllDays(props.currentMonth),
+      allDays: this.getAllDays(props.defaultValue),
       moveNext: false,
       movePrev: false
     }
@@ -20,7 +21,7 @@ class CalendarBody extends React.PureComponent {
 	    this.checkInRange = checkInRange(props.ranges)
     }
 
-    this.renderCurrentMonthDays = this.renderCurrentMonthDays.bind(this)
+    this.renderCurrMonthDays = this.renderCurrMonthDays.bind(this)
     this.handleMouseDown = this.handleMouseDown.bind(this)
     this.transitionEndHandle = this.transitionEndHandle.bind(this)
     this.handleClick = this.handleClick.bind(this)
@@ -31,7 +32,7 @@ class CalendarBody extends React.PureComponent {
     const startNum = startOfMonth.weekday()          // the first weekday
     const nextMonth = startOfMonth.clone().add(1, 'month')
     const prevMonthDays = this.renderPrevMonthDays(startOfMonth, startNum)
-    const currMonthDays = this.renderCurrentMonthDays(startOfMonth, daysInMonth)
+    const currMonthDays = this.renderCurrMonthDays(startOfMonth, daysInMonth)
     const nextMonthDays = this.renderNextMonthDays(nextMonth.startOf('month'), 42 - prevMonthDays.length - currMonthDays.length)
     return {
       [startOfMonth.format('YYYYMMDD')]: [
@@ -67,7 +68,7 @@ class CalendarBody extends React.PureComponent {
   /**
    * render current month
    */
-  renderCurrentMonthDays(firstDay, count) {
+  renderCurrMonthDays(firstDay, count) {
     const realDays = []
     let i = 1
     while (count--) {
@@ -125,9 +126,9 @@ class CalendarBody extends React.PureComponent {
 
   componentWillReceiveProps(nextProps) {
 
-    if (!isSameDay(nextProps.currentMonth, this.props.currentMonth)) {
+    if (!isSameDay(nextProps.defaultValue, this.props.defaultValue)) {
       // next date no equal current date recalculate days
-      if (nextProps.currentMonth.isBefore(this.props.currentMonth)) {
+      if (nextProps.defaultValue.isBefore(this.props.defaultValue)) {
         // prev
         this.setState({
           movePrev: true,
@@ -135,7 +136,7 @@ class CalendarBody extends React.PureComponent {
         })
       }
 
-      if (nextProps.currentMonth.isAfter(this.props.currentMonth)) {
+      if (nextProps.defaultValue.isAfter(this.props.defaultValue)) {
         // next
         this.setState({
           movePrev: false,
@@ -146,7 +147,7 @@ class CalendarBody extends React.PureComponent {
       // set current month not by prev or next btn
       if (!nextProps.isAnimating) {
         this.setState({
-          allDays: this.getAllDays(nextProps.currentMonth)
+          allDays: this.getAllDays(nextProps.defaultValue)
         })
       }
     }
@@ -174,8 +175,8 @@ class CalendarBody extends React.PureComponent {
   transitionEndHandle(e) {
     if (e.propertyName == 'transform') {
       const { movePrev, moveNext } = this.state
-      const { currentMonth, animateEnd } = this.props
-      const allDays = this.getAllDays(currentMonth)
+      const { defaultValue, animateEnd } = this.props
+      const allDays = this.getAllDays(defaultValue)
       const currAllDays = this.state.allDays
   
       if (movePrev) {
@@ -225,7 +226,8 @@ class CalendarBody extends React.PureComponent {
       maxDate,
       disabledDates,
       selectable,
-      bodyWidth
+      bodyWidth,
+      labels
     } = this.props
 
 
@@ -267,14 +269,12 @@ class CalendarBody extends React.PureComponent {
       let arr = []
       days.forEach((item, idx) => {
         if (item.date) { // only handle item has date
-
         	if (this.checkInRange) {
 		        const checkRangeRet = this.checkInRange(item.date)
 		        item.isRangeStart = checkRangeRet.isRangeStart
 		        item.isInRange = checkRangeRet.isInRange
 		        item.isRangeEnd = checkRangeRet.isRangeEnd
 	        }
-
           item.isDisable = isDayBefore(item.date, minDate) || isDayAfter(item.date, maxDate) || dateDisabled(disabledDates, item.date)
           if (startDate && endDate) {
             item.isStart = isSameDay(startDate, item.date)
@@ -304,7 +304,7 @@ class CalendarBody extends React.PureComponent {
       }
       return rowArray.map((rowDays, idx) => {
         return (
-          <div className="rdp-days__row" key={idx}>
+          <div className="rdp__days-row" key={idx}>
             { renderRowDays(rowDays) }
           </div>
         )
@@ -346,20 +346,34 @@ class CalendarBody extends React.PureComponent {
       left: -bodyWidth,
       transform: isAnimating && `translateX(${translateX}px)`
     }
-
+    
     return (
-      <div className={ cls } style={bodyStyle} onTransitionEnd={ this.transitionEndHandle }>
-        { renderAllDays(allDays) }
-      </div>
+      <React.Fragment>
+        <div className="rdp__labels">
+          {
+            labels.map((item, idx) => {
+              return (
+                <div className="rdp__labels-item" key={idx}>
+                  <FormattedMessage id={item} />
+                </div>
+              )
+            })
+          }
+        </div>
+        <div className={ cls } style={bodyStyle} onTransitionEnd={ this.transitionEndHandle }>
+          { renderAllDays(allDays) }
+        </div>
+      </React.Fragment>
     )
   }
 }
 
 const propTypes = {
+  labels: PropTypes.array.isRequired,
   minDate: PropTypes.object,
   maxDate: PropTypes.object,
   disabledDates: PropTypes.array,
-  currentMonth: PropTypes.object,
+  defaultValue: PropTypes.object,
   onHoveringDateChange: PropTypes.func,
   onDateChange: PropTypes.func,               // date change event
   isAnimating: PropTypes.bool.isRequired,     // if body is animating
