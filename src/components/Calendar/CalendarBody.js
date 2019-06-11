@@ -30,12 +30,14 @@ class CalendarBody extends React.PureComponent {
     const daysInMonth = startOfMonth.daysInMonth()   // total num in month
     const startNum = startOfMonth.weekday()          // the first weekday
     const nextMonth = startOfMonth.clone().add(1, 'month')
-    const endNum = 7 - nextMonth.weekday()
+    const prevMonthDays = this.renderPrevMonthDays(startOfMonth, startNum)
+    const currMonthDays = this.renderCurrentMonthDays(startOfMonth, daysInMonth)
+    const nextMonthDays = this.renderNextMonthDays(nextMonth.startOf('month'), 42 - prevMonthDays.length - currMonthDays.length)
     return {
       [startOfMonth.format('YYYYMMDD')]: [
-        ...this.renderPrevMonthDays(startOfMonth, startNum),
-        ...this.renderCurrentMonthDays(startOfMonth, daysInMonth),
-        ...this.renderNextMonthDays(nextMonth.startOf('month'), endNum)
+        ...prevMonthDays,
+        ...currMonthDays,
+        ...nextMonthDays
       ]
     }
   }
@@ -50,7 +52,7 @@ class CalendarBody extends React.PureComponent {
     while (count--) {
       emptyDays.push(
         {
-          num: '',
+          num: start.format('D'),
           date: null,
           key: start.format('YYYYMMDD'),
           inMonth: false,
@@ -95,14 +97,11 @@ class CalendarBody extends React.PureComponent {
    */
   renderNextMonthDays(start, count) {
     const emptyDays = []
-    if (count >= 7) {
-      return emptyDays;
-    }
     let i = 1
     while (count--) {
       emptyDays.push(
         {
-          num: '',
+          num: start.format('D'),
           date: null,
           start: start,
           key: start.format('YYYYMMDD'),

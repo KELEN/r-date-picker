@@ -1,6 +1,6 @@
 {
   "name": "r-date-picker",
-  "version": "0.0.14",
+  "version": "0.0.15",
   "description": "react date picker",
   "main": "index.js",
   "scripts": {

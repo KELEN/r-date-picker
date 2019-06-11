@@ -31,6 +31,10 @@ class Calendar extends React.PureComponent {
       }
     }.bind(this)
     window.addEventListener('resize', this.resizeHandle)
+
+    this.setState({
+      bodyWidth: this.container.offsetWidth
+    })
   }
   
   componentWillUnmount() {
@@ -142,12 +146,7 @@ class Calendar extends React.PureComponent {
       <div
         className="rdp__container"
         ref={(container) => {
-          if (container) {
-            this.container = container;
-            this.setState({
-              bodyWidth: this.container.offsetWidth
-            })
-          }
+          this.container = container;
         }}
       >
         <CalendarHeader
