@@ -230,12 +230,12 @@ class CalendarBody extends React.PureComponent {
       labels
     } = this.props
 
-
     const renderRowDays = (days) => {
       return days.map(item => {
 
         const cls = classNames({
-          'rdp__days-item--grey': !item.inMonth || item.isDisable,
+          'rdp__days-item--grey': item.isDisable,
+          'rdp__days-item--empty': !item.inMonth,
           'rdp__days-item': true,
           'rdb__days-item-active--connect': item.connect,
           'rdp__days-item-active--start': item.isStart,

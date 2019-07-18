@@ -246,7 +246,7 @@ Calendar.defaultProps = {
   startDate: null,
   endDate: null,
   defaultValue: moment(),
-  dateOnly: false
+  dateOnly: true
 }
 
 
