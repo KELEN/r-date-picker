@@ -11,8 +11,9 @@ export default class extends React.Component {
   constructor() {
     super()
     this.state = {
-    	defaultDate: moment(),
-    	ranges: [[moment('2019-03-21'), moment('2019-03-25')], [moment('2019-03-10'), moment('2019-03-10')], [moment('2019-03-1'), moment('2019-03-4')]],
+      defaultDate: moment(),
+      unPassRange: [[moment().subtract(10, 'day'), moment().subtract(5, 'day')]],
+    	ranges: [[moment(), moment().add(3, 'day')]],
     }
 
     this.rangeChange = this.rangeChange.bind(this)
@@ -36,19 +37,30 @@ export default class extends React.Component {
   render() {
 
 
-    const { ranges } = this.state
+    const { ranges, unPassRange } = this.state
 
+    const unPassStart = unPassRange.map(item => item[0]);
+    const unPassEnd = unPassRange.map(item => item[1]);
     return (
       <div>
 	      <h3>显示范围: </h3>
         <ul>
-	        <li>2019-03-21~2019-03-25</li>
-	        <li>2019-03-10~2019-03-10</li>
-	        <li>2019-03-01~2019-03-04</li>
+	        
         </ul>
         <DatePicker
-          onDateRangeChange={ this.rangeChange }
+          selectable={false}
+s         onDateRangeChange={ this.rangeChange }
           ranges={ ranges }
+          itemClass={(item) => {
+            for (let i = 0; i < unPassStart.length; i++) {
+              if (unPassStart[i].isSame(item.date)) {
+                return 'unpass-range-start';
+              }
+              if (unPassEnd[i].isSame(item.data)) {
+                return 'unpass-range-end';
+              }
+            }
+          }}
           defaultDate={ this.state.defaultDate }
         />
       </div>

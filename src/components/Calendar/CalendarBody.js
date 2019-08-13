@@ -48,7 +48,7 @@ class CalendarBody extends React.PureComponent {
    */
   renderPrevMonthDays(firstDay, count) {
     const emptyDays = []
-    let start = moment(firstDay).subtract(count, 'days')
+    let start = moment(firstDay).clone().subtract(count, 'days')
     let i = -1
     while (count--) {
       emptyDays.push(
@@ -60,7 +60,7 @@ class CalendarBody extends React.PureComponent {
           isDisable: true,
         }
       )
-      start = moment(firstDay).subtract(count, 'days')
+      start = moment(firstDay).clone().subtract(count, 'days')
     }
     return emptyDays
   }
@@ -72,7 +72,7 @@ class CalendarBody extends React.PureComponent {
     const realDays = []
     let i = 1
     while (count--) {
-      const date = moment(firstDay).add(i - 1, 'days')
+      const date = moment(firstDay).clone().add(i - 1, 'days')
       realDays.push(
         {
           num: i,
@@ -110,7 +110,7 @@ class CalendarBody extends React.PureComponent {
           isDisable: true
         }
       )
-      start = moment(start).add(1, 'd')
+      start = moment(start).clone().add(1, 'd')
       i += 1
     }
     return emptyDays
@@ -227,12 +227,20 @@ class CalendarBody extends React.PureComponent {
       disabledDates,
       selectable,
       bodyWidth,
+      itemClass,
       labels
     } = this.props
-
     const renderRowDays = (days) => {
       return days.map(item => {
 
+        const typeOfItemClass = typeof itemClass;
+        let itemClassStr = '';
+        if (typeOfItemClass === 'function') {
+          itemClassStr = itemClass(item) || '';
+        }
+        if (typeOfItemClass === 'string') {
+          itemClassStr = itemClass;
+        }
         const cls = classNames({
           'rdp__days-item--grey': item.isDisable,
           'rdp__days-item--empty': !item.inMonth,
@@ -243,7 +251,8 @@ class CalendarBody extends React.PureComponent {
           'rdp__days-item-active--single': !endDate && item.isStart && !range,
 	        'rdp__days-item-active--range-start': item.isRangeStart,
 	        'rdp__days-item-active--range-end': item.isRangeEnd,
-	        'rdp__days-item-active--range-connect': item.isInRange,
+          'rdp__days-item-active--range-connect': item.isInRange,
+          [itemClassStr]: !!itemClassStr,
         })
 
         const allowDownEvent = !item.isDisable && item.inMonth && selectable
@@ -381,13 +390,15 @@ const propTypes = {
   range: PropTypes.bool,                      // select day range
   itemRender: PropTypes.func,                 // day item render function
   selectable: PropTypes.bool,                 // if selectable
-  onDateClick: PropTypes.func                 // date click event
+  onDateClick: PropTypes.func,                // date click event
+  itemClass: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
 }
 
 const defaultProps = {
   isAnimating: false,
   selectable: true,
   disabledDates: [],
+  itemClass: '',
   range: false    // select range date
 }
 
