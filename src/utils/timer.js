@@ -8,15 +8,27 @@ const moment = extendMoment(Moment)
  * @returns {Function}
  */
 export function checkInRange(ranges) {
-	const mRanges = ranges.map(r => {
-		return moment.range.apply(null, r)
-	})
+  const sortRet = ranges.sort((a, b) => { return a[0].diff(b[0]) });
+  // range by YYYY-MM-DD 00:00:00
+	const mRanges = sortRet.map(r => (moment.range.apply(null, r.map(date => moment(date).format('YYYY-MM-DD')))));
 	return function(date) {
 		const inRange = mRanges.find(range => {
 			return range.contains(date)
-		})
+    })
+    let isAdjacent = false;
+    if (mRanges.length > 1) {
+      for (let i = 1; i < mRanges.length; i++) {
+        const prev = mRanges[i - 1];
+        const curr = mRanges[i]
+        if (prev.overlaps(curr, { adjacent: true }) && isSameDay(prev.end, date)) {
+          isAdjacent = true;
+          break;
+        }
+      }
+    }
 		return {
-			isInRange: !!inRange,
+      isInRange: !!inRange,
+      isRangeAdjacent: isAdjacent,
 			isRangeStart: Boolean(inRange && isSameDay(inRange.start, date)),
 			isRangeEnd: Boolean(inRange && isSameDay(inRange.end, date)),
 		}

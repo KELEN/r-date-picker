@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import moment from 'moment'
 import Calendar from '../Calendar'
+import classNames from 'classname'
 import { IntlProvider } from 'react-intl'
 import en from '../../languages/en'
 import zh_CN from '../../languages/zh-CN'
@@ -27,16 +28,22 @@ class DatePicker extends React.Component {
       language = 'cn',
 	    startDate,
 	    endDate,
-	    hoveringDate,
+      hoveringDate,
+      className,
     } = this.props
-
+    const cls = classNames({
+      [className]: !!className,
+      'rdp-datepicker-container': true
+    })
     return (
       <IntlProvider locale='en' messages={ messages[language] }>
-        <Calendar
-          { ...this.props }
-          startDate={ startDate || hoveringDate }
-          endDate={ endDate || hoveringDate }
-        />
+        <div className={cls}>
+          <Calendar
+            { ...this.props }
+            startDate={ startDate || hoveringDate }
+            endDate={ endDate || hoveringDate }
+          />
+        </div>
       </IntlProvider>
     )
   }

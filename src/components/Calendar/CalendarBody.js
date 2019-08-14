@@ -241,17 +241,20 @@ class CalendarBody extends React.PureComponent {
         if (typeOfItemClass === 'string') {
           itemClassStr = itemClass;
         }
+        if (item.date && item.date.format('YYYY-MM-DD') === '2019-08-22') {
+          console.log(item)
+        }
         const cls = classNames({
           'rdp__days-item--grey': item.isDisable,
           'rdp__days-item--empty': !item.inMonth,
           'rdp__days-item': true,
           'rdb__days-item-active--connect': item.connect,
-          'rdp__days-item-active--start': item.isStart,
+          'rdp__days-item-active--start': item.isStart && selectable,
           'rdp__days-item-active--end': item.isEnd,
-          'rdp__days-item-active--single': !endDate && item.isStart && !range,
-	        'rdp__days-item-active--range-start': item.isRangeStart,
-	        'rdp__days-item-active--range-end': item.isRangeEnd,
-          'rdp__days-item-active--range-connect': item.isInRange,
+          'rdp__days-item-active--single': !endDate && item.isStart && !range && selectable,
+	        'rdp__days-item-active--range-start': item.isRangeStart || item.isRangeAdjacent,
+	        'rdp__days-item-active--range-end': item.isRangeEnd || item.isRangeAdjacent,
+          'rdp__days-item-active--range-connect': item.isInRange && (!item.isRangeStart && !item.isRangeEnd),
           [itemClassStr]: !!itemClassStr,
         })
 
@@ -279,10 +282,11 @@ class CalendarBody extends React.PureComponent {
       days.forEach((item, idx) => {
         if (item.date) { // only handle item has date
         	if (this.checkInRange) {
-		        const checkRangeRet = this.checkInRange(item.date)
+            const checkRangeRet = this.checkInRange(item.date)
 		        item.isRangeStart = checkRangeRet.isRangeStart
 		        item.isInRange = checkRangeRet.isInRange
-		        item.isRangeEnd = checkRangeRet.isRangeEnd
+            item.isRangeEnd = checkRangeRet.isRangeEnd
+            item.isRangeAdjacent = checkRangeRet.isRangeAdjacent
 	        }
           item.isDisable = isDayBefore(item.date, minDate) || isDayAfter(item.date, maxDate) || dateDisabled(disabledDates, item.date)
           if (startDate && endDate) {

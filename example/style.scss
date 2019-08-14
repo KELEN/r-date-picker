@@ -32,3 +32,75 @@ button:hover {
 .text-center {
   text-align: center;
 }
+
+.calendar-avatar {
+  width: 30px;
+  height: 30px;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.rdp__days-item-active--range-start,
+.rdp__days-item-active--range-connect,
+.rdp__days-item-active--range-end {
+  background-color: #4D9DE0;
+  color: white;
+}
+
+.calendar-avatar-wrap {
+  position: absolute;
+  top: -4px;
+  width: 48px;
+  height: 48px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50% 0 0 50%;
+  border-width: 2px 0 2px 2px;
+  border-color: #fff;
+  border-style: solid;
+  box-sizing: border-box;
+  .calendar-avatar {
+    border-radius: 50%;
+  }
+}
+
+.rdp__days-item-active--range-start.rdp__days-item-active--range-end {
+  .calendar-avatar-wrap {
+    position: absolute;
+    top: -4px;
+    width: 48px;
+    height: 48px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50% 0 0 50%;
+    border-width: 2px 0 2px 2px;
+    border-color: #fff;
+    border-style: solid;
+    box-sizing: border-box;
+  }
+}
+
+.unpass-range-start {
+  border-top-left-radius: 50%;
+  border-bottom-left-radius: 50%;
+  border-width: 1px 0 1px 1px;
+  border-style: dashed;
+  border-color: red;
+}
+
+.unpass-range-connect {
+  border-width: 1px 0 1px 0;
+  border-style: dashed;
+  border-color: red;
+}
+
+.unpass-range-end {
+  border-top-right-radius: 50%;
+  border-bottom-right-radius: 50%;
+  border-width: 1px 1px 1px 0;
+  border-style: dashed;
+  border-color: red;
+}

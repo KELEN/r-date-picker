@@ -14,6 +14,7 @@ $day_item_percent: 100% / 7;
 .rdp__days-item,
 .rdp__labels-item,
 .rdp__months-item {
+  position: relative;
   box-sizing: border-box;
   display: inline-flex;
   align-items: center;
@@ -60,6 +61,18 @@ $day_item_percent: 100% / 7;
 .rdp__days-item-active--range-connect,
 .rdb__days-item-active--connect {
   border-radius: initial;
+}
+
+.rdp__days-item-active--range-end {
+  border-left: none !important;
+}
+
+.rdp__days-item-active--range-start {
+  border-right: none !important;
+}
+
+.rdp__days-item-active--range-start.rdp__days-item-active--range-end {
+  border-radius: 0 !important;
 }
 
 .rdp__days-item-active--range-start,

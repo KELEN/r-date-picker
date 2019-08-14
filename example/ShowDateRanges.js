@@ -12,8 +12,8 @@ export default class extends React.Component {
     super()
     this.state = {
       defaultDate: moment(),
-      unPassRange: [[moment().subtract(10, 'day'), moment().subtract(5, 'day')]],
-    	ranges: [[moment(), moment().add(3, 'day')]],
+      unPassRange: [moment().subtract(10, 'day'), moment().subtract(5, 'day')],
+    	ranges: [[moment().add(8, 'day'), moment().add(12, 'day')], [moment(), moment().add(8, 'day')]],
     }
 
     this.rangeChange = this.rangeChange.bind(this)
@@ -38,9 +38,7 @@ export default class extends React.Component {
 
 
     const { ranges, unPassRange } = this.state
-
-    const unPassStart = unPassRange.map(item => item[0]);
-    const unPassEnd = unPassRange.map(item => item[1]);
+    const rangeStart = ranges.map(item => item[0]);
     return (
       <div>
 	      <h3>显示范围: </h3>
@@ -48,19 +46,36 @@ export default class extends React.Component {
 	        
         </ul>
         <DatePicker
+          className="show-date-range"
           selectable={false}
 s         onDateRangeChange={ this.rangeChange }
           ranges={ ranges }
           itemClass={(item) => {
-            for (let i = 0; i < unPassStart.length; i++) {
-              if (unPassStart[i].isSame(item.date)) {
-                return 'unpass-range-start';
-              }
-              if (unPassEnd[i].isSame(item.data)) {
-                return 'unpass-range-end';
-              }
+            if (unPassRange[0].isSame(item.date, 'day')) {
+              return 'unpass-range-start';
+            }
+            if (moment(unPassRange[0]).isBefore(item.date, 'day') && moment(unPassRange[1]).isAfter(item.date, 'day')) {
+              return 'unpass-range-connect';
+            }
+            if (unPassRange[1].isSame(item.date, 'day')) {
+              return 'unpass-range-end';
             }
           }}
+          itemRender={(item => {
+            if (rangeStart.findIndex(r => (r.isSame(item.date, 'day'))) > -1 || unPassRange[0].isSame(item.date, 'day')) {
+              return (
+                <div className="calendar-avatar-wrap">
+                  <div className="calendar-avatar" style={{ backgroundImage: `url(https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=3912782603,1429276006&fm=26&gp=0.jpg)` }}></div>
+                </div>
+              )
+            } else {
+              return (
+                <div className="calendar-item-wrap">
+                  { item.num }
+                </div>
+              );
+            }
+          })}
           defaultDate={ this.state.defaultDate }
         />
       </div>
