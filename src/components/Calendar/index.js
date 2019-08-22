@@ -137,7 +137,6 @@ class Calendar extends React.PureComponent {
   }
 
   monthChange(date) {
-    console.log(date.format('YYYY-MM-DD'))
     this.setState({
       mode: 'date',
       defaultValue: date

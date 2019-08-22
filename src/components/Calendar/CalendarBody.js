@@ -241,9 +241,6 @@ class CalendarBody extends React.PureComponent {
         if (typeOfItemClass === 'string') {
           itemClassStr = itemClass;
         }
-        if (item.date && item.date.format('YYYY-MM-DD') === '2019-08-22') {
-          console.log(item)
-        }
         const cls = classNames({
           'rdp__days-item--grey': item.isDisable,
           'rdp__days-item--empty': !item.inMonth,
