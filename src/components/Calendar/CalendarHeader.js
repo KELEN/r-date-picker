@@ -1,63 +1,55 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import classNames from 'classname'
+import React from 'react';
+import PropTypes from 'prop-types';
+import classNames from 'classname';
 
 /**
  * Calendar Header
- * @param {*} props 
+ * @param {*} props
  */
 const CalendarHeader = (props) => {
-  
   const {
     onPrevClick,
     onNextClick,
     hideNextBtn,
     hidePrevBtn,
     renderPrevBtn,
-    renderNextBtn
+    renderNextBtn,
+    children,
   } = props;
 
   const prevBtncls = classNames({
     'rdp__prev-btn': true,
-    'rdp--hidden': hidePrevBtn
-  })
+    'rdp--hidden': hidePrevBtn,
+  });
 
   const nextBtnCls = classNames({
     'rdp__next-btn': true,
-    'rdp--hidden': hideNextBtn
-  })
+    'rdp--hidden': hideNextBtn,
+  });
 
   return (
     <div className="rdp__title">
-      <span className={ prevBtncls } onClick={ onPrevClick }>
+      <span className={prevBtncls} onClick={onPrevClick}>
         { renderPrevBtn && renderPrevBtn() }
-      </span>   
-      <span className="rdp__title-center">
-        { props.children }
       </span>
-      <span className={ nextBtnCls } onClick={ onNextClick }>
+      <span className="rdp__title-center">
+        { children }
+      </span>
+      <span className={nextBtnCls} onClick={onNextClick}>
         { renderNextBtn && renderNextBtn() }
       </span>
     </div>
-  )
-}
+  );
+};
 
-const propTypes = {
+CalendarHeader.propTypes = {
   hidePrevBtn: PropTypes.bool.isRequired,
   hideNextBtn: PropTypes.bool.isRequired,
   onPrevClick: PropTypes.func,
   onNextClick: PropTypes.func,
   renderPrevBtn: PropTypes.func,
-  renderNextBtn: PropTypes.func
-}
+  renderNextBtn: PropTypes.func,
+  children: PropTypes.element.isRequired,
+};
 
-const defaultProps = {
-  hidePrevBtn: false,
-  hideNextBtn: false,
-  defaultValue: PropTypes.object
-}
-
-CalendarHeader.propTypes = propTypes
-CalendarHeader.defaultProps = defaultProps
-
-export default CalendarHeader
+export default CalendarHeader;

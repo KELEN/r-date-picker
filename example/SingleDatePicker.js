@@ -1,47 +1,47 @@
-import React from 'react'
-import DatePicker from '../src/components/DatePicker'
-import moment from 'moment'
-import './style.scss'
+import React from 'react';
+import moment from 'moment';
+import DatePicker from '../src/components/DatePicker';
+import './style.scss';
+
+const defaultMinDate = moment().subtract(4, 'days').format('YYYY-MM-DD');
+const defaultMaxDate = moment().add(3, 'days').format('YYYY-MM-DD');
+const disabledDatesRange = [moment().subtract(10, 'days').format('YYYY-MM-DD'), moment().add(5, 'days').format('YYYY-MM-DD')];
 
 export default class SimpleDatePicker extends React.Component {
-
   constructor() {
-    super()
+    super();
     this.state = {
       selectedDate: moment(),
       minDate: null,
-      maxDate: null
-    }
-    this.setMinDate = this.setMinDate.bind(this)
-    this.setMaxDate = this.setMaxDate.bind(this)
-    this.setLimit = this.setLimit.bind(this)
-    this.resetLimit = this.resetLimit.bind(this)
+      maxDate: null,
+      disabledDates: [],
+    };
   }
 
-  resetLimit() {
+  resetLimit = () => {
     this.setState({
       minDate: null,
       maxDate: null,
-      disabledDates: []
-    })
+      disabledDates: [],
+    });
   }
 
-  setMinDate() {
+  setMinDate = () => {
     this.setState({
-      minDate: moment('2019-02-12')
-    })
+      minDate: defaultMinDate,
+    });
   }
 
-  setMaxDate() {
+  setMaxDate = () => {
     this.setState({
-      maxDate: moment('2019-05-01')
-    })
+      maxDate: defaultMaxDate,
+    });
   }
 
-  setLimit() {
+  setLimit = () => {
     this.setState({
-      disabledDates: [ '2019-03-15', '2019-03-21' ]
-    })
+      disabledDates: disabledDatesRange,
+    });
   }
 
   render() {
@@ -49,39 +49,51 @@ export default class SimpleDatePicker extends React.Component {
       selectedDate,
       minDate,
       maxDate,
-      disabledDates
-    } = this.state
+      disabledDates,
+    } = this.state;
     return (
       <div>
-        <h3>选中的日期: { selectedDate.format('YYYY-MM-DD') }</h3>
-        <div className='op-bar'>
-          <button onClick={ this.setMinDate }>设置最小日期为2019-02-12</button>
-          <button onClick={ this.setMaxDate }>设置最大日期为2019-05-01</button>
-          <button onClick={ this.setLimit }>禁止选择2019-03-15, 2019-03-21</button>
-          <button onClick={ this.resetLimit }>取消限制</button>
+        <h3>
+          选中的日期:
+          { selectedDate.format('YYYY-MM-DD') }
+        </h3>
+        <div className="op-bar">
+          <button onClick={this.setMinDate}>
+            设置最小日期为
+            {defaultMinDate}
+          </button>
+          <button onClick={this.setMaxDate}>
+            设置最大日期为
+            {defaultMaxDate}
+          </button>
+          <button onClick={this.setLimit}>
+            禁止选择
+            {disabledDatesRange.join(', ')}
+          </button>
+          <button onClick={this.resetLimit}>取消限制</button>
         </div>
         <div className="fl">
           <h3 className="text-center">normal datepicker</h3>
           <DatePicker
-            minDate={ minDate && moment(minDate) }
-            maxDate={ maxDate && moment(maxDate) }
-            disabledDates={ disabledDates }
-            defaultDate={ selectedDate }
-            onDateChange={ (event, date) => this.setState({ selectedDate: date }) }
+            minDate={minDate && moment(minDate)}
+            maxDate={maxDate && moment(maxDate)}
+            disabledDates={disabledDates}
+            defaultValue={selectedDate}
+            onDateChange={(event, date) => this.setState({ selectedDate: date })}
           />
         </div>
-        <div className="fl">
+        {/* <div className="fl">
           <h3 className="text-center">disable select month</h3>
           <DatePicker
-            minDate={ minDate && moment(minDate) }
-            maxDate={ maxDate && moment(maxDate) }
-            disabledDates={ disabledDates }
-            defaultDate={ selectedDate }
+            minDate={minDate && moment(minDate)}
+            maxDate={maxDate && moment(maxDate)}
+            disabledDates={disabledDates}
+            defaultDate={selectedDate}
             dateOnly
-            onDateChange={ (event, date) => this.setState({ selectedDate: date }) }
+            onDateChange={(event, date) => this.setState({ selectedDate: date })}
           />
-        </div>
+        </div> */}
       </div>
-    )
+    );
   }
 }

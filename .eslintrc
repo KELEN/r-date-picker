@@ -17,6 +17,7 @@
       "import/prefer-default-export": "off",
       "import/no-unresolved": "off",
       "import/extensions": "off",
-      "react/jsx-props-no-spreading": "off"
+      "react/jsx-props-no-spreading": "off",
+      "react/button-has-type": "off"
     }
 }
