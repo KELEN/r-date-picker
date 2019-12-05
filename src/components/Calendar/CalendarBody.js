@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classname';
 import { FormattedMessage } from 'react-intl';
 import { isSameDay, isDayBefore, isDayAfter, dateDisabled, checkInRange } from '../../utils/timer';
+import Constant from '../../utils/constant';
 
 class CalendarBody extends React.PureComponent {
   constructor(props) {
@@ -236,6 +237,7 @@ class CalendarBody extends React.PureComponent {
       bodyWidth,
       itemClass,
       labels,
+      mode,
     } = this.props;
 
     const renderRowDays = (days) => days.map((item) => {
@@ -247,26 +249,35 @@ class CalendarBody extends React.PureComponent {
       if (typeOfItemClass === 'string') {
         itemClassStr = itemClass;
       }
-      const cls = classNames({
+
+      const commonCls = classNames({
         'rdp__days-item--grey': item.isDisable,
         'rdp__days-item--empty': !item.inMonth,
         'rdp__days-item': true,
-        'rdb__days-item-active--connect': item.connect,
-        'rdp__days-item-active--start': item.isStart && selectable,
-        'rdp__days-item-active--end': item.isEnd,
-        'rdp__days-item-active--single': !endDate && item.isStart && !range && selectable,
-	        'rdp__days-item-active--range-start': item.isRangeStart || item.isRangeAdjacent,
-	        'rdp__days-item-active--range-end': item.isRangeEnd || item.isRangeAdjacent,
-        'rdp__days-item-active--range-connect': item.isInRange && (!item.isRangeStart && !item.isRangeEnd),
         [itemClassStr]: !!itemClassStr,
       });
+
+      // 'rdb__days-item-active--connect': item.connect,
+      // 'rdp__days-item-active--start': item.isStart && selectable,
+      // 'rdp__days-item-active--end': item.isEnd,
+      // 'rdp__days-item-active--single': !endDate && item.isStart && !range && selectable,
+      //   'rdp__days-item-active--range-start': item.isRangeStart || item.isRangeAdjacent,
+      //   'rdp__days-item-active--range-end': item.isRangeEnd || item.isRangeAdjacent,
+      // 'rdp__days-item-active--range-connect': item.isInRange && (!item.isRangeStart && !item.isRangeEnd),
+
+      let modeCls;
+      if (mode === Constant.mode.DATE) {
+        modeCls = classNames({
+          'rdp_days_item-active': isSameDay(defaultValue, item.date),
+        });
+      }
 
       const allowDownEvent = !item.isDisable && item.inMonth && selectable;
       const allowHoverEvent = range && item.inMonth && !item.isDisable;
 
       return (
         <div
-          className={cls}
+          className={`${commonCls} ${modeCls}`}
           key={item.key}
           data-label={item.dayStr}
           data-key={item.key}

@@ -8,6 +8,7 @@ import CalendarHeader from './CalendarHeader';
 import CalendarBody from './CalendarBody';
 import MonthPicker from '../MonthPicker';
 import { isMonthAfter, isMonthBefore, getFirstDayOfMonth, getLastDayOfMonth, isSameDay, isDayBefore } from '../../utils/timer';
+import Constant from '../../utils/constant';
 
 class Calendar extends React.PureComponent {
   constructor(props) {
@@ -146,7 +147,6 @@ class Calendar extends React.PureComponent {
     const labelKeys = Object.keys(WEEK_DAYS);
 
     const {
-      defaultValue,
       animating,
       containerWidth,
       mode,
@@ -159,6 +159,7 @@ class Calendar extends React.PureComponent {
       renderPrevBtn,
       renderNextBtn,
       dateOnly,
+      defaultValue,
     } = this.props;
 
 
@@ -198,6 +199,7 @@ class Calendar extends React.PureComponent {
           bodyWidth={containerWidth}
           animateEnd={() => this.setState({ animating: false })}
           defaultValue={defaultValue}
+          mode={mode}
         />
         <CSSTransition
           in={mode === 'month'}
@@ -235,6 +237,8 @@ Calendar.propType = {
   onMonthChange: PropTypes.func,
   // date select only, without month select
   dateOnly: PropTypes.bool,
+  // 日期选择模式,可以是时间,日期,月份,年
+  mode: PropTypes.string,
 };
 
 Calendar.defaultProps = {
@@ -244,6 +248,8 @@ Calendar.defaultProps = {
   endDate: null,
   defaultValue: moment(),
   dateOnly: true,
+  // 默认选择日期
+  mode: Constant.mode.DATE,
 };
 
 

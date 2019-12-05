@@ -43,6 +43,7 @@
     "eslint-plugin-jsx-a11y": "^6.2.3",
     "eslint-plugin-react": "^7.17.0",
     "node-sass": "^4.11.0",
+    "react-scripts": "^3.3.0",
     "sass-loader": "^7.1.0",
     "style-loader": "^0.23.1"
   },

@@ -32,16 +32,15 @@ DatePicker.propTypes = {
   // default selected dates
   defaultDate: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
   // init visible current month, default is current month
-  defaultValue: PropTypes.object,
+  defaultValue: PropTypes.string,
   // set range
-  ranges: PropTypes.array,
+  ranges: PropTypes.arrayOf(),
 };
 
 DatePicker.defaultProps = {
   defaultValue: moment(),
   defaultDate: null,
   ranges: [],
-  dateOnly: false,
 };
 
 export default EnhanceIntlProvider(EnhanceCalendar(DatePicker));
