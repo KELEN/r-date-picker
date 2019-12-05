@@ -3,14 +3,14 @@ import Calendar from '../Calendar'
 import { IntlProvider } from 'react-intl'
 import moment from 'moment'
 import PropTypes from 'prop-types'
-import en_US from '../../languages/en'
-import zh_CN from '../../languages/zh-CN'
+import en from '../../languages/en'
+import cn from '../../languages/cn'
 import classNames from 'classname'
 import EnhanceCalendar from '../Calendar/EnhanceCalendar'
 
 const messages = {
-  en: en_US,
-  zh_CN: zh_CN
+  en: en,
+  cn: cn
 }
 
 class DateRangePicker extends React.Component {
