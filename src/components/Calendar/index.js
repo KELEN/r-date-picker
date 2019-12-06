@@ -8,16 +8,22 @@ import CalendarHeader from './CalendarHeader';
 import CalendarBody from './CalendarBody';
 import MonthPicker from '../MonthPicker';
 import { isMonthAfter, isMonthBefore, getFirstDayOfMonth, getLastDayOfMonth, isSameDay, isDayBefore } from '../../utils/timer';
+import {
+  MODE,
+} from '../../utils/helper';
 
 class Calendar extends React.PureComponent {
   constructor(props) {
     super(props);
+    const {
+      defaultValue,
+    } = props;
     this.state = {
-      mode: 'date', // current select mode
       animating: false,
       containerHeight: 0, // height of container
       containerWidth: 0, // width of container
-      defaultValue: props.defaultValue, // default is today
+      defaultValue, // default is today
+      date: moment(defaultValue),
     };
   }
 
@@ -97,14 +103,14 @@ class Calendar extends React.PureComponent {
    */
   onPrevClick = () => {
     const { minDate, onMonthChange } = this.props;
-    const { defaultValue, animating } = this.state;
+    const { date, animating } = this.state;
     if (!animating) {
-      const prevMonth = moment(defaultValue).subtract(1, 'month');
+      const prevMonth = moment(date).subtract(1, 'month');
       if (!isMonthAfter(getFirstDayOfMonth(minDate), getFirstDayOfMonth(prevMonth))) {
         onMonthChange && onMonthChange(prevMonth.clone());
         this.setState({
           animating: true,
-          defaultValue: prevMonth,
+          date: prevMonth,
         });
       }
     }
@@ -115,14 +121,14 @@ class Calendar extends React.PureComponent {
    */
   onNextClick = () => {
     const { maxDate, onMonthChange } = this.props;
-    const { defaultValue, animating } = this.state;
+    const { date, animating } = this.state;
     if (!animating) {
-      const nextMonth = moment(defaultValue).add(1, 'month');
+      const nextMonth = moment(date).add(1, 'month');
       if (!isMonthBefore(getLastDayOfMonth(maxDate), getLastDayOfMonth(nextMonth))) {
         onMonthChange && onMonthChange(nextMonth.clone());
         this.setState({
           animating: true,
-          defaultValue: nextMonth,
+          date: nextMonth,
         });
       }
     }
@@ -146,10 +152,10 @@ class Calendar extends React.PureComponent {
     const labelKeys = Object.keys(WEEK_DAYS);
 
     const {
-      defaultValue,
+      mode,
       animating,
       containerWidth,
-      mode,
+      date,
       containerHeight,
     } = this.state;
 
@@ -159,14 +165,15 @@ class Calendar extends React.PureComponent {
       renderPrevBtn,
       renderNextBtn,
       dateOnly,
+      defaultValue,
     } = this.props;
 
 
     const hidePrevBtn = this.checkIfHidePrevBtn(defaultValue, minDate);
     const hideNextBtn = this.checkIfHideNextBtn(defaultValue, maxDate);
 
-    const year = defaultValue.get('year'); const
-      month = defaultValue.get('month') + 1;
+    const year = date.get('year');
+    const month = date.get('month') + 1;
 
     const TitleFormat = injectIntl(({ year, month, day, intl }) => `${year}${intl.formatMessage({ id: 'year' })}${month}${intl.formatMessage({ id: 'month' })}`);
 
@@ -180,11 +187,11 @@ class Calendar extends React.PureComponent {
         <CalendarHeader
           renderNextBtn={renderNextBtn}
           renderPrevBtn={renderPrevBtn}
-          defaultValue={defaultValue}
           hidePrevBtn={hidePrevBtn}
           hideNextBtn={hideNextBtn}
           onPrevClick={this.onPrevClick}
           onNextClick={this.onNextClick}
+          date={date}
         >
           <span onClick={() => !dateOnly && this.changeMode('month')}>
             <TitleFormat year={year} month={month} />
@@ -198,6 +205,7 @@ class Calendar extends React.PureComponent {
           bodyWidth={containerWidth}
           animateEnd={() => this.setState({ animating: false })}
           defaultValue={defaultValue}
+          date={date}
         />
         <CSSTransition
           in={mode === 'month'}
@@ -235,6 +243,9 @@ Calendar.propType = {
   onMonthChange: PropTypes.func,
   // date select only, without month select
   dateOnly: PropTypes.bool,
+  mode: PropTypes.string,
+  // 是否选择范围，默认否
+  range: PropTypes.bool,
 };
 
 Calendar.defaultProps = {
@@ -244,6 +255,9 @@ Calendar.defaultProps = {
   endDate: null,
   defaultValue: moment(),
   dateOnly: true,
+  // 默认是选择日期
+  mode: MODE.DATE,
+  range: false,
 };
 
 

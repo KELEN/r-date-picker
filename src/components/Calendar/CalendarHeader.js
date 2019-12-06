@@ -33,7 +33,7 @@ const CalendarHeader = (props) => {
         { renderPrevBtn && renderPrevBtn() }
       </span>
       <span className="rdp__title-center">
-        { children }
+        {children}
       </span>
       <span className={nextBtnCls} onClick={onNextClick}>
         { renderNextBtn && renderNextBtn() }

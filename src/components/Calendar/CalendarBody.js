@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classname';
 import { FormattedMessage } from 'react-intl';
 import { isSameDay, isDayBefore, isDayAfter, dateDisabled, checkInRange } from '../../utils/timer';
+import { MODE } from '../../utils/helper';
 
 class CalendarBody extends React.PureComponent {
   constructor(props) {
@@ -132,9 +133,9 @@ class CalendarBody extends React.PureComponent {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (!isSameDay(nextProps.defaultValue, this.props.defaultValue)) {
+    if (!isSameDay(nextProps.date, this.props.date)) {
       // next date no equal current date recalculate days
-      if (nextProps.defaultValue.isBefore(this.props.defaultValue)) {
+      if (nextProps.date.isBefore(this.props.date)) {
         // prev
         this.setState({
           movePrev: true,
@@ -142,7 +143,7 @@ class CalendarBody extends React.PureComponent {
         });
       }
 
-      if (nextProps.defaultValue.isAfter(this.props.defaultValue)) {
+      if (nextProps.date.isAfter(this.props.date)) {
         // next
         this.setState({
           movePrev: false,
@@ -153,7 +154,7 @@ class CalendarBody extends React.PureComponent {
       // set current month not by prev or next btn
       if (!nextProps.isAnimating) {
         this.setState({
-          allDays: this.getAllDays(nextProps.defaultValue),
+          allDays: this.getAllDays(nextProps.date),
         });
       }
     }
@@ -181,8 +182,8 @@ class CalendarBody extends React.PureComponent {
   transitionEndHandle(e) {
     if (e.propertyName == 'transform') {
       const { movePrev, moveNext } = this.state;
-      const { defaultValue, animateEnd } = this.props;
-      const allDays = this.getAllDays(defaultValue);
+      const { date, animateEnd } = this.props;
+      const allDays = this.getAllDays(date);
       const currAllDays = this.state.allDays;
 
       if (movePrev) {
@@ -236,6 +237,7 @@ class CalendarBody extends React.PureComponent {
       bodyWidth,
       itemClass,
       labels,
+      mode,
     } = this.props;
 
     const renderRowDays = (days) => days.map((item) => {
@@ -247,26 +249,36 @@ class CalendarBody extends React.PureComponent {
       if (typeOfItemClass === 'string') {
         itemClassStr = itemClass;
       }
-      const cls = classNames({
+      const commonCls = classNames({
         'rdp__days-item--grey': item.isDisable,
         'rdp__days-item--empty': !item.inMonth,
         'rdp__days-item': true,
-        'rdb__days-item-active--connect': item.connect,
-        'rdp__days-item-active--start': item.isStart && selectable,
-        'rdp__days-item-active--end': item.isEnd,
-        'rdp__days-item-active--single': !endDate && item.isStart && !range && selectable,
-	        'rdp__days-item-active--range-start': item.isRangeStart || item.isRangeAdjacent,
-	        'rdp__days-item-active--range-end': item.isRangeEnd || item.isRangeAdjacent,
-        'rdp__days-item-active--range-connect': item.isInRange && (!item.isRangeStart && !item.isRangeEnd),
         [itemClassStr]: !!itemClassStr,
       });
+
+      let alternativeCls = '';
+      if (range) {
+        alternativeCls = classNames({
+          'rdb__days-item-active--connect': item.connect,
+          'rdp__days-item-active--start': item.isStart && selectable,
+          'rdp__days-item-active--end': item.isEnd,
+          'rdp__days-item-active--single': !endDate && item.isStart && !range && selectable,
+          'rdp__days-item-active--range-start': item.isRangeStart || item.isRangeAdjacent,
+          'rdp__days-item-active--range-end': item.isRangeEnd || item.isRangeAdjacent,
+          'rdp__days-item-active--range-connect': item.isInRange && (!item.isRangeStart && !item.isRangeEnd),
+        });
+      } else {
+        alternativeCls = classNames({
+          'rdp__days-item-active--single': item.active,
+        });
+      }
 
       const allowDownEvent = !item.isDisable && item.inMonth && selectable;
       const allowHoverEvent = range && item.inMonth && !item.isDisable;
 
       return (
         <div
-          className={cls}
+          className={`${commonCls} ${alternativeCls}`}
           key={item.key}
           data-label={item.dayStr}
           data-key={item.key}
@@ -284,24 +296,29 @@ class CalendarBody extends React.PureComponent {
       let arr = [];
       days.forEach((item, idx) => {
         if (item.date) { // only handle item has date
-        	if (this.checkInRange) {
+          if (this.checkInRange) {
             const checkRangeRet = this.checkInRange(item.date);
-		        item.isRangeStart = checkRangeRet.isRangeStart;
-		        item.isInRange = checkRangeRet.isInRange;
+            item.isRangeStart = checkRangeRet.isRangeStart;
+            item.isInRange = checkRangeRet.isInRange;
             item.isRangeEnd = checkRangeRet.isRangeEnd;
             item.isRangeAdjacent = checkRangeRet.isRangeAdjacent;
-	        }
+          }
           item.isDisable = isDayBefore(item.date, minDate) || isDayAfter(item.date, maxDate) || dateDisabled(disabledDates, item.date);
-          if (startDate && endDate) {
-            item.isStart = isSameDay(startDate, item.date);
-            item.isEnd = isSameDay(endDate, item.date);
-            item.active = isSameDay(startDate, item.date) || isSameDay(endDate, item.date);
-            item.connect = isDayAfter(item.date, startDate) && isDayBefore(item.date, endDate);
+
+          if (range) {
+            if (startDate && endDate) {
+              item.isStart = isSameDay(startDate, item.date);
+              item.isEnd = isSameDay(endDate, item.date);
+              item.active = isSameDay(startDate, item.date) || isSameDay(endDate, item.date);
+              item.connect = isDayAfter(item.date, startDate) && isDayBefore(item.date, endDate);
+            } else {
+              item.isStart = isSameDay(startDate, item.date);
+              item.active = isSameDay(startDate, item.date);
+              item.isEnd = isSameDay(endDate, item.date);
+              item.connect = false;
+            }
           } else {
-            item.isStart = isSameDay(startDate, item.date);
-            item.active = isSameDay(startDate, item.date);
-            item.isEnd = isSameDay(endDate, item.date);
-            item.connect = false;
+            item.active = isSameDay(defaultValue, item.date);
           }
         } else {
           item.active = false;
