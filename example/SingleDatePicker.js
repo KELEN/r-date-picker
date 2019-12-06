@@ -79,7 +79,7 @@ export default class SimpleDatePicker extends React.Component {
             maxDate={maxDate && moment(maxDate)}
             disabledDates={disabledDates}
             defaultValue={selectedDate}
-            onDateChange={(event, date) => {
+            onDateChange={(date) => {
               this.setState({ selectedDate: date });
             }}
           />
@@ -92,7 +92,7 @@ export default class SimpleDatePicker extends React.Component {
             disabledDates={disabledDates}
             defaultDate={selectedDate}
             dateOnly
-            onDateChange={(event, date) => this.setState({ selectedDate: date })}
+            onDateChange={(date) => this.setState({ selectedDate: date })}
           />
         </div> */}
       </div>

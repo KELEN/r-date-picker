@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classname';
+import { injectIntl } from 'react-intl';
 
 /**
  * Calendar Header
@@ -14,7 +15,11 @@ const CalendarHeader = (props) => {
     hidePrevBtn,
     renderPrevBtn,
     renderNextBtn,
-    children,
+    intl: {
+      messages,
+    },
+    date,
+    onHeaderClick,
   } = props;
 
   const prevBtncls = classNames({
@@ -27,13 +32,19 @@ const CalendarHeader = (props) => {
     'rdp--hidden': hideNextBtn,
   });
 
+
+  const year = date.get('year');
+  const month = date.get('month') + 1;
+
   return (
     <div className="rdp__title">
       <span className={prevBtncls} onClick={onPrevClick}>
         { renderPrevBtn && renderPrevBtn() }
       </span>
       <span className="rdp__title-center">
-        {children}
+        <span onClick={onHeaderClick}>
+          { `${year}${messages.year}${month}${messages.month}` }
+        </span>
       </span>
       <span className={nextBtnCls} onClick={onNextClick}>
         { renderNextBtn && renderNextBtn() }
@@ -49,7 +60,6 @@ CalendarHeader.propTypes = {
   onNextClick: PropTypes.func,
   renderPrevBtn: PropTypes.func,
   renderNextBtn: PropTypes.func,
-  children: PropTypes.element.isRequired,
 };
 
-export default CalendarHeader;
+export default injectIntl(CalendarHeader);

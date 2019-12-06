@@ -1,90 +1,104 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import moment from 'moment'
-import CalendarHeader from '../Calendar/CalendarHeader'
-import MonthBody from './MonthBody'
-import { noop } from '../../utils/helper'
+import React from 'react';
+import PropTypes from 'prop-types';
+import moment from 'moment';
+import CalendarHeader from '../Calendar/CalendarHeader';
+import MonthBody from './MonthBody';
+import { noop } from '../../utils/helper';
+import EnhanceIntlProvider from '../EnhanceIntlProvider';
 
 /**
  * month picker
  */
 class MonthPicker extends React.Component {
-
   constructor(props) {
-    super(props)
-    
+    super(props);
+
     this.state = {
-      defaultValue: props.defaultValue
-    }
+      date: props.defaultValue,
+    };
   }
 
-  onPrevClick() {
-    this.setState({
-      defaultValue: this.state.defaultValue.subtract(1, 'year')
-    })
-  }
-
-  onNextClick() {
-    this.setState({
-      defaultValue: this.state.defaultValue.add(1, 'year')
-    })
-  }
-
-  onMonthClick(num) {
+  onPrevClick = () => {
     const {
-      onMonthChange
-    } = this.props
+      date,
+    } = this.state;
+    console.log(date);
+    this.setState({
+      date: date.subtract(1, 'year'),
+    });
+  }
 
+  onNextClick = () => {
+    const {
+      date,
+    } = this.state;
+    this.setState({
+      date: date.add(1, 'year'),
+    });
+  }
+
+  onMonthClick = (num) => {
+    const {
+      onMonthChange,
+      defaultValue,
+    } = this.props;
+    const {
+      date,
+    } = this.state;
     const newDate = moment({
-      y: this.state.defaultValue.format('YYYY'),
+      y: date.format('YYYY'),
       M: num - 1,
-      d: this.props.defaultValue.format('D')
-    })
+      d: defaultValue.format('D'),
+    });
 
     this.setState({
-      defaultValue: newDate
-    })
+      date: newDate,
+    });
 
-    onMonthChange(newDate)
+    onMonthChange(newDate);
   }
 
   render() {
     const {
-      defaultValue
-    } = this.state
+      date,
+    } = this.state;
 
     const {
       className,
-      style
-    } = this.props
+      style,
+    } = this.props;
 
-    const cls = `rdp__month-container ${className}`
+    const cls = `rdp__month-container ${className}`;
 
     return (
-      <div className={ cls } style={ style }>
+      <div className={cls} style={style}>
         <CalendarHeader
-          onPrevClick={ this.onPrevClick.bind(this) }
-          onNextClick={ this.onNextClick.bind(this) }
-        >
-          { defaultValue.format('YYYY') }
-        </CalendarHeader>
+          onPrevClick={this.onPrevClick}
+          onNextClick={this.onNextClick}
+          date={date}
+        />
         <MonthBody
-          onMonthClick={ this.onMonthClick.bind(this) }
-          month={ defaultValue.format('M') }
+          onMonthClick={this.onMonthClick}
+          month={date.format('M')}
+          defaultValue={moment()}
         />
       </div>
-    )
+    );
   }
 }
 
 MonthPicker.propTypes = {
-  defaultValue: PropTypes.object,
-  onMonthChange: PropTypes.func
-}
+  defaultValue: PropTypes.shape(),
+  style: PropTypes.shape(),
+  onMonthChange: PropTypes.func,
+  className: PropTypes.string,
+};
 
 MonthPicker.defaultProps = {
   defaultValue: moment(),
-  onMonthChange: noop
-}
+  style: {},
+  onMonthChange: noop,
+  className: '',
+};
 
-export default MonthPicker
+export default EnhanceIntlProvider(MonthPicker);

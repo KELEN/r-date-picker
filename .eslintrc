@@ -1,24 +1,29 @@
 {
   "extends": "airbnb",
   "parser": "babel-eslint",
-    "rules": {
-      "react/jsx-filename-extension": ["error", { "extensions": [".js", ".jsx"] }],
-      "no-plusplus": "off",
-      "react/jsx-max-props-per-line": "off",
-      "import/no-mutable-exports": "off",
-      "react/prefer-stateless-function" : "off",
-      "no-param-reassign": "off",
-      "react/require-default-props": "off",
-      "jsx-a11y/click-events-have-key-events": "off",
-      "jsx-a11y/no-static-element-interactions": "off",
-      "jsx-a11y/anchor-is-valid": "off",
-      "jsx-a11y/interactive-supports-focus": "off",
-      "object-curly-newline": "off",
-      "import/prefer-default-export": "off",
-      "import/no-unresolved": "off",
-      "import/extensions": "off",
-      "react/jsx-props-no-spreading": "off",
-      "react/button-has-type": "off",
-      "max-len": "off"
-    }
+  "rules": {
+    "react/jsx-filename-extension": ["error", { "extensions": [".js", ".jsx"] }],
+    "no-plusplus": "off",
+    "react/jsx-max-props-per-line": "off",
+    "import/no-mutable-exports": "off",
+    "react/prefer-stateless-function" : "off",
+    "no-param-reassign": "off",
+    "react/require-default-props": "off",
+    "jsx-a11y/click-events-have-key-events": "off",
+    "jsx-a11y/no-static-element-interactions": "off",
+    "jsx-a11y/anchor-is-valid": "off",
+    "jsx-a11y/interactive-supports-focus": "off",
+    "object-curly-newline": "off",
+    "import/prefer-default-export": "off",
+    "import/no-unresolved": "off",
+    "import/extensions": "off",
+    "react/jsx-props-no-spreading": "off",
+    "react/button-has-type": "off",
+    "max-len": "off"
+  },
+  "env": {
+    "browser": true,
+    "node": true,
+    "jasmine": true
+  }
 }

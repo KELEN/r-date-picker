@@ -4,11 +4,15 @@ import PropTypes from 'prop-types';
 import classNames from 'classname';
 import { FormattedMessage } from 'react-intl';
 import { isSameDay, isDayBefore, isDayAfter, dateDisabled, checkInRange } from '../../utils/timer';
-import { MODE } from '../../utils/helper';
 
 class CalendarBody extends React.PureComponent {
   constructor(props) {
     super(props);
+
+    const {
+      ranges,
+      defaultValue,
+    } = props;
 
     this.state = {
       allDays: this.getAllDays(props.defaultValue),
@@ -16,17 +20,50 @@ class CalendarBody extends React.PureComponent {
       movePrev: false,
     };
 
-    if (props.ranges) {
-	    this.checkInRange = checkInRange(props.ranges);
+    if (ranges) {
+      this.checkInRange = checkInRange(ranges);
     }
-
-    this.renderCurrMonthDays = this.renderCurrMonthDays.bind(this);
-    this.handleMouseDown = this.handleMouseDown.bind(this);
-    this.transitionEndHandle = this.transitionEndHandle.bind(this);
-    this.handleClick = this.handleClick.bind(this);
   }
 
-  getMonthDays(startOfMonth) {
+  componentDidUpdate(prevProps) {
+    const {
+      date: prevDate,
+    } = prevProps;
+    const {
+      date,
+    } = this.props;
+    this.updateStateIfNeed(date, prevDate);
+  }
+
+  /**
+   * 动画切换和重新渲染calendar body
+   * */
+  updateStateIfNeed = (date, prevDate) => {
+    if (!isSameDay(date, prevDate)) {
+      if (isDayBefore(date, prevDate)) {
+        // prev
+        this.setState({
+          movePrev: true,
+          moveNext: false,
+        });
+      }
+      if (isDayAfter(date, prevDate)) {
+        // next
+        this.setState({
+          movePrev: false,
+          moveNext: true,
+        });
+      }
+
+      if (!this.isAnimating) {
+        this.setState({
+          allDays: this.getAllDays(prevDate),
+        });
+      }
+    }
+  }
+
+  getMonthDays = (startOfMonth) => {
     const daysInMonth = startOfMonth.daysInMonth(); // total num in month
     const startNum = startOfMonth.weekday(); // the first weekday
     const nextMonth = startOfMonth.clone().add(1, 'month');
@@ -45,7 +82,7 @@ class CalendarBody extends React.PureComponent {
   /**
    * render last month
    */
-  renderPrevMonthDays(firstDay, count) {
+  renderPrevMonthDays = (firstDay, count) => {
     const emptyDays = [];
     let start = moment(firstDay).clone().subtract(count, 'days');
     const i = -1;
@@ -67,7 +104,7 @@ class CalendarBody extends React.PureComponent {
   /**
    * render current month
    */
-  renderCurrMonthDays(firstDay, count) {
+  renderCurrMonthDays = (firstDay, count) => {
     const realDays = [];
     let i = 1;
     while (count--) {
@@ -95,7 +132,7 @@ class CalendarBody extends React.PureComponent {
    * @param {*} start
    * @param {*} count
    */
-  renderNextMonthDays(start, count) {
+  renderNextMonthDays = (start, count) => {
     const emptyDays = [];
     let i = 1;
     while (count--) {
@@ -115,7 +152,7 @@ class CalendarBody extends React.PureComponent {
     return emptyDays;
   }
 
-  getAllDays(currDate) {
+  getAllDays = (currDate) => {
     const currMonth = moment(currDate).startOf('month');
     const prevMonthDays = this.getMonthDays(currMonth.clone().subtract(1, 'months'));
     const currMonthDays = this.getMonthDays(currMonth);
@@ -123,63 +160,27 @@ class CalendarBody extends React.PureComponent {
     return [prevMonthDays, currMonthDays, nextMonthDays];
   }
 
-  componentDidUpdate(prevProps) {
-    const {
-      defaultValue: prevDefaultValue,
-    } = prevProps;
-    const {
-      defaultValue,
-    } = this.props;
-  }
 
-  componentWillReceiveProps(nextProps) {
-    if (!isSameDay(nextProps.date, this.props.date)) {
-      // next date no equal current date recalculate days
-      if (nextProps.date.isBefore(this.props.date)) {
-        // prev
-        this.setState({
-          movePrev: true,
-          moveNext: false,
-        });
-      }
-
-      if (nextProps.date.isAfter(this.props.date)) {
-        // next
-        this.setState({
-          movePrev: false,
-          moveNext: true,
-        });
-      }
-
-      // set current month not by prev or next btn
-      if (!nextProps.isAnimating) {
-        this.setState({
-          allDays: this.getAllDays(nextProps.date),
-        });
-      }
-    }
-  }
-
-  handleClick(e, date) {
+  handleClick = (date) => {
     const {
       onDateClick,
     } = this.props;
-    onDateClick && onDateClick(e, date);
+    onDateClick && onDateClick(date);
   }
 
-  handleMouseDown(e, date) {
+  handleMouseDown = (date) => {
     const {
       onDateChange,
     } = this.props;
-    onDateChange && onDateChange(e, date);
+    onDateChange && onDateChange(date);
   }
 
-  handleMouseEnter(e, date) {
+  handleMouseEnter = (date) => {
     const { onHoveringDateChange } = this.props;
-    onHoveringDateChange && onHoveringDateChange(e, date);
+    onHoveringDateChange && onHoveringDateChange(date);
   }
 
-  transitionEndHandle(e) {
+  transitionEndHandle = (e) => {
     if (e.propertyName == 'transform') {
       const { movePrev, moveNext } = this.state;
       const { date, animateEnd } = this.props;
@@ -282,9 +283,9 @@ class CalendarBody extends React.PureComponent {
           key={item.key}
           data-label={item.dayStr}
           data-key={item.key}
-          onClick={() => this.handleClick(event, item.date)}
-          onMouseDown={() => allowDownEvent && this.handleMouseDown(event, item.date)}
-          onMouseEnter={() => allowHoverEvent && this.handleMouseEnter(event, item.date)}
+          onClick={() => this.handleClick(item.date)}
+          onMouseDown={() => allowDownEvent && this.handleMouseDown(item.date)}
+          onMouseEnter={() => allowHoverEvent && this.handleMouseEnter(item.date)}
         >
           { itemRender ? itemRender(item) : item.num }
         </div>
@@ -304,7 +305,6 @@ class CalendarBody extends React.PureComponent {
             item.isRangeAdjacent = checkRangeRet.isRangeAdjacent;
           }
           item.isDisable = isDayBefore(item.date, minDate) || isDayAfter(item.date, maxDate) || dateDisabled(disabledDates, item.date);
-
           if (range) {
             if (startDate && endDate) {
               item.isStart = isSameDay(startDate, item.date);
@@ -342,7 +342,7 @@ class CalendarBody extends React.PureComponent {
       ));
     };
 
-    const renderAllDays = (allDays) => allDays.map((pageDays, idx) => {
+    const renderAllDays = () => allDays.map((pageDays, idx) => {
       // base on key format is { YYYYMMDD }
       const key = Object.keys(pageDays)[0];
       const cls = classNames({
@@ -410,6 +410,7 @@ const propTypes = {
   selectable: PropTypes.bool, // if selectable
   onDateClick: PropTypes.func, // date click event
   itemClass: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
+  date: PropTypes.shape(),
 };
 
 const defaultProps = {

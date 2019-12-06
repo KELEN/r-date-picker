@@ -1,26 +1,27 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 /**
- * EnhanceCalendar to handle select state
+ * EnhanceCalendar
+ * 处理选择的日期
  * @param WrapComponent
- * @param options  range: if select range
+ * @param options  range: 是否选择时间范围
  * @constructor
  */
 const EnhanceCalendar = (WrapComponent, options = {}) => {
-
   const { range = false } = options;
 
-  return class extends React.Component {
+  class MComponent extends React.Component {
     constructor(props) {
       super(props);
-      let startDate; let
-        endDate;
-      if (range && Array.isArray(props.defaultDate)) {
-        // range date
-        startDate = props.defaultDate[0];
-        endDate = props.defaultDate[1];
+      let startDate;
+      let endDate;
+      const { defaultDate } = props;
+      if (range && Array.isArray(defaultDate)) {
+        // 时间范围
+        [startDate, endDate] = defaultDate;
       } else {
-        startDate = props.defaultDate;
+        startDate = defaultDate;
       }
       this.state = {
         animating: false,
@@ -28,17 +29,14 @@ const EnhanceCalendar = (WrapComponent, options = {}) => {
         endDate,
         hoveringDate: null,
       };
-
-      this.onDateChange = this.onDateChange.bind(this);
-      this.onHoveringDateChange = this.onHoveringDateChange.bind(this);
     }
 
     /**
-		 * hovering day item
-		 * @param {*} event
-		 * @param {*} date
-		 */
-    onHoveringDateChange(event, date) {
+     * hovering day item
+     * @param {*} event
+     * @param {*} date
+     */
+    onHoveringDateChange = (date) => {
       const { startDate, endDate, isHovering } = this.state;
       const { onHoveringDateChange } = this.props;
       if (range && isHovering) {
@@ -57,15 +55,17 @@ const EnhanceCalendar = (WrapComponent, options = {}) => {
           });
         }
       }
-      onHoveringDateChange && onHoveringDateChange(event, date);
+      if (typeof onHoveringDateChange === 'function') {
+        onHoveringDateChange(date);
+      }
     }
 
     /**
-		 * date change
-		 * @param {*} event
-		 * @param {*} date
-		 */
-    onDateChange(event, date) {
+     * date change
+     * @param {*} event
+     * @param {*} date
+     */
+    onDateChange= (date) => {
       const { startDate, endDate } = this.state;
       const { onDateChange, onDateRangeChange } = this.props;
       if (range) {
@@ -79,7 +79,10 @@ const EnhanceCalendar = (WrapComponent, options = {}) => {
             startDate: date,
             isHovering: !endDate,
           });
-          onDateRangeChange && onDateRangeChange([date, endDate]);
+
+          if (typeof onDateChange === 'function') {
+            onDateRangeChange([date, endDate]);
+          }
         } else if (!endDate) {
           if (date.isBefore(startDate)) {
             this.setState({
@@ -87,13 +90,17 @@ const EnhanceCalendar = (WrapComponent, options = {}) => {
               endDate: startDate,
               isHovering: !startDate,
             });
-            onDateRangeChange && onDateRangeChange([date, startDate]);
+            if (typeof onDateRangeChange === 'function') {
+              onDateRangeChange([date, startDate]);
+            }
           } else {
             this.setState({
               endDate: date,
               isHovering: !startDate,
             });
-            onDateRangeChange && onDateRangeChange([startDate, date]);
+            if (typeof onDateRangeChange === 'function') {
+              onDateRangeChange([startDate, date]);
+            }
           }
         } else {
           this.setState({
@@ -108,20 +115,31 @@ const EnhanceCalendar = (WrapComponent, options = {}) => {
           startDate: date,
         });
       }
-      onDateChange && onDateChange(event, date);
+      if (typeof onDateChange === 'function') {
+        onDateChange(date);
+      }
     }
 
     render() {
       return (
         <WrapComponent
-    {...this.props}
-    {...this.state}
-    onDateChange={this.onDateChange}
-    onHoveringDateChange={this.onHoveringDateChange}
-				/>
+          onDateChange={this.onDateChange}
+          onHoveringDateChange={this.onHoveringDateChange}
+          {...this.props}
+          {...this.state}
+        />
       );
     }
+  }
+
+  MComponent.propTypes = {
+    defaultDate: PropTypes.oneOfType([PropTypes.shape(), PropTypes.arrayOf()]),
+    onHoveringDateChange: PropTypes.func,
+    onDateChange: PropTypes.func,
+    onDateRangeChange: PropTypes.func,
   };
+
+  return MComponent;
 };
 
 export default EnhanceCalendar;

@@ -17,19 +17,16 @@ class DateRangePicker extends React.Component {
       startMonth: moment(),
       endMonth: moment().add(1, 'month'),
     };
-
-    this.onStartMonthChange = this.onStartMonthChange.bind(this);
-    this.onEndMonthChange = this.onEndMonthChange.bind(this);
   }
 
-  onStartMonthChange(date) {
+  onStartMonthChange = (date) => {
     this.setState({
       startMonth: date,
       rightMinDate: date.clone().add(1, 'month').startOf('month'),
     });
   }
 
-  onEndMonthChange(date) {
+  onEndMonthChange = (date) => {
     this.setState({
       endMonth: date,
       leftMaxDate: date.clone().subtract(1, 'month').endOf('month'),
@@ -52,7 +49,6 @@ class DateRangePicker extends React.Component {
       maxDate,
       className,
       single, // single calendar
-      language = 'zh_CN',
     } = this.props;
 
     const cls = classNames({
