@@ -32,9 +32,9 @@ DatePicker.propTypes = {
   // default selected dates
   defaultDate: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
   // init visible current month, default is current month
-  defaultValue: PropTypes.string,
+  defaultValue: PropTypes.shape(),
   // set range
-  ranges: PropTypes.arrayOf(),
+  ranges: PropTypes.arrayOf(PropTypes.string),
 };
 
 DatePicker.defaultProps = {
