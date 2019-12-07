@@ -97,7 +97,9 @@ class Calendar extends React.PureComponent {
     if (!animating) {
       const prevMonth = moment(date).subtract(1, 'month');
       if (!isMonthAfter(getFirstDayOfMonth(minDate), getFirstDayOfMonth(prevMonth))) {
-        onMonthChange && onMonthChange(prevMonth.clone());
+        if (typeof onMonthChange === 'function') {
+          onMonthChange(prevMonth.clone());
+        }
         this.setState({
           animating: true,
           date: prevMonth,
@@ -115,7 +117,9 @@ class Calendar extends React.PureComponent {
     if (!animating) {
       const nextMonth = moment(date).add(1, 'month');
       if (!isMonthBefore(getLastDayOfMonth(maxDate), getLastDayOfMonth(nextMonth))) {
-        onMonthChange && onMonthChange(nextMonth.clone());
+        if (typeof onMonthChange === 'function') {
+          onMonthChange(nextMonth.clone());
+        }
         this.setState({
           animating: true,
           date: nextMonth,
@@ -139,7 +143,7 @@ class Calendar extends React.PureComponent {
   monthChange(date) {
     this.setState({
       mode: 'date',
-      defaultValue: date,
+      date,
     });
   }
 
@@ -242,6 +246,7 @@ Calendar.defaultProps = {
   dateOnly: true,
   // 默认是选择日期
   mode: MODE.DATE,
+  // 是否选择范围
   range: false,
 };
 

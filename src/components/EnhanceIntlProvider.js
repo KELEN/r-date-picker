@@ -14,12 +14,12 @@ const EnhanceIntlProvider = (Component) => {
     render() {
       const {
         language = 'cn',
-        localeMessages,
+        localeMessage,
       } = this.props;
 
-      let messages = localeMessages[language] || defaultMessages[language];
+      let messages = localeMessage[language] || defaultMessages[language];
       if (messages) {
-        messages = Object.assign(messages, localeMessages[language]);
+        messages = Object.assign(messages, localeMessage[language]);
       } else {
         console.warn(`The defaultMessages doesn't contain key ${language}`);
       }
@@ -33,11 +33,11 @@ const EnhanceIntlProvider = (Component) => {
 
   MComponent.propTypes = {
     language: PropTypes.string,
-    localeMessages: PropTypes.shape(),
+    localeMessage: PropTypes.shape(),
   };
 
   MComponent.defaultProps = {
-    localeMessages: {},
+    localeMessage: {},
   };
 
   return MComponent;

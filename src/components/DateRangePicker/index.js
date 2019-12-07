@@ -11,7 +11,6 @@ class DateRangePicker extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      isHovering: false,
       leftMaxDate: moment().endOf('month'),
       rightMinDate: moment().add(1, 'month').startOf('month'),
       startMonth: moment(),
@@ -42,9 +41,9 @@ class DateRangePicker extends React.Component {
     } = this.state;
 
     const {
-	    startDate,
-	    endDate,
-	    hoveringDate,
+      startDate,
+      endDate,
+      hoveringDate,
       minDate,
       maxDate,
       className,
@@ -81,7 +80,6 @@ class DateRangePicker extends React.Component {
                   {...this.props}
                   range
                   minDate={rightMin}
-                  maxDate={maxDate}
                   startDate={startDate || hoveringDate}
                   endDate={endDate || hoveringDate}
                   defaultValue={endMonth}
@@ -95,8 +93,6 @@ class DateRangePicker extends React.Component {
               <Calendar
                 {...this.props}
                 range
-                minDate={minDate}
-                maxDate={maxDate}
                 startDate={startDate || hoveringDate}
                 endDate={endDate || hoveringDate}
                 defaultValue={endMonth}
@@ -110,9 +106,9 @@ class DateRangePicker extends React.Component {
 }
 
 DateRangePicker.propTypes = {
-  defaultValue: PropTypes.array.isRequired,
-  minDate: PropTypes.object,
-  maxDate: PropTypes.object,
+  defaultValue: PropTypes.array,
+  minDate: PropTypes.oneOfType([PropTypes.string, PropTypes.instanceOf(moment)]),
+  maxDate: PropTypes.oneOfType([PropTypes.string, PropTypes.instanceOf(moment)]),
   single: PropTypes.bool,
 };
 
@@ -120,6 +116,7 @@ DateRangePicker.defaultProps = {
   defaultValue: [],
   minDate: null,
   maxDate: null,
+  // 显示一个日历
   single: false,
 };
 

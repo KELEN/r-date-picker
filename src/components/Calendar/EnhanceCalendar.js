@@ -80,7 +80,7 @@ const EnhanceCalendar = (WrapComponent, options = {}) => {
             isHovering: !endDate,
           });
 
-          if (typeof onDateChange === 'function') {
+          if (typeof onDateRangeChange === 'function') {
             onDateRangeChange([date, endDate]);
           }
         } else if (!endDate) {
@@ -125,8 +125,8 @@ const EnhanceCalendar = (WrapComponent, options = {}) => {
         <WrapComponent
           onDateChange={this.onDateChange}
           onHoveringDateChange={this.onHoveringDateChange}
-          {...this.props}
           {...this.state}
+          {...this.props}
         />
       );
     }
