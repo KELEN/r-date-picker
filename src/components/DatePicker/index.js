@@ -30,7 +30,7 @@ const DatePicker = (props) => {
 
 DatePicker.propTypes = {
   // default selected dates
-  defaultDate: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
+  defaultDate: PropTypes.oneOfType([PropTypes.shape(), PropTypes.array]),
   // init visible current month, default is current month
   defaultValue: PropTypes.shape(),
   // set range

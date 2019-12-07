@@ -4,6 +4,9 @@ import PropTypes from 'prop-types';
 import classNames from 'classname';
 import { FormattedMessage } from 'react-intl';
 import { isSameDay, isDayBefore, isDayAfter, dateDisabled, checkInRange } from '../../utils/timer';
+import { WEEK_DAYS } from '../../languages/en';
+
+const labelKeys = Object.keys(WEEK_DAYS);
 
 class CalendarBody extends React.PureComponent {
   constructor(props) {
@@ -380,8 +383,8 @@ class CalendarBody extends React.PureComponent {
       <>
         <div className="rdp__labels">
           {
-            labels.map((item, idx) => (
-              <div className="rdp__labels-item" key={idx}>
+            labelKeys.map((item, idx) => (
+              <div className="rdp__labels-item" key={item}>
                 <FormattedMessage id={item} />
               </div>
             ))
@@ -396,11 +399,10 @@ class CalendarBody extends React.PureComponent {
 }
 
 const propTypes = {
-  labels: PropTypes.array.isRequired,
-  minDate: PropTypes.object,
-  maxDate: PropTypes.object,
+  minDate: PropTypes.shape(),
+  maxDate: PropTypes.shape(),
   disabledDates: PropTypes.array,
-  defaultValue: PropTypes.object,
+  defaultValue: PropTypes.shape(),
   onHoveringDateChange: PropTypes.func,
   onDateChange: PropTypes.func, // date change event
   isAnimating: PropTypes.bool.isRequired, // if body is animating

@@ -60,6 +60,9 @@ CalendarHeader.propTypes = {
   onNextClick: PropTypes.func,
   renderPrevBtn: PropTypes.func,
   renderNextBtn: PropTypes.func,
+  intl: PropTypes.shape().isRequired,
+  date: PropTypes.shape().isRequired,
+  onHeaderClick: PropTypes.func,
 };
 
 export default injectIntl(CalendarHeader);

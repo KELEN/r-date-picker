@@ -1,8 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import moment, { max, min } from 'moment';
+import moment from 'moment';
 import { CSSTransition } from 'react-transition-group';
-import { WEEK_DAYS } from '../../languages/en';
 import CalendarHeader from './CalendarHeader';
 import CalendarBody from './CalendarBody';
 import MonthPicker from '../MonthPicker';
@@ -148,8 +147,6 @@ class Calendar extends React.PureComponent {
   }
 
   render() {
-    const labelKeys = Object.keys(WEEK_DAYS);
-
     const {
       mode,
       animating,
@@ -189,7 +186,6 @@ class Calendar extends React.PureComponent {
         />
         <CalendarBody
           ref={(calendarBody) => { this.calendarBody = calendarBody; }}
-          labels={labelKeys}
           isAnimating={animating}
           bodyWidth={containerWidth}
           animateEnd={() => this.setState({ animating: false })}
@@ -221,13 +217,13 @@ Calendar.propTypes = {
   // visible view month
   defaultValue: PropTypes.shape(),
   // start of range date or single date
-  startDate: PropTypes.object,
+  startDate: PropTypes.shape(),
   // end of range date
-  endDate: PropTypes.object,
+  endDate: PropTypes.shape(),
   // min month limit
-  minDate: PropTypes.object,
+  minDate: PropTypes.shape(),
   // min month limit
-  maxDate: PropTypes.object,
+  maxDate: PropTypes.shape(),
   // month change event
   onMonthChange: PropTypes.func,
   // date select only, without month select
