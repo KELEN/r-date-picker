@@ -19,7 +19,8 @@
     "import/extensions": "off",
     "react/jsx-props-no-spreading": "off",
     "react/button-has-type": "off",
-    "max-len": "off"
+    "max-len": "off",
+    "react/static-property-placement": "off"
   },
   "env": {
     "browser": true,

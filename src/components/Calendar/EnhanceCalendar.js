@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import moment from 'moment';
 
 /**
  * EnhanceCalendar
@@ -133,7 +134,12 @@ const EnhanceCalendar = (WrapComponent, options = {}) => {
   }
 
   MComponent.propTypes = {
-    defaultDate: PropTypes.oneOfType([PropTypes.shape(), PropTypes.arrayOf()]),
+    defaultDate: PropTypes.oneOfType(
+      [
+        PropTypes.shape(),
+        PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.instanceOf(moment), PropTypes.string])),
+      ],
+    ),
     onHoveringDateChange: PropTypes.func,
     onDateChange: PropTypes.func,
     onDateRangeChange: PropTypes.func,

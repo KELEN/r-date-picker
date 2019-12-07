@@ -54,8 +54,8 @@ const CalendarHeader = (props) => {
 };
 
 CalendarHeader.propTypes = {
-  hidePrevBtn: PropTypes.bool.isRequired,
-  hideNextBtn: PropTypes.bool.isRequired,
+  hidePrevBtn: PropTypes.bool,
+  hideNextBtn: PropTypes.bool,
   onPrevClick: PropTypes.func,
   onNextClick: PropTypes.func,
   renderPrevBtn: PropTypes.func,
@@ -63,6 +63,11 @@ CalendarHeader.propTypes = {
   intl: PropTypes.shape().isRequired,
   date: PropTypes.shape().isRequired,
   onHeaderClick: PropTypes.func,
+};
+
+CalendarHeader.defaultProps = {
+  hidePrevBtn: false,
+  hideNextBtn: false,
 };
 
 export default injectIntl(CalendarHeader);

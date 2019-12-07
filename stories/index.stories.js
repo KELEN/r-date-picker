@@ -21,7 +21,7 @@ storiesOf('Date Picker', module)
 
 storiesOf('Multilple Date Picker', module)
   .add('One Calendar', () => (
-    <DateRangePicker single />
+    <DateRangePicker single defaultDate={[moment().subtract(20, 'days'), moment().add(4, 'days')]} />
   ))
   .add('Two Calendar', () => (
     <DateRangePicker minDate={moment()} />

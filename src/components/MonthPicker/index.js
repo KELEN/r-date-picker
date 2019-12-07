@@ -22,7 +22,6 @@ class MonthPicker extends React.Component {
     const {
       date,
     } = this.state;
-    console.log(date);
     this.setState({
       date: date.subtract(1, 'year'),
     });

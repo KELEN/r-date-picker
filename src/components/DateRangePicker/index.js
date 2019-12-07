@@ -95,7 +95,7 @@ class DateRangePicker extends React.Component {
                 range
                 startDate={startDate || hoveringDate}
                 endDate={endDate || hoveringDate}
-                defaultValue={endMonth}
+                defaultValue={startMonth}
                 onMonthChange={this.onEndMonthChange}
               />
             </div>
@@ -106,7 +106,7 @@ class DateRangePicker extends React.Component {
 }
 
 DateRangePicker.propTypes = {
-  defaultValue: PropTypes.array,
+  defaultDate: PropTypes.oneOfType([PropTypes.shape(), PropTypes.arrayOf(PropTypes.instanceOf(moment))]),
   minDate: PropTypes.oneOfType([PropTypes.string, PropTypes.instanceOf(moment)]),
   maxDate: PropTypes.oneOfType([PropTypes.string, PropTypes.instanceOf(moment)]),
   single: PropTypes.bool,
@@ -114,6 +114,7 @@ DateRangePicker.propTypes = {
 
 DateRangePicker.defaultProps = {
   defaultValue: [],
+  defaultDate: null,
   minDate: null,
   maxDate: null,
   // 显示一个日历

@@ -1,13 +1,14 @@
 {
   "name": "r-date-picker",
-  "version": "0.0.20",
+  "version": "0.0.21",
   "description": "react date picker",
   "main": "index.js",
   "scripts": {
     "start": "start-storybook",
     "build:cjs": "babel src/ -d lib/",
     "build-storybook": "build-storybook -c .storybook -o .out",
-    "deploy-storybook": "storybook-to-ghpages"
+    "deploy-storybook": "storybook-to-ghpages",
+    "finish": "npm run build:cjs && npm run build-storybook && npm run deploy-storybook"
   },
   "keywords": [
     "react",

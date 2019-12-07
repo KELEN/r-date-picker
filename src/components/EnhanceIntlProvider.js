@@ -9,11 +9,20 @@ const defaultMessages = {
   cn,
 };
 
-const EnhanceIntlProvider = (Component) => {
-  class MComponent extends React.Component {
+const EnhanceIntlProvider = (Component) => class extends React.Component {
+    static propTypes = {
+      language: PropTypes.string,
+      localeMessage: PropTypes.shape(),
+    };
+
+    static defaultProps = {
+      localeMessage: {},
+      language: 'cn',
+    };
+
     render() {
       const {
-        language = 'cn',
+        language,
         localeMessage,
       } = this.props;
 
@@ -29,18 +38,6 @@ const EnhanceIntlProvider = (Component) => {
         </IntlProvider>
       );
     }
-  }
-
-  MComponent.propTypes = {
-    language: PropTypes.string,
-    localeMessage: PropTypes.shape(),
-  };
-
-  MComponent.defaultProps = {
-    localeMessage: {},
-  };
-
-  return MComponent;
 };
 
 export default EnhanceIntlProvider;
