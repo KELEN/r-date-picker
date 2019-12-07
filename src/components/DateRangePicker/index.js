@@ -106,7 +106,10 @@ class DateRangePicker extends React.Component {
 }
 
 DateRangePicker.propTypes = {
-  defaultDate: PropTypes.oneOfType([PropTypes.shape(), PropTypes.arrayOf(PropTypes.instanceOf(moment))]),
+  defaultDate: PropTypes.oneOfType([
+    PropTypes.shape(),
+    PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.instanceOf(moment), PropTypes.string])),
+  ]),
   minDate: PropTypes.oneOfType([PropTypes.string, PropTypes.instanceOf(moment)]),
   maxDate: PropTypes.oneOfType([PropTypes.string, PropTypes.instanceOf(moment)]),
   single: PropTypes.bool,

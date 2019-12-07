@@ -215,15 +215,15 @@ class Calendar extends React.PureComponent {
 
 Calendar.propTypes = {
   // visible view month
-  defaultValue: PropTypes.shape(),
+  defaultValue: PropTypes.oneOfType([PropTypes.string, PropTypes.instanceOf(moment)]),
   // start of range date or single date
-  startDate: PropTypes.shape(),
+  startDate: PropTypes.oneOfType([PropTypes.string, PropTypes.instanceOf(moment)]),
   // end of range date
-  endDate: PropTypes.shape(),
+  endDate: PropTypes.oneOfType([PropTypes.string, PropTypes.instanceOf(moment)]),
   // min month limit
-  minDate: PropTypes.shape(),
+  minDate: PropTypes.oneOfType([PropTypes.string, PropTypes.instanceOf(moment)]),
   // min month limit
-  maxDate: PropTypes.shape(),
+  maxDate: PropTypes.oneOfType([PropTypes.string, PropTypes.instanceOf(moment)]),
   // month change event
   onMonthChange: PropTypes.func,
   // date select only, without month select
