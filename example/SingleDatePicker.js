@@ -1,7 +1,7 @@
 import React from 'react';
 import moment from 'moment';
 import DatePicker from '../src/components/DatePicker';
-import './style.scss';
+import './style.less';
 
 const defaultMinDate = moment().subtract(4, 'days').format('YYYY-MM-DD');
 const defaultMaxDate = moment().add(3, 'days').format('YYYY-MM-DD');

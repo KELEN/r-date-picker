@@ -1,16 +1,16 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { linkTo } from '@storybook/addon-links';
-import '../src/styles/index.scss';
+import '../styles/index.less';
 import moment from 'moment';
-import DateRangePicker from '../src/components/DateRangePicker';
-import SimpleDatePicker from '../example/SingleDatePicker';
-import ShowDateRange from '../example/ShowDateRanges';
-import CustomDatePicker from '../example/CustomDatePicker';
-import IntlDatePicker from '../example/IntlDatePicker';
-import SelectablePicker from '../example/SelectablePicker';
-import Airbnb from '../example/Airbnb';
-import MonthPicker from '../src/components/MonthPicker';
+import DateRangePicker from '../components/DateRangePicker';
+import SimpleDatePicker from '../../example/SingleDatePicker';
+import ShowDateRange from '../../example/ShowDateRanges';
+import CustomDatePicker from '../../example/CustomDatePicker';
+import IntlDatePicker from '../../example/IntlDatePicker';
+import SelectablePicker from '../../example/SelectablePicker';
+import Airbnb from '../../example/Airbnb';
+import MonthPicker from '../components/MonthPicker';
 
 storiesOf('Date Picker', module)
   .add('Base', () => <SimpleDatePicker />)

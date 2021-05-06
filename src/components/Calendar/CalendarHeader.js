@@ -32,7 +32,6 @@ const CalendarHeader = (props) => {
     'rdp--hidden': hideNextBtn,
   });
 
-
   const year = date.get('year');
   const month = date.get('month') + 1;
 
