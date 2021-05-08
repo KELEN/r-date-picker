@@ -1,7 +1,7 @@
 import React from 'react';
 import dayjs from 'dayjs';
 import Calendar from '../../lib/component/calendar';
-import './index.less';
+import style from './index.less';
 
 export default {
   title: 'Calendar/normal-calendar',
@@ -16,6 +16,6 @@ const Template = (args) => <Calendar {...args} />;
 
 export const OnlyShow = Template.bind({});
 OnlyShow.args = {
-  className: 'container',
+  className: style.container,
   initialDate: dayjs('2021-05-01').format('YYYY-MM-DD'),
 };
