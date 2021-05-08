@@ -1,10 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import CalendarHeader from './calendar-header';
 import dayjs from 'dayjs';
+import classNames from 'classnames'
+import CalendarHeader from './calendar-header';
+import CalendarWeek from './calendar-week'
 import {
   getDateString,
-} from '../utils/date'
+} from '../utils/dayjs';
 
 const Calendar = props => {
 
@@ -13,8 +15,13 @@ const Calendar = props => {
     className,
   } = props;
 
+  const wrapCls = classNames({
+    [className]: !className,
+    'rdp__calendar': true,
+  })
+
   return (
-    <div className={className}>
+    <div className={wrapCls}>
       <CalendarHeader>{ getDateString(initialDate) }</CalendarHeader>
     </div>
   )

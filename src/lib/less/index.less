@@ -1,0 +1,44 @@
+@import './calendar.less';
+@import './animation.less';
+
+.rdp__container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  max-width: 100%;
+  overflow: hidden;
+  font-size: 14px;
+  user-select: none;
+  box-sizing: border-box;
+}
+
+.rdp__months-absolute {
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #FFF;
+}
+
+.rdp__month-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.rdp-range__container {
+  overflow: hidden;
+  box-sizing: border-box;
+  white-space: nowrap;
+  .rdp__container {
+    display: flex;
+    box-shadow: none;
+    vertical-align: top;
+  }
+}
+
+.rdp-range__calendar {
+  max-width: 50%;
+  display: inline-block;
+  vertical-align: top;
+}
