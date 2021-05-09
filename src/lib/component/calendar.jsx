@@ -1,48 +1,59 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import dayjs from 'dayjs';
-import classNames from 'classnames'
+import classNames from 'classnames';
+import pick from 'lodash.pick';
 import {
   getDateString,
 } from '../utils/dayjs';
 import {
-  prefixClassObject
+  prefixClassObject,
 } from '../utils/style';
 import CalendarHeader from './calendar-header';
-import CalendarWeek from './calendar-week'
+import CalendarWeek from './calendar-week';
 import CalendarBody from './calendar-body';
 
-const Calendar = props => {
-
+const Calendar = (props) => {
   const {
-    initialDate,
     className,
+    defaultDate,
+    itemRender,
   } = props;
 
   const wrapCls = classNames({
     [className]: !!className,
     ...prefixClassObject({
-      'calendar': true,
-    })
-  })
+      calendar: true,
+    }),
+  });
 
   return (
     <div className={wrapCls}>
-      <CalendarHeader>{ getDateString(initialDate) }</CalendarHeader>
+      <CalendarHeader>{ getDateString(defaultDate) }</CalendarHeader>
       <CalendarWeek />
-      <CalendarBody />
+      <CalendarBody
+        {
+          ...pick(props, [
+            'defaultDate',
+            'itemRender',
+          ])
+        }
+      />
     </div>
-  )
-}
+  );
+};
 
 Calendar.propTypes = {
-  initialDate: PropTypes.string,
   className: PropTypes.string,
-}
+  defaultDate: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.instanceOf(dayjs),
+  ]),
+};
 
 Calendar.defaultProps = {
-  initialDate: dayjs().format('YYYY-MM-DD'),
   className: '',
-}
+  defaultDate: dayjs(),
+};
 
-export default Calendar
+export default Calendar;

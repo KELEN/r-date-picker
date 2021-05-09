@@ -1,7 +1,7 @@
 import React from 'react';
 import dayjs from 'dayjs';
 import {
-  Calendar
+  Calendar,
 } from '../../lib/component';
 import './index.less';
 
@@ -9,15 +9,26 @@ export default {
   title: 'Calendar/normal-calendar',
   component: Calendar,
   argTypes: {
-    initialDate: { control: 'date' },
+    defaultDate: { control: 'date' },
   },
 };
 
 const Template = (args) => <Calendar {...args} />;
 
-
 export const OnlyShow = Template.bind({});
 OnlyShow.args = {
   className: 'container',
-  initialDate: dayjs('2021-05-01').format('YYYY-MM-DD'),
+  defaultDate: dayjs('2021-05').format('YYYY-MM'),
+};
+
+export const CustomShow = Template.bind({});
+
+CustomShow.args = {
+  className: 'custom-style',
+  defaultDate: dayjs('2021-05').format('YYYY-MM'),
+  itemRender(cell) {
+    return (
+      <div className="custom-item-render">{ cell.date.format('MM-DD') }</div>
+    );
+  },
 };

@@ -1,14 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-  weeks
+  weeks,
 } from '../utils/constants';
 import {
-  prefixClass
-} from '../utils/style'
+  prefixClass,
+} from '../utils/style';
 
-const CalendarWeek = props => {
-
+const CalendarWeek = (props) => {
   const {
     weeks,
   } = props;
@@ -16,22 +15,22 @@ const CalendarWeek = props => {
   return (
     <div className={prefixClass('calendar-week')}>
       {
-        weeks.map(i => (
+        weeks.map((i) => (
           <span key={i}>
             { i }
           </span>
         ))
       }
     </div>
-  )
-}
+  );
+};
 
 CalendarWeek.propTypes = {
   weeks: PropTypes.arrayOf(PropTypes.string),
-}
+};
 
 CalendarWeek.defaultProps = {
-  weeks: weeks,
-}
+  weeks,
+};
 
-export default CalendarWeek
+export default CalendarWeek;
