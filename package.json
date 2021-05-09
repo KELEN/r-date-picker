@@ -30,6 +30,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
+    "lint": "eslint src/**/*.js src/**/*.jsx",
+    "lint:fix": "eslint --fix",
     "storybook": "start-storybook -p 6006 -s public",
     "build-storybook": "build-storybook -s public"
   },
@@ -46,6 +48,7 @@
     ]
   },
   "devDependencies": {
+    "@babel/core": "^7.14.0",
     "@storybook/addon-actions": "^6.2.8",
     "@storybook/addon-essentials": "^6.2.8",
     "@storybook/addon-links": "^6.2.8",
@@ -53,6 +56,6 @@
     "@storybook/preset-create-react-app": "^3.1.7",
     "@storybook/react": "^6.2.8",
     "@storybook/testing-react": "^0.0.10",
-    "svg-inline-loader": "^0.8.2"
+    "svg-url-loader": "^7.1.1"
   }
 }

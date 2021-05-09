@@ -1,44 +1,36 @@
+
 @import './calendar.less';
 @import './animation.less';
 
-.rdp__container {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  max-width: 100%;
-  overflow: hidden;
-  font-size: 14px;
-  user-select: none;
-  box-sizing: border-box;
-}
+@prefix: ~"rdp__";
 
-.rdp__months-absolute {
-  position: absolute;
-  left: 0;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  background-color: #FFF;
-}
+.@{prefix} {
 
-.rdp__month-container {
-  display: flex;
-  flex-direction: column;
-}
-
-.rdp-range__container {
-  overflow: hidden;
-  box-sizing: border-box;
-  white-space: nowrap;
-  .rdp__container {
+  &calendar {
+    position: relative;
     display: flex;
-    box-shadow: none;
-    vertical-align: top;
+    flex-direction: column;
+    max-width: 100%;
+    overflow: hidden;
+    font-size: 14px;
+    user-select: none;
+    box-sizing: border-box;
   }
-}
 
-.rdp-range__calendar {
-  max-width: 50%;
-  display: inline-block;
-  vertical-align: top;
+  &calendar-header {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  &calendar-week {
+    display: flex;
+    justify-content: space-between;
+    * {
+      flex: 1;
+      display: inline-flex;
+      justify-content: center;
+    }
+  }
 }

@@ -1,12 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import {
+  prefixClass
+} from '../utils/style'
 
 const CalendarHeader = React.memo((props) => {
   const {
     children,
   } = props;
+  
   return (
-    <div className="rdp__header">
+    <div className={prefixClass('calendar-header')}>
       { children }
     </div>
   )

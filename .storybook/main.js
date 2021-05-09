@@ -1,7 +1,7 @@
 const {
   merge,
 } = require('webpack-merge');
-const customConfig = require('./webpack.config')
+const customConfig = require('./webpack.config');
 
 module.exports = {
   "stories": [
@@ -26,6 +26,14 @@ module.exports = {
       }
       return rule;
     })
+
+    config.plugins.forEach(plugin => {
+      // console.log(plugin)
+    })
+    
+    console.log(config.plugins)
+
+    // console.log(config);
     return merge(config, customConfig);
   }
 }

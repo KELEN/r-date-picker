@@ -5,8 +5,6 @@ import {
 } from '../../lib/component';
 import './index.less';
 
-console.log
-
 export default {
   title: 'Calendar/normal-calendar',
   component: Calendar,
