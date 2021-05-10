@@ -1,7 +1,8 @@
 
-@import './animation.less';
-
 @prefix: ~"rdp__";
+
+@import './animation.less';
+@import './picker.less';
 
 .@{prefix} {
 
@@ -21,6 +22,21 @@
     display: flex;
     justify-content: center;
     align-items: center;
+  }
+  
+  &nav-button {
+    position: absolute;
+    top: 50%;
+    cursor: pointer;
+    transform: translateY(-50%);
+  }
+
+  &nav-button-prev {
+    left: 10px;
+  }
+
+  &nav-button-next {
+    right: 10px;
   }
 
   &calendar-week {

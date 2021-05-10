@@ -5,10 +5,14 @@ import classNames from 'classnames';
 import pick from 'lodash.pick';
 import {
   getDateString,
-} from '../utils/dayjs';
+  getDateArray,
+} from '@/utils/dayjs';
 import {
   prefixClassObject,
-} from '../utils/style';
+} from '@/utils/style';
+import {
+  dateType
+} from '@/utils/prop-types';
 import CalendarHeader from './calendar-header';
 import CalendarWeek from './calendar-week';
 import CalendarBody from './calendar-body';
@@ -18,6 +22,7 @@ const Calendar = (props) => {
     className,
     defaultDate,
     itemRender,
+    isoWeek,
   } = props;
 
   const wrapCls = classNames({
@@ -26,9 +31,17 @@ const Calendar = (props) => {
     calendar: true,
   }));
 
+  const calendarData = getDateArray(defaultDate, isoWeek);
+
   return (
     <div className={wrapCls}>
-      <CalendarHeader>{ getDateString(defaultDate) }</CalendarHeader>
+      <CalendarHeader 
+        {
+          ...pick(props, [
+            'date'
+          ])
+        }
+      />
       <CalendarWeek 
         {
           ...pick(props, [
@@ -44,6 +57,7 @@ const Calendar = (props) => {
             'isoWeek'
           ])
         }
+        calendarData={calendarData}
       />
     </div>
   );
@@ -51,10 +65,7 @@ const Calendar = (props) => {
 
 Calendar.propTypes = {
   className: PropTypes.string,
-  defaultDate: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.instanceOf(dayjs),
-  ]),
+  defaultDate: dateType,
 };
 
 Calendar.defaultProps = {

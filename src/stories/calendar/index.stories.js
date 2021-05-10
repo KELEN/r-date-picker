@@ -6,7 +6,7 @@ import {
 import './index.less';
 
 export default {
-  title: 'Calendar/normal-calendar',
+  title: 'Calendar/calendar',
   component: Calendar,
   argTypes: {
     defaultDate: { control: 'date' },
@@ -15,30 +15,18 @@ export default {
 
 const Template = (args) => <Calendar {...args} />;
 
-export const OnlyShow = Template.bind({});
-OnlyShow.args = {
+export const PureRender = Template.bind({});
+PureRender.args = {
   className: 'container',
   defaultDate: dayjs('2021-05').format('YYYY-MM'),
 };
 
-export const CustomShow = Template.bind({});
+export const CustomRender = Template.bind({});
 
-CustomShow.args = {
+CustomRender.args = {
   className: 'custom-style',
   defaultDate: dayjs('2021-05').format('YYYY-MM'),
-  itemRender(cell) {
-    return (
-      <div className="custom-item-render">{ cell.date.format('DD') }</div>
-    );
-  },
-};
-
-export const isoWeek = Template.bind({});
-
-isoWeek.args = {
-  className: 'custom-style',
-  defaultDate: dayjs('2021-05').format('YYYY-MM'),
-  isoWeek: true,
+  isoWeek: false,
   itemRender(cell) {
     return (
       <div className="custom-item-render">{ cell.date.format('DD') }</div>

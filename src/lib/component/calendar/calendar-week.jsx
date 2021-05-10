@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 import {
   weeks,
   isoWeeks,
-} from '../utils/constants';
+} from '@/utils/constants';
 import {
   prefixClass,
-} from '../utils/style';
+} from '@/utils/style';
 
 const CalendarWeek = (props) => {
   const {

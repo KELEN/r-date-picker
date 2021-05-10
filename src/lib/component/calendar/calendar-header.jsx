@@ -2,25 +2,28 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {
   prefixClass,
-} from '../utils/style';
+} from '@/utils/style';
+import {
+  dateType,
+} from '@/utils/prop-types';
+import {
+  getDateString,
+} from '@/utils/dayjs';
 
 const CalendarHeader = React.memo((props) => {
   const {
-    children,
+    date,
   } = props;
 
   return (
     <div className={prefixClass('calendar-header')}>
-      { children }
+      { getDateString(date) }
     </div>
   );
 });
 
 CalendarHeader.propTypes = {
-  children: PropTypes.oneOfType([
-    PropTypes.element,
-    PropTypes.string,
-  ]).isRequired,
+  date: dateType
 };
 
 export default CalendarHeader;

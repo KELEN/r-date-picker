@@ -1,25 +1,30 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import dayjs from 'dayjs';
+import classNames from 'classnames'
 import {
   prefixClass,
   prefixClassObject,
-} from '../utils/style';
+} from '@/utils/style';
 import {
-  getDateArray,
-} from '../utils/dayjs';
+  dateType
+} from '@/utils/prop-types'
 
 const CalendarBody = (props) => {
   const {
-    defaultDate,
+    calendarData,
     itemRender,
-    isoWeek,
+    className,
   } = props;
 
-  const calendarData = getDateArray(defaultDate, isoWeek);
-
   return (
-    <div className={prefixClass('calendar-body')}>
+    <div 
+      className={
+        classNames(prefixClassObject({
+          'calendar-body': true,
+        }), className)
+      }
+    >
       {
         calendarData.map((rows, index) => (
           // eslint-disable-next-line react/no-array-index-key
@@ -47,18 +52,14 @@ const CalendarBody = (props) => {
 };
 
 CalendarBody.propTypes = {
-  defaultDate: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.instanceOf(dayjs),
-  ]),
+  calendarData: PropTypes.arrayOf(
+    PropTypes.arrayOf(PropTypes.shape())
+  ),
   itemRender: PropTypes.func,
-  isoWeek: PropTypes.bool,
 };
 
 CalendarBody.defaultProps = {
-  defaultDate: dayjs().format('YYYY-MM-01'),
   itemRender: null,
-  isoWeek: false,
 };
 
 export default CalendarBody;

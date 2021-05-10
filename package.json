@@ -26,6 +26,7 @@
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-scripts": "4.0.1",
+    "react-transition-group": "^4.4.1",
     "web-vitals": "^0.2.4",
     "webpack-merge": "^5.7.3"
   },
@@ -52,6 +53,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.14.0",
+    "@babel/eslint-parser": "^7.13.14",
     "@storybook/addon-actions": "^6.2.8",
     "@storybook/addon-essentials": "^6.2.8",
     "@storybook/addon-links": "^6.2.8",
@@ -61,6 +63,7 @@
     "@storybook/testing-react": "^0.0.10",
     "eslint": "^7.26.0",
     "eslint-config-airbnb": "^18.2.1",
+    "eslint-import-resolver-alias": "^1.1.2",
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-jsx-a11y": "^6.4.1",
     "eslint-plugin-react": "^7.23.2",
