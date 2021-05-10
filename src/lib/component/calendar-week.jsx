@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {
   weeks,
+  isoWeeks,
 } from '../utils/constants';
 import {
   prefixClass,
@@ -10,12 +11,15 @@ import {
 const CalendarWeek = (props) => {
   const {
     weeks,
+    isoWeek,
   } = props;
+
+  const arr = isoWeek ? isoWeeks : weeks;
 
   return (
     <div className={prefixClass('calendar-week')}>
       {
-        weeks.map((i) => (
+        arr.map((i) => (
           <span key={i}>
             { i }
           </span>
@@ -27,10 +31,12 @@ const CalendarWeek = (props) => {
 
 CalendarWeek.propTypes = {
   weeks: PropTypes.arrayOf(PropTypes.string),
+  isoWeek: PropTypes.bool,
 };
 
 CalendarWeek.defaultProps = {
   weeks,
+  isoWeek: false,
 };
 
 export default CalendarWeek;

@@ -28,7 +28,20 @@ CustomShow.args = {
   defaultDate: dayjs('2021-05').format('YYYY-MM'),
   itemRender(cell) {
     return (
-      <div className="custom-item-render">{ cell.date.format('MM-DD') }</div>
+      <div className="custom-item-render">{ cell.date.format('DD') }</div>
+    );
+  },
+};
+
+export const isoWeek = Template.bind({});
+
+isoWeek.args = {
+  className: 'custom-style',
+  defaultDate: dayjs('2021-05').format('YYYY-MM'),
+  isoWeek: true,
+  itemRender(cell) {
+    return (
+      <div className="custom-item-render">{ cell.date.format('DD') }</div>
     );
   },
 };

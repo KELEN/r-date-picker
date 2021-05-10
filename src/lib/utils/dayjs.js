@@ -12,21 +12,25 @@ export const getDateString = (date) => dayjs(date).format('YYYY-MM-DD');
 /**
  * 获取日期二维数据
  * @param {*} month
+ * @param {*} isoWeek 是否周一为一周的开始
  * @returns
  */
-export const getDateArray = (month = dayjs().format('YYYY-MM-01')) => {
+export const getDateArray = (month = dayjs().format('YYYY-MM-01'), isoWeek = false) => {
+  const offsetIndex = isoWeek ? -1 : 0;
+
   const currentMonth = dayjs(dayjs(month).format('YYYY-MM-01'));
 
   const startOfMonth = currentMonth.startOf('month');
   const endOfMonth = currentMonth.endOf('month');
-  const startIndex = startOfMonth.day();
-  const endIndex = endOfMonth.day();
+  const startIndex = startOfMonth.day() + offsetIndex;
+  const endIndex = endOfMonth.day() + offsetIndex;
   const daysInMonth = currentMonth.daysInMonth();
 
   const prependDates = [];
   for (let i = 1; i < startIndex + 1; i += 1) {
     prependDates.unshift({
       date: startOfMonth.subtract(i, 'day'),
+      inMonth: false,
     });
   }
 
@@ -34,6 +38,7 @@ export const getDateArray = (month = dayjs().format('YYYY-MM-01')) => {
   for (let i = 0; i < daysInMonth; i += 1) {
     dates.push({
       date: startOfMonth.add(i, 'day'),
+      inMonth: true,
     });
   }
 
@@ -48,6 +53,7 @@ export const getDateArray = (month = dayjs().format('YYYY-MM-01')) => {
     for (let i = 1; i <= appendNum; i += 1) {
       appendDates.push({
         date: endOfMonth.add(i, 'day'),
+        inMonth: false,
       });
     }
   }
@@ -55,13 +61,4 @@ export const getDateArray = (month = dayjs().format('YYYY-MM-01')) => {
   return chunk([...prependDates, ...dates, ...appendDates], 7);
 };
 
-export default function configDayjs({
-  isoWeek,
-} = {
-  isoWeek: false,
-}) {
-  if (isoWeek) {
-    dayjs.extend(isoWeekPlugin);
-  }
-  return dayjs;
-}
+export default dayjs;

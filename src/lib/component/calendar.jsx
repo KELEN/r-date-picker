@@ -22,20 +22,26 @@ const Calendar = (props) => {
 
   const wrapCls = classNames({
     [className]: !!className,
-    ...prefixClassObject({
-      calendar: true,
-    }),
-  });
+  }, prefixClassObject({
+    calendar: true,
+  }));
 
   return (
     <div className={wrapCls}>
       <CalendarHeader>{ getDateString(defaultDate) }</CalendarHeader>
-      <CalendarWeek />
+      <CalendarWeek 
+        {
+          ...pick(props, [
+            'isoWeek'
+          ])
+        }
+      />
       <CalendarBody
         {
           ...pick(props, [
             'defaultDate',
             'itemRender',
+            'isoWeek'
           ])
         }
       />

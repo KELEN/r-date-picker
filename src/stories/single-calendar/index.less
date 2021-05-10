@@ -5,9 +5,40 @@
 
 .custom-style {
 
+  width: 280px;
+
   .rdp__calendar-header,
   .rdp__calendar-week,
-  .rdp__calendar-body-row-cell {
-    padding: 20px 0;
+  .rdp__calendar-body-cell {
+    height: 40px;
+    font-size: 13px;
   }
+
+  .rdp__calendar-header {
+    font-size: 16px;
+    color: #333;
+    padding: 10px 0;
+  }
+
+  .rdp__calendar-body {
+    border: 1px solid #efefef;
+  }
+
+  .rdp__calendar-body-cell {
+    border-right: 1px solid #EFEFEF;
+    border-bottom: 1px solid #EFEFEF;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    &:last-child {
+      border-right: none;
+    }
+  }
+
+  .rdp__calendar-body-row:last-child {
+    .rdp__calendar-body-cell {
+      border-bottom: none;
+    }
+  }
+
 }

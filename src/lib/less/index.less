@@ -1,5 +1,4 @@
 
-@import './calendar.less';
 @import './animation.less';
 
 @prefix: ~"rdp__";
@@ -34,13 +33,22 @@
     }
   }
 
+  &calendar-body {
+    display: flex;
+    flex-direction: column;
+  }
+
   &calendar-body-row {
     display: flex;
   }
 
-  &calendar-body-row-cell {
+  &calendar-body-cell {
     display: inline-flex;
     flex: 1;
     justify-content: center;
+  }
+
+  &calendar-body-cell-disabled {
+    color: rgb(202, 204, 205);
   }
 }
