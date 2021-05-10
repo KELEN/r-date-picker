@@ -38,7 +38,7 @@ const Calendar = (props) => {
       <CalendarHeader 
         {
           ...pick(props, [
-            'date'
+            'defaultDate'
           ])
         }
       />

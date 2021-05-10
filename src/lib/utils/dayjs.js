@@ -10,6 +10,13 @@ import chunk from 'lodash.chunk';
 export const getDateString = (date) => dayjs(date).format('YYYY-MM-DD');
 
 /**
+ * 获取月格式
+ * @param {*} date 
+ * @returns 
+ */
+export const getMonthString = (date) => dayjs(date).format('YYYY-MM');
+
+/**
  * 获取日期二维数据
  * @param {*} month
  * @param {*} isoWeek 是否周一为一周的开始
@@ -44,11 +51,13 @@ export const getDateArray = (month = dayjs().format('YYYY-MM-01'), isoWeek = fal
 
   const appendDates = [];
 
-  const rows = Math.floor((startIndex + daysInMonth) / 7);
+  const rows = Math.floor((startIndex + daysInMonth - 1) / 7);
+
   const MAX_ROW = 6; // 最大行数
 
   if (rows < MAX_ROW) {
     const diffRows = MAX_ROW - rows;
+
     const appendNum = diffRows * 7 - (endIndex + 1);
     for (let i = 1; i <= appendNum; i += 1) {
       appendDates.push({

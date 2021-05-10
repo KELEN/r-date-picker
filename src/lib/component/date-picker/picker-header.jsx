@@ -10,12 +10,12 @@ import {
   childrenType,
 } from '@/utils/prop-types';
 import {
-  getDateString,
+  getMonthString,
 } from '@/utils/dayjs';
 
 const PickerHeader = React.memo((props) => {
   const {
-    date,
+    defaultDate,
     onNavClick,
   } = props;
 
@@ -33,7 +33,7 @@ const PickerHeader = React.memo((props) => {
       >
         prev
       </span>
-      { getDateString(date) }
+      { getMonthString(defaultDate) }
       <span
         aria-hidden="true"
         className={prefixClassObject({
@@ -52,12 +52,12 @@ const PickerHeader = React.memo((props) => {
 
 PickerHeader.propTypes = {
   onNavClick: PropTypes.func,
-  date: dateType,
+  defaultDate: dateType,
 };
 
 PickerHeader.defaultProps = {
   onNavClick: null,
-  date: dayjs(),
+  defaultDate: dayjs(),
 };
 
 export default PickerHeader;

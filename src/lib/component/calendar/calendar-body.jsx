@@ -1,24 +1,21 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import dayjs from 'dayjs';
-import classNames from 'classnames'
+import classNames from 'classnames';
 import {
   prefixClass,
   prefixClassObject,
 } from '@/utils/style';
-import {
-  dateType
-} from '@/utils/prop-types'
 
 const CalendarBody = (props) => {
   const {
     calendarData,
     itemRender,
     className,
+    onDateSelect,
   } = props;
 
   return (
-    <div 
+    <div
       className={
         classNames(prefixClassObject({
           'calendar-body': true,
@@ -37,6 +34,12 @@ const CalendarBody = (props) => {
                     'calendar-body-cell': true,
                     'calendar-body-cell-disabled': !cell.inMonth,
                   })}
+                  aria-hidden="true"
+                  onClick={() => {
+                    if (typeof onDateSelect === 'function') {
+                      onDateSelect(cell);
+                    }
+                  }}
                 >
                   {
                     itemRender ? itemRender(cell) : cell.date.format('DD')
@@ -52,14 +55,22 @@ const CalendarBody = (props) => {
 };
 
 CalendarBody.propTypes = {
+  // 自定义样式
+  className: PropTypes.string,
+  // 日期数据
   calendarData: PropTypes.arrayOf(
-    PropTypes.arrayOf(PropTypes.shape())
-  ),
+    PropTypes.arrayOf(PropTypes.shape()),
+  ).isRequired,
+  // 自定义渲染
   itemRender: PropTypes.func,
+  // 选择日期
+  onDateSelect: PropTypes.func,
 };
 
 CalendarBody.defaultProps = {
+  className: '',
   itemRender: null,
+  onDateSelect: null,
 };
 
 export default CalendarBody;

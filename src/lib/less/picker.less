@@ -1,13 +1,45 @@
+@keyframes anime-to-left {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes anime-to-right {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}
+
 .@{prefix} {
   &picker-body {
     position: relative;
     overflow: hidden;
+    animation-duration: 0.4s;
+    animation-fill-mode: forwards;
+    animation-timing-function: ease;
+  }
+
+  &to-left {
+    overflow: visible;
+    animation-name: anime-to-left;
+  }
+
+  &to-right {
+    overflow: visible;
+    animation-name: anime-to-right;
   }
 
   &picker-calendar {
     width: 100%;
     position: relative;
     top: 0;
+    border: none !important;
     &:first-child {
       position: absolute;
       left: -100%;

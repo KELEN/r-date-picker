@@ -12,18 +12,18 @@ import {
 
 const CalendarHeader = React.memo((props) => {
   const {
-    date,
+    defaultDate,
   } = props;
 
   return (
     <div className={prefixClass('calendar-header')}>
-      { getDateString(date) }
+      { getDateString(defaultDate) }
     </div>
   );
 });
 
 CalendarHeader.propTypes = {
-  date: dateType
+  defaultDate: dateType
 };
 
 export default CalendarHeader;

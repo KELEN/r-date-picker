@@ -14,7 +14,6 @@ import {
 } from '@/utils/dayjs';
 import pick from 'lodash.pick';
 import dayjs from 'dayjs';
-import { CSSTransition } from 'react-transition-group';
 import PickerHeader from './picker-header';
 import CalendarBody from '../calendar/calendar-body';
 
@@ -27,15 +26,13 @@ class DatePicker extends React.PureComponent {
     const {
       defaultDate,
     } = props;
-    const defaultMonths = this.getMonthArray(defaultDate);
 
-    this.bodyRef = React.createRef(null);
+    const defaultMonths = this.getMonthArray(defaultDate);
 
     this.state = {
       selectedDate: defaultDate,
       months: defaultMonths,
-      startAnimation: false,
-      animationCls: '',
+      animationTo: '',
     };
   }
 
@@ -63,10 +60,8 @@ class DatePicker extends React.PureComponent {
   }
 
   translateTo = (arrow) => {
-    console.log(prefixClass(arrow === 'next' ? 'to-right' : 'to-left'))
     this.setState({
-      startAnimation: true,
-      animationCls: prefixClass(arrow === 'next' ? 'to-right' : 'to-left'),
+      animationTo: arrow,
     })
   }
 
@@ -80,6 +75,8 @@ class DatePicker extends React.PureComponent {
       this.setState({
         selectedDate: date,
         months: this.getMonthArray(date)
+      }, () => {
+
       });
     }
 
@@ -88,28 +85,54 @@ class DatePicker extends React.PureComponent {
       this.setState({
         selectedDate: date,
         months: this.getMonthArray(date)
+      }, () => {
+
       });
     }
   }
 
-  handleTransitionEnd = () => {
-    console.log(1);
-    this.setState({
-      startAnimation: false,
-      animationCls: ''
-    })
+  handleAnimationEnd = () => {
+    const {
+      animationTo,
+      selectedDate
+    } = this.state;
+
+    if (animationTo === 'prev') {
+      const date = dayjs(selectedDate).subtract(1, 'month');
+      this.setState({
+        animationTo: ''
+      }, () => {
+        this.setState({
+          selectedDate: date,
+          months: this.getMonthArray(date),
+        })
+      });
+    }
+    
+    if (animationTo === 'next') {
+      const date = dayjs(selectedDate).add(1, 'month');
+      this.setState({
+        animationTo: ''
+      }, () => {
+        this.setState({
+          selectedDate: date,
+          months: this.getMonthArray(date),
+        })
+      });
+    }
+
   }
 
   render() {
     const {
       selectedDate,
       months,
-      startAnimation,
-      animationCls,
+      animationTo,
     } = this.state;
 
     const {
       className,
+      onDateSelect,
     } = this.props;
 
     const wrapCls = classNames({
@@ -122,23 +145,27 @@ class DatePicker extends React.PureComponent {
       <div className={wrapCls}>
         <PickerHeader
           onNavClick={this.translateTo}
-          date={selectedDate}
+          defaultDate={selectedDate}
         />
-        <CSSTransition 
-          in={startAnimation} timeout={200} classNames={animationCls}
-          onExited={this.handleTransitionEnd}
-          onEntered={this.handleTransitionEnd}
+        <div
+          className={prefixClassObject({
+            'picker-body': true,
+            'to-left': animationTo === 'prev',
+            'to-right': animationTo === 'next',
+          })}
+          onAnimationEnd={this.handleAnimationEnd}
         >
-          <div
-            className={prefixClass('picker-body')}
-          >
-            {
-              months.map((m) => {
-                return <CalendarBody className={prefixClass('picker-calendar')} calendarData={m.data} key={m.key} />
-              })
-            }
-          </div>
-        </CSSTransition>
+          {
+            months.map((m) => (
+              <CalendarBody 
+                className={prefixClass('picker-calendar')} 
+                calendarData={m.data}
+                key={m.key}
+                onDateSelect={onDateSelect}
+              />
+            ))
+          }
+        </div>
       </div>
     );
   }
@@ -146,9 +173,12 @@ class DatePicker extends React.PureComponent {
 
 DatePicker.propTypes = {
   className: PropTypes.string,
+  // 默认日期
   defaultDate: dateType,
-  onClick: PropTypes.func,
+  // 是否选择范围
   range: PropTypes.bool,
+  // 选择日期回调
+  onDateSelect: PropTypes.func,
 };
 
 DatePicker.defaultProps = {
@@ -156,6 +186,7 @@ DatePicker.defaultProps = {
   onClick: null,
   range: false,
   defaultDate: dayjs(),
+  onDateSelect: null,
 };
 
 export default DatePicker;
