@@ -9,13 +9,19 @@ import {
   prefixClass,
 } from '@/utils/style';
 import {
+  getMonthString,
   getDateString,
   getDateArray,
 } from '@/utils/dayjs';
+import {
+  ARROW_PREV,
+  ARROW_NEXT,
+} from '@/utils/constants';
 import pick from 'lodash.pick';
 import dayjs from 'dayjs';
 import PickerHeader from './picker-header';
 import CalendarBody from '../calendar/calendar-body';
+
 
 /**
  * 日期选择器
@@ -28,13 +34,49 @@ class DatePicker extends React.PureComponent {
       value,
     } = props;
 
-    const defaultMonths = this.getMonthArray(defaultDate);
+    let selectedDate = '';
+
+    if (defaultDate) {
+      selectedDate = defaultDate;
+    }
+
+    if (value) {
+      selectedDate = value;
+    }
+
+    const month = getMonthString(selectedDate);
+    const defaultMonths = this.getMonthArray(month);
 
     this.state = {
-      selectedDate: defaultDate,
+      selectedDate,
+      month,
       months: defaultMonths,
       animationTo: '',
     };
+  }
+
+  componentDidUpdate(prevProps) {
+    const {
+      selectedDate,
+      month,
+    } = this.state;
+    const {
+      value,
+    } = this.props;
+    if (value !== selectedDate) {
+      this.setState({
+        selectedDate: value,
+      }, () => {
+        const diffMonth = dayjs(value).diff(month, 'month', true);
+        // 不是在当前月份的情况，需要滚动到上月，或者下个月
+        if (diffMonth < 0) {
+          this.translateTo(ARROW_PREV);
+        }
+        if (diffMonth > 1) {
+          this.translateTo(ARROW_NEXT);
+        }
+      })
+    }
   }
 
   /**
@@ -66,58 +108,32 @@ class DatePicker extends React.PureComponent {
     })
   }
 
-  handleNavClick = (arrow) => {
-    const {
-      selectedDate,
-    } = this.state;
-
-    if (arrow === 'prev') {
-      const date = dayjs(selectedDate).subtract(1, 'month');
-      this.setState({
-        selectedDate: date,
-        months: this.getMonthArray(date)
-      }, () => {
-
-      });
-    }
-
-    if (arrow === 'next') {
-      const date = dayjs(selectedDate).add(1, 'month');
-      this.setState({
-        selectedDate: date,
-        months: this.getMonthArray(date)
-      }, () => {
-
-      });
-    }
-  }
-
   handleAnimationEnd = () => {
     const {
       animationTo,
-      selectedDate
+      month
     } = this.state;
 
-    if (animationTo === 'prev') {
-      const date = dayjs(selectedDate).subtract(1, 'month');
+    if (animationTo === ARROW_PREV) {
+      const prevMonth = dayjs(month).subtract(1, 'month');
       this.setState({
         animationTo: ''
       }, () => {
         this.setState({
-          selectedDate: date,
-          months: this.getMonthArray(date),
+          month: getMonthString(prevMonth),
+          months: this.getMonthArray(prevMonth),
         })
       });
     }
     
-    if (animationTo === 'next') {
-      const date = dayjs(selectedDate).add(1, 'month');
+    if (animationTo === ARROW_NEXT) {
+      const nextMonth = dayjs(month).add(1, 'month');
       this.setState({
         animationTo: ''
       }, () => {
         this.setState({
-          selectedDate: date,
-          months: this.getMonthArray(date),
+          month: getMonthString(nextMonth),
+          months: this.getMonthArray(nextMonth),
         })
       });
     }
@@ -152,8 +168,8 @@ class DatePicker extends React.PureComponent {
           <div 
             className={prefixClassObject({
               'calendar-headers': true,
-              'to-left': animationTo === 'prev',
-              'to-right': animationTo === 'next',
+              'to-left': animationTo === ARROW_PREV,
+              'to-right': animationTo === ARROW_NEXT,
             })}
           >
             {
@@ -168,8 +184,8 @@ class DatePicker extends React.PureComponent {
         <div
           className={prefixClassObject({
             'picker-body': true,
-            'to-left': animationTo === 'prev',
-            'to-right': animationTo === 'next',
+            'to-left': animationTo === ARROW_PREV,
+            'to-right': animationTo === ARROW_NEXT,
           })}
           onAnimationEnd={this.handleAnimationEnd}
         >

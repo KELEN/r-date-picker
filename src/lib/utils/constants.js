@@ -1,3 +1,6 @@
+export const ARROW_PREV = 'prev';
+export const ARROW_NEXT = 'next';
+
 export const weeks = [
   '日',
   '一',

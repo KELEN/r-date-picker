@@ -12,6 +12,10 @@ import {
 import {
   getMonthString,
 } from '@/utils/dayjs';
+import {
+  ARROW_PREV,
+  ARROW_NEXT,
+} from '@/utils/constants';
 
 const PickerHeader = React.memo((props) => {
   const {
@@ -30,7 +34,7 @@ const PickerHeader = React.memo((props) => {
           'nav-button-prev': true,
         })}
         onClick={() => {
-          onNavClick('prev');
+          onNavClick(ARROW_PREV);
         }}
       >
         prev
@@ -42,7 +46,7 @@ const PickerHeader = React.memo((props) => {
           'nav-button-next': true,
         })}
         onClick={() => {
-          onNavClick('next');
+          onNavClick(ARROW_NEXT);
         }}
       >
         next

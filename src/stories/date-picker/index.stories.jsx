@@ -11,22 +11,38 @@ export default {
   title: 'Calendar/date-picker',
   component: DatePicker,
   argTypes: {
-    defaultDate: { control: 'date' },
+    className: {
+      type: 'input',
+      defaultValue: 'container',
+    },
   },
 };
 
-export const SingleDatePicker = () => {
+export const SingleDatePicker = (args) => {
   const [value, setValue] = useState(dayjs());
 
   return (
-    <DatePicker
-      className="container"
-      value={value}
-      onDateSelect={({
-        date,
-      }) => {
-        setValue(date);
-      }}
-    />
+    <div>
+      <h1>
+        选中的日期:
+        { value.format('YYYY-MM-DD') }
+      </h1>
+      <DatePicker
+        className="container"
+        {...args}
+        value={value}
+        onDateSelect={({
+          date,
+        }) => {
+          setValue(date);
+        }}
+      />
+    </div>
   );
+};
+
+SingleDatePicker.bind({});
+
+SingleDatePicker.args = {
+  range: false,
 };
