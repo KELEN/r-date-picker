@@ -22,7 +22,6 @@ import dayjs from 'dayjs';
 import PickerHeader from './picker-header';
 import CalendarBody from '../calendar/calendar-body';
 
-
 /**
  * 日期选择器
  */
@@ -32,6 +31,7 @@ class DatePicker extends React.PureComponent {
     const {
       defaultDate,
       value,
+      range,
     } = props;
 
     let selectedDate = '';
@@ -44,7 +44,7 @@ class DatePicker extends React.PureComponent {
       selectedDate = value;
     }
 
-    const month = getMonthString(selectedDate);
+    const month = getMonthString(!range ? selectedDate : selectedDate[0]);
     const defaultMonths = this.getMonthArray(month);
 
     this.state = {
@@ -150,7 +150,8 @@ class DatePicker extends React.PureComponent {
     const {
       className,
       value,
-      onDateSelect,
+      onChange,
+      range
     } = this.props;
 
     const wrapCls = classNames({
@@ -195,8 +196,9 @@ class DatePicker extends React.PureComponent {
                 className={prefixClass('picker-calendar-body')} 
                 calendarData={m.data}
                 key={m.month}
-                onDateSelect={onDateSelect}
+                onChange={onChange}
                 value={value}
+                range={range}
               />
             ))
           }
@@ -214,9 +216,12 @@ DatePicker.propTypes = {
   // 是否选择范围
   range: PropTypes.bool,
   // 选择的日期
-  value: dateType,
+  value: PropTypes.oneOfType([
+    dateType,
+    PropTypes.arrayOf(dateType)
+  ]),
   // 选择日期回调
-  onDateSelect: PropTypes.func,
+  onChange: PropTypes.func,
 };
 
 DatePicker.defaultProps = {
@@ -224,7 +229,7 @@ DatePicker.defaultProps = {
   onClick: null,
   range: false,
   defaultDate: dayjs(),
-  onDateSelect: null,
+  onChange: null,
 };
 
 export default DatePicker;

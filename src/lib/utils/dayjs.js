@@ -1,6 +1,9 @@
 import dayjs from 'dayjs';
 import isoWeekPlugin from 'dayjs/plugin/isoWeek';
+import isBetweenPlugin from 'dayjs/plugin/isBetween';
 import chunk from 'lodash.chunk';
+
+dayjs.extend(isBetweenPlugin);
 
 /**
  * 获取日期格式
@@ -15,6 +18,16 @@ export const getDateString = (date) => dayjs(date).format('YYYY-MM-DD');
  * @returns 
  */
 export const getMonthString = (date) => dayjs(date).format('YYYY-MM');
+
+/**
+ * 判断是否是同一天
+ */
+export const isSameDay = (d1, d2) => d1 && d2 && dayjs(d1).isSame(dayjs(d2));
+
+/**
+ * 是否在日期d1和d2之间
+ */
+export const isBetween = (d, d1, d2) => d1 && d2 && dayjs(d).isBetween(d1, d2)
 
 /**
  * 获取日期二维数据

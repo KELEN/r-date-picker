@@ -15,6 +15,9 @@ export default {
       type: 'input',
       defaultValue: 'container',
     },
+    value: {
+      type: 'array',
+    }
   },
 };
 
@@ -31,10 +34,8 @@ export const SingleDatePicker = (args) => {
         className="container"
         {...args}
         value={value}
-        onDateSelect={({
-          date,
-        }) => {
-          setValue(date);
+        onChange={(val) => {
+          setValue(val);
         }}
       />
     </div>
@@ -45,4 +46,32 @@ SingleDatePicker.bind({});
 
 SingleDatePicker.args = {
   range: false,
+};
+
+export const DateRangePicker = (args) => {
+  const [value, setValue] = useState([dayjs(), dayjs().add(3, 'day')]);
+
+  return (
+    <div>
+      { value[0] ? value[0].format('YYYY-MM-DD') : '' }
+      ~
+      { value[1] ? value[1].format('YYYY-MM-DD') : '' }
+      <DatePicker
+        className="container"
+        {...args}
+        value={value}
+        range
+        onChange={(val) => {
+          console.log(val);
+          setValue(val);
+        }}
+      />
+    </div>
+  );
+};
+
+DateRangePicker.bind({});
+
+DateRangePicker.args = {
+  range: true,
 };

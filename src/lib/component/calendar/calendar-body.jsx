@@ -9,6 +9,7 @@ import {
 import {
   dateType,
 } from '@/utils/prop-types';
+import useMouseAction from '../../hooks/useMouseAction';
 
 const CalendarBody = (props) => {
   const {
@@ -16,8 +17,29 @@ const CalendarBody = (props) => {
     itemRender,
     className,
     value,
-    onDateSelect,
+    onChange,
+    range,
   } = props;
+
+  const {
+    calendarData: newCalendarData,
+    onDateEnter,
+    onDateLeave,
+    onMouseDown,
+  } = useMouseAction({
+    calendarData,
+    onChange,
+    value,
+  });
+
+  const cellCls = (cell) => prefixClassObject({
+    'calendar-cell': true,
+    'calendar-cell-disabled': !cell.inMonth,
+    'calendar-cell-selected': !range && dayjs(value).isSame(dayjs(cell.date), 'day'),
+    'calendar-cell-start': cell.pickStart,
+    'calendar-cell-end': cell.pickEnd,
+    'calendar-cell-connect': cell.pickConnect,
+  });
 
   return (
     <div
@@ -28,24 +50,36 @@ const CalendarBody = (props) => {
       }
     >
       {
-        calendarData.map((rows, index) => (
+        newCalendarData.map((rows, index) => (
           // eslint-disable-next-line react/no-array-index-key
           <div key={index} className={prefixClass('calendar-body-row')}>
             {
               rows.map((cell) => (
                 <div
                   key={cell.date.format('YYYY-MM-DD')}
-                  className={prefixClassObject({
-                    'calendar-cell': true,
-                    'calendar-cell-disabled': !cell.inMonth,
-                    'calendar-cell-selected': dayjs(value).isSame(dayjs(cell.date), 'day'),
-                  })}
+                  className={cellCls(cell)}
                   aria-hidden="true"
-                  onClick={() => {
-                    if (typeof onDateSelect === 'function') {
-                      onDateSelect(cell);
+                  onClick={(ev) => {
+                    if (typeof onChange === 'function' && !range) {
+                      // 单选的情况
+                      onChange(cell.date, ev);
                     }
                   }}
+                  onMouseDown={range ? (ev) => {
+                    if (typeof onMouseDown === 'function') {
+                      onMouseDown(cell, ev);
+                    }
+                  } : null}
+                  onMouseEnter={range ? (ev) => {
+                    if (typeof onDateEnter === 'function') {
+                      onDateEnter(cell, ev);
+                    }
+                  } : null}
+                  onMouseLeave={range ? (ev) => {
+                    if (typeof onDateLeave === 'function') {
+                      onDateLeave(cell, ev);
+                    }
+                  } : null}
                 >
                   {
                     itemRender ? itemRender(cell) : cell.date.format('DD')
@@ -69,16 +103,23 @@ CalendarBody.propTypes = {
   ).isRequired,
   // 自定义渲染
   itemRender: PropTypes.func,
-  value: dateType,
+  // 值
+  value: PropTypes.oneOfType([
+    dateType,
+    PropTypes.arrayOf(dateType)
+  ]),
   // 选择日期
-  onDateSelect: PropTypes.func,
+  onChange: PropTypes.func,
+  // 是否选择范围
+  range: PropTypes.bool,
 };
 
 CalendarBody.defaultProps = {
   className: '',
   itemRender: null,
-  onDateSelect: null,
+  onChange: null,
   value: null,
+  range: false,
 };
 
 export default CalendarBody;
