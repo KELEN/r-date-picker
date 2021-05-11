@@ -17,6 +17,12 @@
 }
 
 .@{prefix} {
+
+  &picker-header {
+    position: relative;
+  }
+
+  &calendar-headers,
   &picker-body {
     position: relative;
     overflow: hidden;
@@ -35,7 +41,8 @@
     animation-name: anime-to-right;
   }
 
-  &picker-calendar {
+  &picker-calendar-header,
+  &picker-calendar-body {
     width: 100%;
     position: relative;
     top: 0;
@@ -50,5 +57,9 @@
       right: -100%;
       top: 0;
     }
+  }
+
+  &picker-calendar-header {
+    text-align: center;
   }
 }

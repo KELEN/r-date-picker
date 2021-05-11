@@ -31,8 +31,8 @@ const CalendarBody = (props) => {
                 <div
                   key={cell.date.format('YYYY-MM-DD')}
                   className={prefixClassObject({
-                    'calendar-body-cell': true,
-                    'calendar-body-cell-disabled': !cell.inMonth,
+                    'calendar-cell': true,
+                    'calendar-cell-disabled': !cell.inMonth,
                   })}
                   aria-hidden="true"
                   onClick={() => {

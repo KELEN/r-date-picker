@@ -45,15 +45,15 @@ class DatePicker extends React.PureComponent {
     const nextMonth = dayjs(date).add(1, 'month');
     return [
       {
-        key: prevMonth.format('YYYY-MM'),
+        month: prevMonth.format('YYYY-MM'),
         data: getDateArray(prevMonth)
       },
       {
-        key: currMonth.format('YYYY-MM'),
+        month: currMonth.format('YYYY-MM'),
         data: getDateArray(currMonth),
       },
       {
-        key: nextMonth.format('YYYY-MM'),
+        month: nextMonth.format('YYYY-MM'),
         data: getDateArray(nextMonth),
       }
     ]
@@ -144,9 +144,25 @@ class DatePicker extends React.PureComponent {
     return (
       <div className={wrapCls}>
         <PickerHeader
+          className={prefixClass('picker-header')}
           onNavClick={this.translateTo}
-          defaultDate={selectedDate}
-        />
+        >
+          <div 
+            className={prefixClassObject({
+              'calendar-headers': true,
+              'to-left': animationTo === 'prev',
+              'to-right': animationTo === 'next',
+            })}
+          >
+            {
+              months.map(m => (
+                <div key={m.month} className={prefixClass('picker-calendar-header')}>
+                  { m.month }
+                </div>
+              ))
+            }
+          </div>
+        </PickerHeader>
         <div
           className={prefixClassObject({
             'picker-body': true,
@@ -158,9 +174,9 @@ class DatePicker extends React.PureComponent {
           {
             months.map((m) => (
               <CalendarBody 
-                className={prefixClass('picker-calendar')} 
+                className={prefixClass('picker-calendar-body')} 
                 calendarData={m.data}
-                key={m.key}
+                key={m.month}
                 onDateSelect={onDateSelect}
               />
             ))
@@ -172,11 +188,14 @@ class DatePicker extends React.PureComponent {
 }
 
 DatePicker.propTypes = {
+  // 自定义类名
   className: PropTypes.string,
   // 默认日期
   defaultDate: dateType,
   // 是否选择范围
   range: PropTypes.bool,
+  // 选择的日期
+  value: dateType,
   // 选择日期回调
   onDateSelect: PropTypes.func,
 };

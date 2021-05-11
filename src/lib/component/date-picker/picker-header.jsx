@@ -15,12 +15,14 @@ import {
 
 const PickerHeader = React.memo((props) => {
   const {
-    defaultDate,
+    className,
     onNavClick,
+    children,
   } = props;
 
   return (
-    <div className={prefixClass('calendar-header')}>
+    <div className={className}>
+      { children }
       <span
         aria-hidden="true"
         className={prefixClassObject({
@@ -33,7 +35,6 @@ const PickerHeader = React.memo((props) => {
       >
         prev
       </span>
-      { getMonthString(defaultDate) }
       <span
         aria-hidden="true"
         className={prefixClassObject({
@@ -52,12 +53,13 @@ const PickerHeader = React.memo((props) => {
 
 PickerHeader.propTypes = {
   onNavClick: PropTypes.func,
-  defaultDate: dateType,
+  children: PropTypes.element.isRequired,
+  className: PropTypes.string,
 };
 
 PickerHeader.defaultProps = {
   onNavClick: null,
-  defaultDate: dayjs(),
+  className: '',
 };
 
 export default PickerHeader;
