@@ -1,16 +1,21 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import dayjs from 'dayjs';
 import {
   prefixClass,
   prefixClassObject,
 } from '@/utils/style';
+import {
+  dateType,
+} from '@/utils/prop-types';
 
 const CalendarBody = (props) => {
   const {
     calendarData,
     itemRender,
     className,
+    value,
     onDateSelect,
   } = props;
 
@@ -33,6 +38,7 @@ const CalendarBody = (props) => {
                   className={prefixClassObject({
                     'calendar-cell': true,
                     'calendar-cell-disabled': !cell.inMonth,
+                    'calendar-cell-selected': dayjs(value).isSame(dayjs(cell.date), 'day'),
                   })}
                   aria-hidden="true"
                   onClick={() => {
@@ -63,6 +69,7 @@ CalendarBody.propTypes = {
   ).isRequired,
   // 自定义渲染
   itemRender: PropTypes.func,
+  value: dateType,
   // 选择日期
   onDateSelect: PropTypes.func,
 };
@@ -71,6 +78,7 @@ CalendarBody.defaultProps = {
   className: '',
   itemRender: null,
   onDateSelect: null,
+  value: null,
 };
 
 export default CalendarBody;

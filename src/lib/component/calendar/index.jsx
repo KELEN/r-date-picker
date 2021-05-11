@@ -11,7 +11,7 @@ import {
   prefixClassObject,
 } from '@/utils/style';
 import {
-  dateType
+  dateType,
 } from '@/utils/prop-types';
 import CalendarHeader from './calendar-header';
 import CalendarWeek from './calendar-week';
@@ -35,26 +35,27 @@ const Calendar = (props) => {
 
   return (
     <div className={wrapCls}>
-      <CalendarHeader 
+      <CalendarHeader
         {
           ...pick(props, [
-            'defaultDate'
+            'defaultDate',
           ])
         }
       />
-      <CalendarWeek 
+      <CalendarWeek
         {
           ...pick(props, [
-            'isoWeek'
+            'isoWeek',
           ])
         }
       />
       <CalendarBody
         {
           ...pick(props, [
+            'value',
             'defaultDate',
             'itemRender',
-            'isoWeek'
+            'isoWeek',
           ])
         }
         calendarData={calendarData}

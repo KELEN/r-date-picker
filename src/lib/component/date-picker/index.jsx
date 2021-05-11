@@ -25,6 +25,7 @@ class DatePicker extends React.PureComponent {
     super(props);
     const {
       defaultDate,
+      value,
     } = props;
 
     const defaultMonths = this.getMonthArray(defaultDate);
@@ -132,6 +133,7 @@ class DatePicker extends React.PureComponent {
 
     const {
       className,
+      value,
       onDateSelect,
     } = this.props;
 
@@ -178,6 +180,7 @@ class DatePicker extends React.PureComponent {
                 calendarData={m.data}
                 key={m.month}
                 onDateSelect={onDateSelect}
+                value={value}
               />
             ))
           }
