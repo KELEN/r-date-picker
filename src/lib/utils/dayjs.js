@@ -14,8 +14,8 @@ export const getDateString = (date) => dayjs(date).format('YYYY-MM-DD');
 
 /**
  * 获取月格式
- * @param {*} date 
- * @returns 
+ * @param {*} date
+ * @returns
  */
 export const getMonthString = (date) => dayjs(date).format('YYYY-MM');
 
@@ -27,7 +27,15 @@ export const isSameDay = (d1, d2) => d1 && d2 && dayjs(d1).isSame(dayjs(d2));
 /**
  * 是否在日期d1和d2之间
  */
-export const isBetween = (d, d1, d2) => d1 && d2 && dayjs(d).isBetween(d1, d2)
+export const isBetween = (d, d1, d2) => d1 && d2 && dayjs(d).isBetween(d1, d2);
+
+/**
+ * d1 是否在 d2 之前
+ * @param {*} d1
+ * @param {*} d2
+ * @returns
+ */
+export const isBefore = (d1, d2) => d1 && d2 && dayjs(d1).isBefore(d2);
 
 /**
  * 获取日期二维数据

@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import {
   prefixClass,
 } from '@/utils/style';
@@ -23,7 +22,7 @@ const CalendarHeader = React.memo((props) => {
 });
 
 CalendarHeader.propTypes = {
-  defaultDate: dateType
+  defaultDate: dateType.isRequired,
 };
 
 export default CalendarHeader;
