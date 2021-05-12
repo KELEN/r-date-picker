@@ -10,11 +10,11 @@ import {
 
 const CalendarWeek = (props) => {
   const {
-    weeks,
+    weeks: customWeek,
     isoWeek,
   } = props;
 
-  const arr = isoWeek ? isoWeeks : weeks;
+  const arr = customWeek || (isoWeek ? isoWeeks : weeks);
 
   return (
     <div className={prefixClass('calendar-week')}>

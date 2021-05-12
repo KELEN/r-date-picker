@@ -196,9 +196,14 @@ class DatePicker extends React.PureComponent {
                 className={prefixClass('picker-calendar-body')} 
                 calendarData={m.data}
                 key={m.month}
-                onChange={onChange}
-                value={value}
-                range={range}
+                {
+                  ...pick(this.props, [
+                    'range',
+                    'showOutside',
+                    'value',
+                    'onChange'
+                  ])
+                }
               />
             ))
           }

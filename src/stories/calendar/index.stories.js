@@ -19,6 +19,7 @@ export const PureRender = Template.bind({});
 PureRender.args = {
   className: 'container',
   defaultDate: dayjs('2021-05').format('YYYY-MM'),
+  showOutside: true,
 };
 
 export const CustomRender = Template.bind({});
@@ -32,4 +33,11 @@ CustomRender.args = {
       <div className="custom-item-render">{ cell.date.format('DD') }</div>
     );
   },
+};
+
+export const PureRangeRender = Template.bind({});
+PureRangeRender.args = {
+  className: 'container',
+  range: true,
+  value: [dayjs(), dayjs().add(4, 'day')],
 };

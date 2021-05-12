@@ -22,12 +22,12 @@ export const getMonthString = (date) => dayjs(date).format('YYYY-MM');
 /**
  * 判断是否是同一天
  */
-export const isSameDay = (d1, d2) => d1 && d2 && dayjs(d1).isSame(dayjs(d2));
+export const isSameDay = (d1, d2) => d1 && d2 && dayjs(d1).isSame(dayjs(d2), 'day');
 
 /**
  * 是否在日期d1和d2之间
  */
-export const isBetween = (d, d1, d2) => d1 && d2 && dayjs(d).isBetween(d1, d2);
+export const isBetween = (d, d1, d2) => d1 && d2 && dayjs(d).isBetween(d1, d2, 'day');
 
 /**
  * d1 是否在 d2 之前

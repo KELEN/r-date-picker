@@ -19,7 +19,10 @@ const CalendarBody = (props) => {
     value,
     onChange,
     range,
+    showOutside,
   } = props;
+
+  console.log(showOutside);
 
   const {
     calendarData: newCalendarData,
@@ -30,16 +33,24 @@ const CalendarBody = (props) => {
     calendarData,
     onChange,
     value,
+    range,
   });
 
   const cellCls = (cell) => prefixClassObject({
     'calendar-cell': true,
-    'calendar-cell-disabled': !cell.inMonth,
     'calendar-cell-selected': !range && dayjs(value).isSame(dayjs(cell.date), 'day'),
     'calendar-cell-start': cell.pickStart,
     'calendar-cell-end': cell.pickEnd,
     'calendar-cell-connect': cell.pickConnect,
+    'calendar-cell-disabled': !cell.inMonth,
   });
+
+  const renderCell = (cell) => {
+    if (!cell.inMonth && !showOutside) {
+      return '';
+    }
+    return itemRender ? itemRender(cell) : cell.date.format('DD');
+  };
 
   return (
     <div
@@ -81,9 +92,7 @@ const CalendarBody = (props) => {
                     }
                   } : null}
                 >
-                  {
-                    itemRender ? itemRender(cell) : cell.date.format('DD')
-                  }
+                  { renderCell(cell) }
                 </div>
               ))
             }
@@ -103,23 +112,26 @@ CalendarBody.propTypes = {
   ).isRequired,
   // 自定义渲染
   itemRender: PropTypes.func,
-  // 值
+  // 设置的值
   value: PropTypes.oneOfType([
     dateType,
-    PropTypes.arrayOf(dateType)
+    PropTypes.arrayOf(dateType),
   ]),
   // 选择日期
   onChange: PropTypes.func,
   // 是否选择范围
   range: PropTypes.bool,
+  // 是否显示上下月的日期
+  showOutside: PropTypes.bool,
 };
 
 CalendarBody.defaultProps = {
   className: '',
   itemRender: null,
   onChange: null,
-  value: null,
+  value: undefined,
   range: false,
+  showOutside: true,
 };
 
 export default CalendarBody;

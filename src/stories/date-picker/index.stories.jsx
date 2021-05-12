@@ -17,7 +17,7 @@ export default {
     },
     value: {
       type: 'array',
-    }
+    },
   },
 };
 
@@ -61,8 +61,8 @@ export const DateRangePicker = (args) => {
         {...args}
         value={value}
         range
+        showOutside={false}
         onChange={(val) => {
-          console.log(val);
           setValue(val);
         }}
       />

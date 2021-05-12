@@ -20,9 +20,8 @@ import CalendarBody from './calendar-body';
 const Calendar = (props) => {
   const {
     className,
-    defaultDate,
-    itemRender,
     isoWeek,
+    defaultDate,
   } = props;
 
   const wrapCls = classNames({
@@ -56,6 +55,8 @@ const Calendar = (props) => {
             'defaultDate',
             'itemRender',
             'isoWeek',
+            'range',
+            'showOutside',
           ])
         }
         calendarData={calendarData}
@@ -67,11 +68,13 @@ const Calendar = (props) => {
 Calendar.propTypes = {
   className: PropTypes.string,
   defaultDate: dateType,
+  isoWeek: PropTypes.bool,
 };
 
 Calendar.defaultProps = {
   className: '',
   defaultDate: dayjs(),
+  isoWeek: false,
 };
 
 export default Calendar;
