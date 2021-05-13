@@ -20,6 +20,7 @@ import {
 import pick from 'lodash.pick';
 import dayjs from 'dayjs';
 import PickerHeader from './picker-header';
+import CalendarWeek from '../calendar/calendar-week';
 import CalendarBody from '../calendar/calendar-body';
 
 /**
@@ -165,6 +166,12 @@ class DatePicker extends React.PureComponent {
         <PickerHeader
           className={prefixClass('picker-header')}
           onNavClick={this.translateTo}
+          {
+            ...pick(this.props, [
+              'prevButton',
+              'nextButton'
+            ])
+          }
         >
           <div 
             className={prefixClassObject({
@@ -182,6 +189,13 @@ class DatePicker extends React.PureComponent {
             }
           </div>
         </PickerHeader>
+        <CalendarWeek
+          {
+            ...pick(this.props, [
+              'isoWeek',
+            ])
+          }
+        />
         <div
           className={prefixClassObject({
             'picker-body': true,
