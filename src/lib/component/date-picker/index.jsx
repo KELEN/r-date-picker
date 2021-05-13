@@ -53,7 +53,20 @@ class DatePicker extends React.PureComponent {
       month,
       months: defaultMonths,
       animationTo: '',
+      columnWidth: null,
     };
+
+    this.pickerContainer = React.createRef(null);
+  }
+
+  componentDidMount() {
+    const {
+      calendarNumber
+    } = this.props;
+
+    this.setState({
+      columnWidth: this.pickerContainer.current.offsetWidth / calendarNumber
+    })
   }
 
   componentDidUpdate(prevProps) {
@@ -84,18 +97,27 @@ class DatePicker extends React.PureComponent {
    * 获取每个日历需要渲染的数据
    */
   getMonthArray = (date) => {
+
+    const {
+      calendarNumber
+    } = this.props;
+
     const prevMonth = dayjs(date).subtract(1, 'month');
-    const currMonth = dayjs(date);
-    const nextMonth = dayjs(date).add(1, 'month');
+    const middleMonths = [];
+    for (let i = 0; i < calendarNumber; i++) {
+      const month = dayjs(date).add(i, 'month');
+      middleMonths.push({
+        month: month.format('YYYY-MM'),
+        data: getDateArray(month),
+      })
+    }
+    const nextMonth = dayjs(date).add(calendarNumber, 'month');
     return [
       {
         month: prevMonth.format('YYYY-MM'),
         data: getDateArray(prevMonth)
       },
-      {
-        month: currMonth.format('YYYY-MM'),
-        data: getDateArray(currMonth),
-      },
+      ...middleMonths,
       {
         month: nextMonth.format('YYYY-MM'),
         data: getDateArray(nextMonth),
@@ -104,12 +126,19 @@ class DatePicker extends React.PureComponent {
   }
 
   translateTo = (arrow) => {
-    this.setState({
-      animationTo: arrow,
+    this.setState((prevState) => {
+      const {
+        columnWidth
+      } = prevState;
+      return {
+        translateX: arrow === ARROW_NEXT ? -columnWidth : columnWidth,
+        animationTo: arrow,
+      }
     })
   }
 
-  handleAnimationEnd = () => {
+  handleTransitionEnd = () => {
+
     const {
       animationTo,
       month
@@ -118,7 +147,8 @@ class DatePicker extends React.PureComponent {
     if (animationTo === ARROW_PREV) {
       const prevMonth = dayjs(month).subtract(1, 'month');
       this.setState({
-        animationTo: ''
+        animationTo: '',
+        translateX: 0,
       }, () => {
         this.setState({
           month: getMonthString(prevMonth),
@@ -130,7 +160,8 @@ class DatePicker extends React.PureComponent {
     if (animationTo === ARROW_NEXT) {
       const nextMonth = dayjs(month).add(1, 'month');
       this.setState({
-        animationTo: ''
+        animationTo: '',
+        translateX: 0,
       }, () => {
         this.setState({
           month: getMonthString(nextMonth),
@@ -146,13 +177,16 @@ class DatePicker extends React.PureComponent {
       selectedDate,
       months,
       animationTo,
+      translateX,
+      columnWidth,
     } = this.state;
 
     const {
       className,
       value,
       onChange,
-      range
+      range,
+      calendarNumber
     } = this.props;
 
     const wrapCls = classNames({
@@ -161,8 +195,13 @@ class DatePicker extends React.PureComponent {
       calendar: true,
     }));
 
+    const transformStyle = {
+      transform: `translateX(${translateX}px)`,
+      transition: `${translateX !== 0 ? 'transform 0.4s ease' : 'none'}`,
+    }
+
     return (
-      <div className={wrapCls}>
+      <div className={wrapCls} ref={this.pickerContainer}>
         <PickerHeader
           className={prefixClass('picker-header')}
           onNavClick={this.translateTo}
@@ -173,36 +212,58 @@ class DatePicker extends React.PureComponent {
             ])
           }
         >
-          <div 
+          <div
             className={prefixClassObject({
               'calendar-headers': true,
-              'to-left': animationTo === ARROW_PREV,
-              'to-right': animationTo === ARROW_NEXT,
+              // 'to-left': animationTo === ARROW_PREV,
+              // 'to-right': animationTo === ARROW_NEXT,
             })}
+            style={transformStyle}
           >
             {
               months.map(m => (
-                <div key={m.month} className={prefixClass('picker-calendar-header')}>
-                  { m.month }
+                <div 
+                  key={m.month} 
+                  style={{
+                    width: columnWidth
+                  }}
+                  className={prefixClass('picker-calendar-header')}
+                >
+                  { m.month } 
                 </div>
               ))
             }
           </div>
         </PickerHeader>
-        <CalendarWeek
+        <div
+          className={prefixClassObject({
+            'picker-week': true,
+          })}
+        >
           {
-            ...pick(this.props, [
-              'isoWeek',
-            ])
+            months.map((m) => {
+              return (
+                <CalendarWeek
+                  className="picker-calendar-week"
+                  {
+                    ...pick(this.props, [
+                      'isoWeek',
+                    ])
+                  }
+                />
+              )
+            })
           }
-        />
+        </div>
+        
         <div
           className={prefixClassObject({
             'picker-body': true,
             'to-left': animationTo === ARROW_PREV,
             'to-right': animationTo === ARROW_NEXT,
           })}
-          onAnimationEnd={this.handleAnimationEnd}
+          style={transformStyle}
+          onTransitionEnd={this.handleTransitionEnd}
         >
           {
             months.map((m) => (
@@ -210,6 +271,9 @@ class DatePicker extends React.PureComponent {
                 className={prefixClass('picker-calendar-body')} 
                 calendarData={m.data}
                 key={m.month}
+                style={{
+                  width: columnWidth
+                }}
                 {
                   ...pick(this.props, [
                     'range',
@@ -241,6 +305,8 @@ DatePicker.propTypes = {
   ]),
   // 选择日期回调
   onChange: PropTypes.func,
+  // 日历个数
+  calendarNumber: PropTypes.number,
 };
 
 DatePicker.defaultProps = {
@@ -249,6 +315,7 @@ DatePicker.defaultProps = {
   range: false,
   defaultDate: dayjs(),
   onChange: null,
+  calendarNumber: 1,
 };
 
 export default DatePicker;

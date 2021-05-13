@@ -24,10 +24,11 @@ const PickerHeader = React.memo((props) => {
     children,
     prevButton,
     nextButton,
+    style,
   } = props;
 
   return (
-    <div className={className}>
+    <div className={className} style={style}>
       { children }
       <span
         aria-hidden="true"
@@ -70,6 +71,8 @@ PickerHeader.propTypes = {
     PropTypes.element,
     PropTypes.string,
   ]),
+  // 内联样式
+  style: PropTypes.shape(),
 };
 
 PickerHeader.defaultProps = {
@@ -77,6 +80,7 @@ PickerHeader.defaultProps = {
   className: '',
   prevButton: 'prev',
   nextButton: 'next',
+  style: {},
 };
 
 export default PickerHeader;

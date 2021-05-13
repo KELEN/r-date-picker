@@ -20,9 +20,8 @@ const CalendarBody = (props) => {
     onChange,
     range,
     showOutside,
+    style,
   } = props;
-
-  console.log(showOutside);
 
   const {
     calendarData: newCalendarData,
@@ -68,6 +67,7 @@ const CalendarBody = (props) => {
           'calendar-body': true,
         }), className)
       }
+      style={style}
     >
       {
         newCalendarData.map((rows, index) => (
@@ -133,6 +133,8 @@ CalendarBody.propTypes = {
   range: PropTypes.bool,
   // 是否显示上下月的日期
   showOutside: PropTypes.bool,
+  // 样式
+  style: PropTypes.shape(),
 };
 
 CalendarBody.defaultProps = {
@@ -142,6 +144,7 @@ CalendarBody.defaultProps = {
   value: undefined,
   range: false,
   showOutside: true,
+  style: {},
 };
 
 export default CalendarBody;
