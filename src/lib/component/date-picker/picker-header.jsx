@@ -22,6 +22,8 @@ const PickerHeader = React.memo((props) => {
     className,
     onNavClick,
     children,
+    prevButton,
+    nextButton,
   } = props;
 
   return (
@@ -37,7 +39,7 @@ const PickerHeader = React.memo((props) => {
           onNavClick(ARROW_PREV);
         }}
       >
-        prev
+        { prevButton }
       </span>
       <span
         aria-hidden="true"
@@ -49,7 +51,7 @@ const PickerHeader = React.memo((props) => {
           onNavClick(ARROW_NEXT);
         }}
       >
-        next
+        { nextButton }
       </span>
     </div>
   );
@@ -59,11 +61,22 @@ PickerHeader.propTypes = {
   onNavClick: PropTypes.func,
   children: PropTypes.element.isRequired,
   className: PropTypes.string,
+  // 方向按钮
+  prevButton: PropTypes.oneOfType([
+    PropTypes.element,
+    PropTypes.string,
+  ]),
+  nextButton: PropTypes.oneOfType([
+    PropTypes.element,
+    PropTypes.string,
+  ]),
 };
 
 PickerHeader.defaultProps = {
   onNavClick: null,
   className: '',
+  prevButton: 'prev',
+  nextButton: 'next',
 };
 
 export default PickerHeader;

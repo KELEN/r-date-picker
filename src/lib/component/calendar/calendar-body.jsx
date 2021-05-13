@@ -34,16 +34,25 @@ const CalendarBody = (props) => {
     onChange,
     value,
     range,
+    showOutside,
   });
 
-  const cellCls = (cell) => prefixClassObject({
-    'calendar-cell': true,
-    'calendar-cell-selected': !range && dayjs(value).isSame(dayjs(cell.date), 'day'),
-    'calendar-cell-start': cell.pickStart,
-    'calendar-cell-end': cell.pickEnd,
-    'calendar-cell-connect': cell.pickConnect,
-    'calendar-cell-disabled': !cell.inMonth,
-  });
+  const cellCls = (cell) => {
+    if (!showOutside && !cell.inMonth) {
+      return prefixClassObject({
+        'calendar-cell': true,
+        'calendar-cell-outside': true,
+      });
+    }
+    return prefixClassObject({
+      'calendar-cell': true,
+      'calendar-cell-selected': !range && dayjs(value).isSame(dayjs(cell.date), 'day'),
+      'calendar-cell-start': cell.pickStart,
+      'calendar-cell-end': cell.pickEnd,
+      'calendar-cell-connect': cell.pickConnect,
+      'calendar-cell-disabled': !cell.inMonth,
+    });
+  };
 
   const renderCell = (cell) => {
     if (!cell.inMonth && !showOutside) {
@@ -72,6 +81,7 @@ const CalendarBody = (props) => {
                   aria-hidden="true"
                   onClick={(ev) => {
                     if (typeof onChange === 'function' && !range) {
+                      if (!showOutside && !cell.inMonth) return;
                       // 单选的情况
                       onChange(cell.date, ev);
                     }

@@ -25,6 +25,7 @@ const useMouseAction = ({
   onChange,
   range = false,
   selectable = true,
+  showOutside = true,
 }) => {
   if (!range || !selectable) {
     return {
@@ -47,6 +48,8 @@ const useMouseAction = ({
 
   const dateMouseDownHandle = (cell, ev) => {
     if (ev.nativeEvent.which === MOUSE_DOWN_KEY.LEFT) {
+      if (!showOutside && !cell.inMonth) return;
+
       if (value[0] === undefined || (value[0] && value[1])) {
         value[0] = cell.date;
         value[1] = undefined;
