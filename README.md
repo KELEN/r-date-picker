@@ -2,6 +2,10 @@
 
 基于react的日历选择组件，支持单选，多选
 
+## 新版本地址
+
+https://gitee.com/imkelen/r-date-picker
+
 ## [demo](https://kelen.github.io/r-date-picker/)
 
 ![AirbnbStyle](https://raw.githubusercontent.com/KELEN/r-date-picker/master/example/images/airbnb-style.png "AirbnbStyle")
