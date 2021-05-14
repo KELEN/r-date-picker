@@ -1,10 +1,9 @@
 /* eslint-disable no-param-reassign */
 import React, {
   useState,
-  useEffect,
 } from 'react';
 import PropTypes from 'prop-types';
-import dayjs, {
+import {
   isSameDay,
   isBetween,
   isBefore,
@@ -20,12 +19,12 @@ const MOUSE_DOWN_KEY = {
 };
 
 /**
- * 单个日历操作
+ * 多个日历操作
  * @param {*} param0
  * @returns
  */
-const useMouseAction = ({
-  calendarData = [],
+const usePickerAction = ({
+  months = [],
   value = [],
   onChange,
   range = false,
@@ -34,7 +33,7 @@ const useMouseAction = ({
 }) => {
   if (!range || !selectable) {
     return {
-      calendarData,
+      months,
     };
   }
 
@@ -60,6 +59,7 @@ const useMouseAction = ({
       if (value[0] === undefined || (value[0] && value[1])) {
         value[0] = cell.date;
         value[1] = undefined;
+        setTmpEndDate(null);
         onChange(value.slice());
       } else if (value[0] && value[1] === undefined) {
         value[1] = cell.date;
@@ -71,22 +71,25 @@ const useMouseAction = ({
     }
   };
 
-  calendarData = React.useMemo(() => calendarData.map((row) => row.map((cell) => {
-    cell.pickStart = isSameDay(value[0], cell.date);
-    cell.pickEnd = isSameDay(value[1] || tmpEndDate, cell.date);
-    cell.pickConnect = isBetween(cell.date, value[0], value[1] || tmpEndDate);
-    return cell;
-  })), [value, tmpEndDate]);
+  months = React.useMemo(() => months.map((month) => ({
+    month: month.month,
+    data: month.data.map((row) => row.map((cell) => {
+      cell.pickStart = isSameDay(value[0], cell.date);
+      cell.pickEnd = isSameDay(value[1] || tmpEndDate, cell.date);
+      cell.pickConnect = isBetween(cell.date, value[0], value[1] || tmpEndDate);
+      return cell;
+    })),
+  })), [value, tmpEndDate, months]);
 
   return {
-    calendarData,
+    months,
     onDateEnter: dateEnterHandle,
     onDateLeave: dateLeaveHandle,
     onDateClick: dateMouseDownHandle,
   };
 };
 
-useMouseAction.propTypes = {
+usePickerAction.propTypes = {
   onDateEnter: PropTypes.func,
   value: PropTypes.oneOfType([
     dateType,
@@ -94,9 +97,9 @@ useMouseAction.propTypes = {
   ]).isRequired,
 };
 
-useMouseAction.defaultProps = {
+usePickerAction.defaultProps = {
   onDateEnter: null,
   onDateLeave: null,
 };
 
-export default useMouseAction;
+export default usePickerAction;

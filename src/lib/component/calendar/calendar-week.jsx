@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 import {
   weeks,
   isoWeeks,
@@ -14,17 +15,17 @@ const CalendarWeek = (props) => {
     weeks: customWeek,
     isoWeek,
     className,
+    style,
   } = props;
 
   const arr = customWeek || (isoWeek ? isoWeeks : weeks);
 
-  const wrapCls = prefixClassObject({
+  const wrapCls = classNames(className, prefixClassObject({
     'calendar-week': true,
-    [className]: !!className,
-  });
+  }));
 
   return (
-    <div className={wrapCls}>
+    <div className={wrapCls} style={style}>
       {
         arr.map((i) => (
           <span key={i}>

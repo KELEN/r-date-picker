@@ -1,17 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import dayjs from 'dayjs';
 import {
-  prefixClass,
   prefixClassObject,
 } from '@/utils/style';
-import {
-  dateType,
-  childrenType,
-} from '@/utils/prop-types';
-import {
-  getMonthString,
-} from '@/utils/dayjs';
 import {
   ARROW_PREV,
   ARROW_NEXT,

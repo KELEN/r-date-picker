@@ -18,6 +18,9 @@ export default {
     value: {
       type: 'array',
     },
+    calendarNumber: {
+      type: 'number',
+    },
   },
 };
 
@@ -91,11 +94,11 @@ export const MultipleCalendarPicker = (args) => {
       ~
       { value[1] ? value[1].format('YYYY-MM-DD') : '' }
       <DatePicker
+        {...args}
         className="multiple-calendar-container"
         value={value}
         range
         showOutside={false}
-        calendarNumber={3}
         onChange={(val) => {
           setValue(val);
         }}
@@ -114,4 +117,5 @@ MultipleCalendarPicker.bind({});
 
 MultipleCalendarPicker.args = {
   range: true,
+  calendarNumber: 3,
 };

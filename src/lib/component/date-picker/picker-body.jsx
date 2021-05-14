@@ -9,32 +9,21 @@ import {
 import {
   dateType,
 } from '@/utils/prop-types';
-import useMouseAction from '@/hooks/useMouseAction';
 
-const CalendarBody = (props) => {
+const PickerBody = React.memo((props) => {
   const {
     calendarData,
     itemRender,
     className,
-    value,
     onChange,
     range,
     showOutside,
     style,
-  } = props;
-
-  const {
-    calendarData: newCalendarData,
+    value,
+    onDateClick,
     onDateEnter,
     onDateLeave,
-    onDateClick,
-  } = useMouseAction({
-    calendarData,
-    onChange,
-    value,
-    range,
-    showOutside,
-  });
+  } = props;
 
   const cellCls = (cell) => {
     if (!showOutside && !cell.inMonth) {
@@ -70,7 +59,7 @@ const CalendarBody = (props) => {
       style={style}
     >
       {
-        newCalendarData.map((rows, index) => (
+        calendarData.map((rows, index) => (
           // eslint-disable-next-line react/no-array-index-key
           <div key={index} className={prefixClass('calendar-body-row')}>
             {
@@ -80,8 +69,8 @@ const CalendarBody = (props) => {
                   className={cellCls(cell)}
                   aria-hidden="true"
                   onClick={(ev) => {
+                    if (!showOutside && !cell.inMonth) return;
                     if (typeof onChange === 'function' && !range) {
-                      if (!showOutside && !cell.inMonth) return;
                       // 单选的情况
                       onChange(cell.date, ev);
                     }
@@ -111,9 +100,9 @@ const CalendarBody = (props) => {
       }
     </div>
   );
-};
+});
 
-CalendarBody.propTypes = {
+PickerBody.propTypes = {
   // 自定义样式
   className: PropTypes.string,
   // 日期数据
@@ -135,9 +124,12 @@ CalendarBody.propTypes = {
   showOutside: PropTypes.bool,
   // 样式
   style: PropTypes.shape(),
+  onDateClick: PropTypes.func,
+  onDateEnter: PropTypes.func,
+  onDateLeave: PropTypes.func,
 };
 
-CalendarBody.defaultProps = {
+PickerBody.defaultProps = {
   className: '',
   itemRender: null,
   onChange: null,
@@ -145,6 +137,9 @@ CalendarBody.defaultProps = {
   range: false,
   showOutside: true,
   style: {},
+  onDateClick: null,
+  onDateEnter: null,
+  onDateLeave: null,
 };
 
-export default CalendarBody;
+export default PickerBody;
