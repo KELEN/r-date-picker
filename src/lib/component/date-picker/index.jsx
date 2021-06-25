@@ -35,6 +35,9 @@ const DatePicker = (props) => {
     className,
     showOutside,
     onChange,
+    min,
+    max,
+    selectable,
   } = props;
 
   let initSelectedDate = '';
@@ -57,19 +60,19 @@ const DatePicker = (props) => {
       const month = dayjs(date).add(i, 'month');
       middleMonths.push({
         month: month.format('YYYY-MM'),
-        data: getDateArray(month),
+        data: getDateArray(month, { min, max }),
       });
     }
     const nextMonth = dayjs(date).add(calendarNumber, 'month');
     return [
       {
         month: prevMonth.format('YYYY-MM'),
-        data: getDateArray(prevMonth),
+        data: getDateArray(prevMonth, { min, max }),
       },
       ...middleMonths,
       {
         month: nextMonth.format('YYYY-MM'),
-        data: getDateArray(nextMonth),
+        data: getDateArray(nextMonth, { min, max }),
       },
     ];
   };
@@ -152,6 +155,7 @@ const DatePicker = (props) => {
     value,
     range,
     showOutside,
+    selectable,
   });
 
   return (
@@ -261,6 +265,7 @@ const DatePicker = (props) => {
                     'showOutside',
                     'value',
                     'onChange',
+                    'itemRender',
                   ])
                 }
               />
@@ -284,12 +289,18 @@ DatePicker.propTypes = {
     dateType,
     PropTypes.arrayOf(dateType),
   ]),
+  // 最小日期
+  min: dateType,
+  // 最大日期
+  max: dateType,
   // 选择日期回调
   onChange: PropTypes.func,
   // 日历个数
   calendarNumber: PropTypes.number,
   // 是否展示当前日历之外的日期
   showOutside: PropTypes.bool,
+  // 是否可选
+  selectable: PropTypes.bool,
 };
 
 DatePicker.defaultProps = {
@@ -300,6 +311,9 @@ DatePicker.defaultProps = {
   onChange: null,
   calendarNumber: 1,
   showOutside: true,
+  min: null,
+  max: null,
+  selectable: true,
 };
 
 export default DatePicker;

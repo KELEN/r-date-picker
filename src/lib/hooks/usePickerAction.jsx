@@ -1,6 +1,7 @@
 /* eslint-disable no-param-reassign */
 import React, {
   useState,
+  useCallback,
 } from 'react';
 import PropTypes from 'prop-types';
 import {
@@ -11,6 +12,7 @@ import {
 import {
   dateType,
 } from '@/utils/prop-types';
+import { isFunction } from '@/utils';
 
 const MOUSE_DOWN_KEY = {
   LEFT: 1,
@@ -40,46 +42,56 @@ const usePickerAction = ({
   // 临时结束时间存储，如果value[0]，value[1]为空，可以展示连接动画
   const [tmpEndDate, setTmpEndDate] = useState(null);
 
-  const dateEnterHandle = (cell, ev) => {
+  const dateEnterHandle = (cell) => {
     if (value[0] && !value[1]) {
       setTmpEndDate(cell.date);
     }
   };
 
-  const dateLeaveHandle = (cell, ev) => {
+  const dateLeaveHandle = () => {
     if (value[0] && !value[1]) {
       setTmpEndDate(null);
     }
   };
-
-  const dateMouseDownHandle = (cell, ev) => {
+  
+  const dateMouseDownHandle = useCallback((cell, ev) => {
     if (ev.nativeEvent.which === MOUSE_DOWN_KEY.LEFT) {
-      if (!showOutside && !cell.inMonth) return;
+      if (cell.disabled || !isFunction(onChange) ) return;
 
       if (value[0] === undefined || (value[0] && value[1])) {
         value[0] = cell.date;
         value[1] = undefined;
-        setTmpEndDate(null);
+        setTmpEndDate(cell.date);
         onChange(value.slice());
       } else if (value[0] && value[1] === undefined) {
         value[1] = cell.date;
         if (isBefore(value[1], value[0])) {
           value = [value[1], value[0]];
         }
+        setTmpEndDate(null);
         onChange(value.slice());
       }
     }
-  };
+  }, [value]);
 
-  months = React.useMemo(() => months.map((month) => ({
-    month: month.month,
-    data: month.data.map((row) => row.map((cell) => {
-      cell.pickStart = isSameDay(value[0], cell.date);
-      cell.pickEnd = isSameDay(value[1] || tmpEndDate, cell.date);
-      cell.pickConnect = isBetween(cell.date, value[0], value[1] || tmpEndDate);
-      return cell;
-    })),
-  })), [value, tmpEndDate, months]);
+  months = React.useMemo(() => {
+    console.log('current value is ', value[0]?.format('YYYY-MM-DD'), value[1]?.format('YYYY-MM-DD'));
+    return months.map((month) => ({
+      month: month.month,
+      data: month.data.map((row) => row.map((cell) => {
+        const start = value[0];
+        const end = value[1] || tmpEndDate;
+        let range = [start, end];
+        if (isBefore(end, start)) {
+          range = [end, start];
+        }
+        cell.pickStart = isSameDay(range[0], cell.date);
+        cell.pickEnd = isSameDay(range[1], cell.date);
+        cell.pickConnect = isBetween(cell.date, range[0], range[1]);
+        return cell;
+      })),
+    }));
+  }, [value, tmpEndDate, months]);
 
   return {
     months,

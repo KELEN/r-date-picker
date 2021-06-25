@@ -1,10 +1,9 @@
 /* eslint-disable no-param-reassign */
 import React, {
   useState,
-  useEffect,
 } from 'react';
 import PropTypes from 'prop-types';
-import dayjs, {
+import {
   isSameDay,
   isBetween,
   isBefore,
@@ -12,6 +11,9 @@ import dayjs, {
 import {
   dateType,
 } from '@/utils/prop-types';
+import {
+  isFunction,
+} from '@/utils';
 
 const MOUSE_DOWN_KEY = {
   LEFT: 1,
@@ -41,13 +43,13 @@ const useMouseAction = ({
   // 临时结束时间存储，如果value[0]，value[1]为空，可以展示连接动画
   const [tmpEndDate, setTmpEndDate] = useState(null);
 
-  const dateEnterHandle = (cell, ev) => {
+  const dateEnterHandle = (cell) => {
     if (value[0] && !value[1]) {
       setTmpEndDate(cell.date);
     }
   };
 
-  const dateLeaveHandle = (cell, ev) => {
+  const dateLeaveHandle = () => {
     if (value[0] && !value[1]) {
       setTmpEndDate(null);
     }
@@ -60,13 +62,17 @@ const useMouseAction = ({
       if (value[0] === undefined || (value[0] && value[1])) {
         value[0] = cell.date;
         value[1] = undefined;
-        onChange(value.slice());
+        if (isFunction(onChange)) {
+          onChange(value.slice());
+        }
       } else if (value[0] && value[1] === undefined) {
         value[1] = cell.date;
         if (isBefore(value[1], value[0])) {
           value = [value[1], value[0]];
         }
-        onChange(value.slice());
+        if (isFunction(onChange)) {
+          onChange(value.slice());
+        }
       }
     }
   };

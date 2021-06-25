@@ -6,10 +6,17 @@ import {
 import './index.less';
 
 export default {
-  title: 'Calendar/calendar',
+  title: 'Calendar/Calendar',
   component: Calendar,
   argTypes: {
     defaultDate: { control: 'date' },
+    min: { control: 'date' },
+    max: { control: 'date' },
+    onChange: {
+      control: {
+        disable: true,
+      },
+    },
   },
 };
 
@@ -18,21 +25,9 @@ const Template = (args) => <Calendar {...args} />;
 export const PureRender = Template.bind({});
 PureRender.args = {
   className: 'container',
-  defaultDate: dayjs('2021-05').format('YYYY-MM'),
-  showOutside: true,
-};
-
-export const CustomRender = Template.bind({});
-
-CustomRender.args = {
-  className: 'custom-style',
-  defaultDate: dayjs('2021-05').format('YYYY-MM'),
-  isoWeek: false,
-  itemRender(cell) {
-    return (
-      <div className="custom-item-render">{ cell.date.format('DD') }</div>
-    );
-  },
+  defaultDate: dayjs().format('YYYY-MM-DD'),
+  showOutside: false,
+  min: dayjs().subtract(1, 'days'),
 };
 
 export const PureRangeRender = Template.bind({});

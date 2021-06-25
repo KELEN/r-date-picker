@@ -8,7 +8,7 @@ import {
 import './index.less';
 
 export default {
-  title: 'Calendar/date-picker',
+  title: 'Calendar/Date Picker',
   component: DatePicker,
   argTypes: {
     className: {
@@ -20,13 +20,17 @@ export default {
     },
     calendarNumber: {
       type: 'number',
+      control: {
+        readonly: true,
+      },
     },
+    min: { control: 'date' },
+    max: { control: 'date' },
   },
 };
 
 export const SingleDatePicker = (args) => {
   const [value, setValue] = useState(dayjs());
-
   return (
     <div>
       <h1>
@@ -49,6 +53,8 @@ SingleDatePicker.bind({});
 
 SingleDatePicker.args = {
   range: false,
+  min: dayjs().subtract(1, 'day'),
+  max: dayjs().add(6, 'day'),
 };
 
 export const DateRangePicker = (args) => {
@@ -64,7 +70,6 @@ export const DateRangePicker = (args) => {
         {...args}
         value={value}
         range
-        showOutside={false}
         onChange={(val) => {
           setValue(val);
         }}
@@ -82,7 +87,7 @@ export const DateRangePicker = (args) => {
 DateRangePicker.bind({});
 
 DateRangePicker.args = {
-  range: true,
+  showOutside: false,
 };
 
 export const MultipleCalendarPicker = (args) => {

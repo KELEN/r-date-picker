@@ -43,7 +43,9 @@ export const isBefore = (d1, d2) => d1 && d2 && dayjs(d1).isBefore(d2);
  * @param {*} isoWeek 是否周一为一周的开始
  * @returns
  */
-export const getDateArray = (month = dayjs().format('YYYY-MM-01'), isoWeek = false) => {
+export const getDateArray = (month = dayjs().format('YYYY-MM-01'), {
+  max, min, isoWeek = false,
+} = {}) => {
   const offsetIndex = isoWeek ? -1 : 0;
 
   const currentMonth = dayjs(dayjs(month).format('YYYY-MM-01'));
@@ -56,17 +58,23 @@ export const getDateArray = (month = dayjs().format('YYYY-MM-01'), isoWeek = fal
 
   const prependDates = [];
   for (let i = 1; i < startIndex + 1; i += 1) {
+    const date = startOfMonth.subtract(i, 'day');
     prependDates.unshift({
-      date: startOfMonth.subtract(i, 'day'),
+      date,
       inMonth: false,
+      disabled: (min && dayjs(date).isBefore(min, 'day'))
+        || (max && dayjs(date).isAfter(max, 'day')),
     });
   }
 
   const dates = [];
   for (let i = 0; i < daysInMonth; i += 1) {
+    const date = startOfMonth.add(i, 'day');
     dates.push({
-      date: startOfMonth.add(i, 'day'),
+      date,
       inMonth: true,
+      disabled: (min && dayjs(date).isBefore(min, 'day'))
+        || (max && dayjs(date).isAfter(max, 'day')),
     });
   }
 
@@ -81,9 +89,12 @@ export const getDateArray = (month = dayjs().format('YYYY-MM-01'), isoWeek = fal
 
     const appendNum = diffRows * 7 - (endIndex + 1);
     for (let i = 1; i <= appendNum; i += 1) {
+      const date = endOfMonth.add(i, 'day');
       appendDates.push({
-        date: endOfMonth.add(i, 'day'),
+        date,
         inMonth: false,
+        disabled: (min && dayjs(date).isBefore(min, 'day'))
+          || (max && dayjs(date).isAfter(max, 'day')),
       });
     }
   }

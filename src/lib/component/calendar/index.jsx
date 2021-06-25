@@ -4,7 +4,6 @@ import dayjs from 'dayjs';
 import classNames from 'classnames';
 import pick from 'lodash.pick';
 import {
-  getDateString,
   getDateArray,
 } from '@/utils/dayjs';
 import {
@@ -22,6 +21,8 @@ const Calendar = (props) => {
     className,
     isoWeek,
     defaultDate,
+    min,
+    max,
   } = props;
 
   const wrapCls = classNames({
@@ -30,7 +31,11 @@ const Calendar = (props) => {
     calendar: true,
   }));
 
-  const calendarData = getDateArray(defaultDate, isoWeek);
+  const calendarData = getDateArray(defaultDate, {
+    isoWeek,
+    min,
+    max,
+  });
 
   return (
     <div className={wrapCls}>
@@ -57,6 +62,8 @@ const Calendar = (props) => {
             'isoWeek',
             'range',
             'showOutside',
+            'min',
+            'max',
           ])
         }
         calendarData={calendarData}
@@ -68,6 +75,8 @@ const Calendar = (props) => {
 Calendar.propTypes = {
   className: PropTypes.string,
   defaultDate: dateType,
+  min: dateType,
+  max: dateType,
   isoWeek: PropTypes.bool,
 };
 
@@ -75,6 +84,8 @@ Calendar.defaultProps = {
   className: '',
   defaultDate: dayjs(),
   isoWeek: false,
+  min: null,
+  max: null,
 };
 
 export default Calendar;

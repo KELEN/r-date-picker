@@ -1,24 +1,70 @@
 @import '../style.less';
 
 .container {
-  width: 280px;
+  width: 340px;
+  .rdp__calendar-cell-start,
+  .rdp__calendar-cell-end,
+  .rdp__calendar-cell-selected {
+    background-color: rgb(0, 166, 153);
+    color: #FFF;
+  }
+  .rdp__calendar-cell-connect {
+    background-color: rgba(0, 166, 153, .4);
+    color: #FFF;
+  }
+}
+
+
+.flex {
+  display: flex;
 }
 
 .rdp__calendar-headers {
   margin: 10px 0;
 }
 
-.rdp__calendar-cell-start,
-.rdp__calendar-cell-end,
-.rdp__calendar-cell-selected {
-  background-color: rgb(0, 166, 153);
-  color: #FFF;
+.custom-range-container {
+  width: 340px;
+}
+
+.custom-cell {
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@customBgColor: #ff6a6a;
+
+.rdp__calendar-cell-start {
+  .custom-cell {
+    background-color: @customBgColor;
+    border-radius: 18px 0 0 18px;
+    color: #FFF;
+  }
+  &.rdp__calendar-cell-end {
+    .custom-cell {
+      border-radius: 18px;
+      color: #FFF;
+    } 
+  }
 }
 
 .rdp__calendar-cell-connect {
-  background-color: rgba(0, 166, 153, .4);
-  color: #FFF;
+  .custom-cell {
+    background-color: @customBgColor;
+    color: #FFF;
+  }
 }
+
+.rdp__calendar-cell-end {
+  .custom-cell {
+    background-color: @customBgColor;
+    color: #FFF;
+    border-radius: 0 18px 18px 0;
+  }
+}
+
 
 .rdp__calendar-cell-disabled.rdp__calendar-cell-selected {
   opacity: 0.8;
@@ -35,8 +81,22 @@
 
 .multiple-calendar-container {
   width: 900px;
+  .rdp__calendar-cell-start,
+  .rdp__calendar-cell-end,
+  .rdp__calendar-cell-selected {
+    background-color: rgb(0, 166, 153);
+    color: #FFF;
+  }
+  .rdp__calendar-cell-connect {
+    background-color: rgba(0, 166, 153, .4);
+    color: #FFF;
+  }
 }
 
 .rdp__picker-column {
   padding: 0 20px;
+}
+
+.text-center {
+  text-align: center;
 }

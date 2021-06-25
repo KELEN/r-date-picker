@@ -9,7 +9,6 @@ import {
 import {
   dateType,
 } from '@/utils/prop-types';
-import useMouseAction from '@/hooks/useMouseAction';
 
 const CalendarBody = (props) => {
   const {
@@ -17,24 +16,10 @@ const CalendarBody = (props) => {
     itemRender,
     className,
     value,
-    onChange,
     range,
     showOutside,
     style,
   } = props;
-
-  const {
-    calendarData: newCalendarData,
-    onDateEnter,
-    onDateLeave,
-    onDateClick,
-  } = useMouseAction({
-    calendarData,
-    onChange,
-    value,
-    range,
-    showOutside,
-  });
 
   const cellCls = (cell) => {
     if (!showOutside && !cell.inMonth) {
@@ -43,13 +28,14 @@ const CalendarBody = (props) => {
         'calendar-cell-outside': true,
       });
     }
+
     return prefixClassObject({
       'calendar-cell': true,
       'calendar-cell-selected': !range && dayjs(value).isSame(dayjs(cell.date), 'day'),
       'calendar-cell-start': cell.pickStart,
       'calendar-cell-end': cell.pickEnd,
       'calendar-cell-connect': cell.pickConnect,
-      'calendar-cell-disabled': !cell.inMonth,
+      'calendar-cell-disabled': !cell.inMonth || cell.disabled,
     });
   };
 
@@ -70,7 +56,7 @@ const CalendarBody = (props) => {
       style={style}
     >
       {
-        newCalendarData.map((rows, index) => (
+        calendarData.map((rows, index) => (
           // eslint-disable-next-line react/no-array-index-key
           <div key={index} className={prefixClass('calendar-body-row')}>
             {
@@ -79,28 +65,6 @@ const CalendarBody = (props) => {
                   key={cell.date.format('YYYY-MM-DD')}
                   className={cellCls(cell)}
                   aria-hidden="true"
-                  onClick={(ev) => {
-                    if (typeof onChange === 'function' && !range) {
-                      if (!showOutside && !cell.inMonth) return;
-                      // 单选的情况
-                      onChange(cell.date, ev);
-                    }
-                  }}
-                  onMouseDown={range ? (ev) => {
-                    if (typeof onDateClick === 'function') {
-                      onDateClick(cell, ev);
-                    }
-                  } : null}
-                  onMouseEnter={range ? (ev) => {
-                    if (typeof onDateEnter === 'function') {
-                      onDateEnter(cell, ev);
-                    }
-                  } : null}
-                  onMouseLeave={range ? (ev) => {
-                    if (typeof onDateLeave === 'function') {
-                      onDateLeave(cell, ev);
-                    }
-                  } : null}
                 >
                   { renderCell(cell) }
                 </div>

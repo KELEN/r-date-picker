@@ -9,6 +9,7 @@ import {
 import {
   dateType,
 } from '@/utils/prop-types';
+import { isFunction } from '@/utils';
 
 const PickerBody = React.memo((props) => {
   const {
@@ -32,13 +33,14 @@ const PickerBody = React.memo((props) => {
         'calendar-cell-outside': true,
       });
     }
+
     return prefixClassObject({
       'calendar-cell': true,
       'calendar-cell-selected': !range && dayjs(value).isSame(dayjs(cell.date), 'day'),
       'calendar-cell-start': cell.pickStart,
       'calendar-cell-end': cell.pickEnd,
       'calendar-cell-connect': cell.pickConnect,
-      'calendar-cell-disabled': !cell.inMonth,
+      'calendar-cell-disabled': !cell.inMonth || cell.disabled,
     });
   };
 
@@ -68,25 +70,22 @@ const PickerBody = React.memo((props) => {
                   key={cell.date.format('YYYY-MM-DD')}
                   className={cellCls(cell)}
                   aria-hidden="true"
-                  onClick={(ev) => {
-                    if (!showOutside && !cell.inMonth) return;
-                    if (typeof onChange === 'function' && !range) {
+                  onMouseDown={(ev) => {
+                    if (range && isFunction(onDateClick)) {
+                      onDateClick(cell, ev);
+                    }
+                    if (!range && !cell.disabled && isFunction(onChange)) {
                       // 单选的情况
                       onChange(cell.date, ev);
                     }
                   }}
-                  onMouseDown={range ? (ev) => {
-                    if (typeof onDateClick === 'function') {
-                      onDateClick(cell, ev);
-                    }
-                  } : null}
                   onMouseEnter={range ? (ev) => {
-                    if (typeof onDateEnter === 'function') {
+                    if (isFunction(onDateEnter)) {
                       onDateEnter(cell, ev);
                     }
                   } : null}
                   onMouseLeave={range ? (ev) => {
-                    if (typeof onDateLeave === 'function') {
+                    if (isFunction(onDateLeave)) {
                       onDateLeave(cell, ev);
                     }
                   } : null}
@@ -134,6 +133,8 @@ PickerBody.defaultProps = {
   itemRender: null,
   onChange: null,
   value: undefined,
+  min: null,
+  max: null,
   range: false,
   showOutside: true,
   style: {},
