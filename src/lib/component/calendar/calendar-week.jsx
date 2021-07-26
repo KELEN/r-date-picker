@@ -41,12 +41,14 @@ CalendarWeek.propTypes = {
   weeks: PropTypes.arrayOf(PropTypes.string),
   isoWeek: PropTypes.bool,
   className: PropTypes.string,
+  style: PropTypes.shape(),
 };
 
 CalendarWeek.defaultProps = {
-  weeks,
+  weeks: null,
   isoWeek: false,
   className: '',
+  style: null,
 };
 
 export default CalendarWeek;

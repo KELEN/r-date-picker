@@ -50,6 +50,7 @@ const Calendar = (props) => {
         {
           ...pick(props, [
             'isoWeek',
+            'weeks',
           ])
         }
       />

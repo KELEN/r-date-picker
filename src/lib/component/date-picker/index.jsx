@@ -38,6 +38,7 @@ const DatePicker = (props) => {
     min,
     max,
     selectable,
+    isoWeek,
   } = props;
 
   let initSelectedDate = '';
@@ -60,19 +61,19 @@ const DatePicker = (props) => {
       const month = dayjs(date).add(i, 'month');
       middleMonths.push({
         month: month.format('YYYY-MM'),
-        data: getDateArray(month, { min, max }),
+        data: getDateArray(month, { min, max, isoWeek }),
       });
     }
     const nextMonth = dayjs(date).add(calendarNumber, 'month');
     return [
       {
         month: prevMonth.format('YYYY-MM'),
-        data: getDateArray(prevMonth, { min, max }),
+        data: getDateArray(prevMonth, { min, max, isoWeek }),
       },
       ...middleMonths,
       {
         month: nextMonth.format('YYYY-MM'),
-        data: getDateArray(nextMonth, { min, max }),
+        data: getDateArray(nextMonth, { min, max, isoWeek }),
       },
     ];
   };
@@ -301,6 +302,8 @@ DatePicker.propTypes = {
   showOutside: PropTypes.bool,
   // 是否可选
   selectable: PropTypes.bool,
+  // 周一作为一周的第一天
+  isoWeek: PropTypes.bool,
 };
 
 DatePicker.defaultProps = {
@@ -314,6 +317,7 @@ DatePicker.defaultProps = {
   min: null,
   max: null,
   selectable: true,
+  isoWeek: true,
 };
 
 export default DatePicker;

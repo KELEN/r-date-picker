@@ -71,6 +71,9 @@ const PickerBody = React.memo((props) => {
                   className={cellCls(cell)}
                   aria-hidden="true"
                   onMouseDown={(ev) => {
+                    if (!showOutside && !cell.inMonth) {
+                      return;
+                    }
                     if (range && isFunction(onDateClick)) {
                       onDateClick(cell, ev);
                     }

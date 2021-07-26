@@ -1,5 +1,4 @@
 import dayjs from 'dayjs';
-import isoWeekPlugin from 'dayjs/plugin/isoWeek';
 import isBetweenPlugin from 'dayjs/plugin/isBetween';
 import chunk from 'lodash.chunk';
 
