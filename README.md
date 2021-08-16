@@ -30,10 +30,10 @@ import { DatePicker } from 'r-date-picker'
 import { DateRangePicker } from 'r-date-picker'
 ```
 
-### import index.scss
+### import index.less
 
 ```
-import 'r-date-picker/src/styles/index.scss'
+import 'r-date-picker/src/styles/index.less'
 ```
 
 

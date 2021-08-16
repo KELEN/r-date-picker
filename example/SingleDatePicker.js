@@ -1,7 +1,7 @@
 import React from 'react'
 import DatePicker from '../src/components/DatePicker'
 import moment from 'moment'
-import './style.scss'
+import './style.less'
 
 export default class SimpleDatePicker extends React.Component {
 

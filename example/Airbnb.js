@@ -1,7 +1,7 @@
 import React from 'react'
 import DateRangePicker from '../src/components/DateRangePicker'
 import moment from 'moment'
-import './Airbnb.scss'
+import './Airbnb.less'
 
 class Airbnb extends React.Component {
 

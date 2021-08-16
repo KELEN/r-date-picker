@@ -1,6 +1,6 @@
 {
   "name": "r-date-picker",
-  "version": "0.0.15",
+  "version": "0.0.16",
   "description": "react date picker",
   "main": "index.js",
   "scripts": {
@@ -35,8 +35,8 @@
     "@storybook/storybook-deployer": "^2.8.1",
     "babel-loader": "^8.0.5",
     "css-loader": "^2.1.1",
-    "node-sass": "^4.11.0",
-    "sass-loader": "^7.1.0",
+    "less": "^4.1.1",
+    "less-loader": "5.0.0",
     "style-loader": "^0.23.1"
   },
   "dependencies": {

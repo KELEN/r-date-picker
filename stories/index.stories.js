@@ -1,7 +1,7 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { linkTo } from '@storybook/addon-links';
-import '../src/styles/index.scss'
+import '../src/styles/index.less'
 import moment from 'moment'
 import DateRangePicker from '../src/components/DateRangePicker'
 import SimpleDatePicker from '../example/SingleDatePicker'

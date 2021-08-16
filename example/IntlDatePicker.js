@@ -1,6 +1,6 @@
 import React from 'react'
 import DatePicker from '../src/components/DatePicker'
-import './style.scss'
+import './style.less'
 
 /**
  * 国际化
