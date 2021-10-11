@@ -39,7 +39,9 @@ export const SingleDatePicker = (args) => {
       </h1>
       <DatePicker
         className="container"
-        {...args}
+        range={false}
+        min={dayjs().subtract(1, 'day')}
+        max={dayjs().add(6, 'day')}
         value={value}
         onChange={(val) => {
           setValue(val);

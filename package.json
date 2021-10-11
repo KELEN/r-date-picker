@@ -1,17 +1,16 @@
 {
-  "name": "intro-storybook-react-template",
-  "version": "0.1.0",
-  "description": "Starter template to get up and running quickly with React and Storybook",
-  "author": "Chromatic <https://chromatic.com/>",
+  "name": "r-date-picker",
+  "version": "0.0.30",
+  "description": "基于react的日历选择组件，支持单选，多选",
+  "author": "Kelen",
   "repository": {
     "type": "git",
-    "url": "https://github.com/chromaui/intro-storybook-react-template"
+    "url": "https://github.com/KELEN/r-date-picker"
   },
   "bugs": {
-    "url": "https://github.com/chromaui/intro-storybook-react-template/issues"
+    "url": "https://github.com/KELEN/r-date-picker/issues"
   },
   "license": "MIT",
-  "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
