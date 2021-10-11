@@ -1,4 +1,6 @@
-import React from 'react';
+import React, {
+  useState, useEffect,
+} from 'react';
 import PropTypes from 'prop-types';
 import dayjs from 'dayjs';
 import classNames from 'classnames';
@@ -31,11 +33,16 @@ const Calendar = (props) => {
     calendar: true,
   }));
 
-  const calendarData = getDateArray(defaultDate, {
-    isoWeek,
-    min,
-    max,
-  });
+  const [calendarData, setCalendarData] = useState([]);
+
+  useEffect(() => {
+    const data = getDateArray(defaultDate, {
+      isoWeek,
+      min,
+      max,
+    });
+    setCalendarData(data);
+  }, [isoWeek, min, max, defaultDate]);
 
   return (
     <div className={wrapCls}>

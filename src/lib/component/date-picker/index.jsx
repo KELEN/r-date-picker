@@ -2,6 +2,7 @@ import React, {
   useEffect,
   useState,
   useRef,
+  useCallback,
 } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
@@ -54,7 +55,7 @@ const DatePicker = (props) => {
   /**
    * 获取每个日历需要渲染的数据
    */
-  const getMonthArray = (date) => {
+  const getMonthArray = useCallback((date) => {
     const prevMonth = dayjs(date).subtract(1, 'month');
     const middleMonths = [];
     for (let i = 0; i < calendarNumber; i += 1) {
@@ -76,17 +77,20 @@ const DatePicker = (props) => {
         data: getDateArray(nextMonth, { min, max, isoWeek }),
       },
     ];
-  };
+  }, []);
 
   const initMonth = getMonthString(!range ? initSelectedDate : initSelectedDate[0]);
-  const defaultMonths = getMonthArray(initMonth);
 
   const [selectedDate, setSelectedDate] = useState(initSelectedDate);
   const [month, setMonth] = useState(initMonth);
-  const [months, setMonths] = useState(defaultMonths);
+  const [months, setMonths] = useState([]);
   const [columnWidth, setColumnWidth] = useState(0);
   const [translateX, setTranslateX] = useState(0);
   const [animateTo, setAnimateTo] = useState('');
+
+  useEffect(() => {
+    setMonths(getMonthArray(initMonth));
+  }, []);
 
   const pickerContainerRef = useRef(null);
 

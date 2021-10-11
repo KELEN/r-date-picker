@@ -31,7 +31,6 @@ const usePickerAction = ({
   onChange,
   range = false,
   selectable = true,
-  showOutside = true,
 }) => {
   if (!range || !selectable) {
     return {
@@ -53,10 +52,10 @@ const usePickerAction = ({
       setTmpEndDate(null);
     }
   };
-  
+
   const dateMouseDownHandle = useCallback((cell, ev) => {
     if (ev.nativeEvent.which === MOUSE_DOWN_KEY.LEFT) {
-      if (cell.disabled || !isFunction(onChange) ) return;
+      if (cell.disabled || !isFunction(onChange)) return;
 
       if (value[0] === undefined || (value[0] && value[1])) {
         value[0] = cell.date;
@@ -74,24 +73,21 @@ const usePickerAction = ({
     }
   }, [value]);
 
-  months = React.useMemo(() => {
-    console.log('current value is ', value[0]?.format('YYYY-MM-DD'), value[1]?.format('YYYY-MM-DD'));
-    return months.map((month) => ({
-      month: month.month,
-      data: month.data.map((row) => row.map((cell) => {
-        const start = value[0];
-        const end = value[1] || tmpEndDate;
-        let range = [start, end];
-        if (isBefore(end, start)) {
-          range = [end, start];
-        }
-        cell.pickStart = isSameDay(range[0], cell.date);
-        cell.pickEnd = isSameDay(range[1], cell.date);
-        cell.pickConnect = isBetween(cell.date, range[0], range[1]);
-        return cell;
-      })),
-    }));
-  }, [value, tmpEndDate, months]);
+  months = React.useMemo(() => months.map((month) => ({
+    month: month.month,
+    data: month.data.map((row) => row.map((cell) => {
+      const start = value[0];
+      const end = value[1] || tmpEndDate;
+      let ranges = [start, end];
+      if (isBefore(end, start)) {
+        ranges = [end, start];
+      }
+      cell.pickStart = isSameDay(ranges[0], cell.date);
+      cell.pickEnd = isSameDay(ranges[1], cell.date);
+      cell.pickConnect = isBetween(cell.date, ranges[0], ranges[1]);
+      return cell;
+    })),
+  })), [value, tmpEndDate, months]);
 
   return {
     months,
