@@ -10,6 +10,7 @@ import {
   dateType,
 } from '@/utils/prop-types';
 import { isFunction } from '@/utils';
+import { isBefore } from '@/utils/dayjs';
 
 const PickerBody = React.memo((props) => {
   const {
@@ -21,9 +22,7 @@ const PickerBody = React.memo((props) => {
     showOutside,
     style,
     value,
-    onDateClick,
-    onDateEnter,
-    onDateLeave,
+    onHoverChange,
   } = props;
 
   const cellCls = (cell) => {
@@ -71,27 +70,39 @@ const PickerBody = React.memo((props) => {
                   className={cellCls(cell)}
                   aria-hidden="true"
                   onMouseDown={(ev) => {
-                    if (!showOutside && !cell.inMonth) {
+                    if (
+                      (!showOutside && !cell.inMonth)
+                      || !isFunction(onChange) || cell.disabled || !cell.inMonth
+                    ) {
                       return;
                     }
-                    if (range && isFunction(onDateClick)) {
-                      onDateClick(cell, ev);
-                    }
-                    if (!range && !cell.disabled && isFunction(onChange)) {
+                    if (range) {
+                      const [start, end] = value;
+                      if (start) {
+                        if (end) {
+                          onChange([cell.date, null]);
+                        } else {
+                          let newVal = [start, cell.date];
+                          if (isBefore(cell.date, start)) {
+                            newVal = [cell.date, start];
+                          }
+                          onHoverChange(null);
+                          onChange(newVal);
+                        }
+                      } else {
+                        // 重新选择开始日期
+                        onChange([cell.date, null]);
+                      }
+                    } else {
                       // 单选的情况
                       onChange(cell.date, ev);
                     }
                   }}
-                  onMouseEnter={range ? (ev) => {
-                    if (isFunction(onDateEnter)) {
-                      onDateEnter(cell, ev);
+                  onMouseEnter={() => {
+                    if (value[0] && !value[1]) {
+                      onHoverChange(cell.date);
                     }
-                  } : null}
-                  onMouseLeave={range ? (ev) => {
-                    if (isFunction(onDateLeave)) {
-                      onDateLeave(cell, ev);
-                    }
-                  } : null}
+                  }}
                 >
                   { renderCell(cell) }
                 </div>

@@ -25,6 +25,8 @@ const Calendar = (props) => {
     defaultDate,
     min,
     max,
+    value,
+    range,
   } = props;
 
   const wrapCls = classNames({
@@ -35,14 +37,18 @@ const Calendar = (props) => {
 
   const [calendarData, setCalendarData] = useState([]);
 
+  console.log(props);
+
   useEffect(() => {
     const data = getDateArray(defaultDate, {
       isoWeek,
       min,
       max,
+      value,
+      range,
     });
     setCalendarData(data);
-  }, [isoWeek, min, max, defaultDate]);
+  }, [isoWeek, min, max, defaultDate, value, range]);
 
   return (
     <div className={wrapCls}>

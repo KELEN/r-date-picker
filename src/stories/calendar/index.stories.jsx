@@ -25,12 +25,22 @@ const Template = (args) => <Calendar {...args} />;
 export const PureRender = Template.bind({});
 PureRender.args = {
   className: 'container',
-  defaultDate: dayjs().format('YYYY-MM-DD'),
+  value: dayjs().format('YYYY-MM-DD'),
   showOutside: false,
   min: dayjs().subtract(1, 'days'),
 };
 
-export const PureRangeRender = Template.bind({});
+const PureRangeRenderTemplate = (args) => {
+  const { value } = args;
+  return (
+    <div className="container">
+      { `${value[0].format('YYYY-MM-DD')} ~ ${value[1].format('YYYY-MM-DD')}` }
+      <Calendar {...args} />
+    </div>
+  );
+};
+
+export const PureRangeRender = PureRangeRenderTemplate.bind({});
 PureRangeRender.args = {
   className: 'container',
   range: true,

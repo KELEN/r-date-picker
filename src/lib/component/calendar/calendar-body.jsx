@@ -1,22 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import dayjs from 'dayjs';
 import {
   prefixClass,
   prefixClassObject,
 } from '@/utils/style';
-import {
-  dateType,
-} from '@/utils/prop-types';
 
 const CalendarBody = (props) => {
   const {
     calendarData,
     itemRender,
     className,
-    value,
-    range,
     showOutside,
     style,
   } = props;
@@ -31,7 +25,7 @@ const CalendarBody = (props) => {
 
     return prefixClassObject({
       'calendar-cell': true,
-      'calendar-cell-selected': !range && dayjs(value).isSame(dayjs(cell.date), 'day'),
+      'calendar-cell-selected': cell.selected,
       'calendar-cell-start': cell.pickStart,
       'calendar-cell-end': cell.pickEnd,
       'calendar-cell-connect': cell.pickConnect,
@@ -86,15 +80,6 @@ CalendarBody.propTypes = {
   ).isRequired,
   // 自定义渲染
   itemRender: PropTypes.func,
-  // 设置的值
-  value: PropTypes.oneOfType([
-    dateType,
-    PropTypes.arrayOf(dateType),
-  ]),
-  // 选择日期
-  onChange: PropTypes.func,
-  // 是否选择范围
-  range: PropTypes.bool,
   // 是否显示上下月的日期
   showOutside: PropTypes.bool,
   // 样式
@@ -104,9 +89,6 @@ CalendarBody.propTypes = {
 CalendarBody.defaultProps = {
   className: '',
   itemRender: null,
-  onChange: null,
-  value: undefined,
-  range: false,
   showOutside: true,
   style: {},
 };

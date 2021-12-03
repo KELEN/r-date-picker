@@ -3,6 +3,7 @@ import React, {
   useState,
   useRef,
   useCallback,
+  useMemo,
 } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
@@ -42,55 +43,15 @@ const DatePicker = (props) => {
     isoWeek,
   } = props;
 
-  let initSelectedDate = '';
+  const initMonth = getMonthString(!range ? value : value?.[0]);
 
-  if (defaultDate) {
-    initSelectedDate = defaultDate;
-  }
-
-  if (value) {
-    initSelectedDate = value;
-  }
-
-  /**
-   * 获取每个日历需要渲染的数据
-   */
-  const getMonthArray = useCallback((date) => {
-    const prevMonth = dayjs(date).subtract(1, 'month');
-    const middleMonths = [];
-    for (let i = 0; i < calendarNumber; i += 1) {
-      const month = dayjs(date).add(i, 'month');
-      middleMonths.push({
-        month: month.format('YYYY-MM'),
-        data: getDateArray(month, { min, max, isoWeek }),
-      });
-    }
-    const nextMonth = dayjs(date).add(calendarNumber, 'month');
-    return [
-      {
-        month: prevMonth.format('YYYY-MM'),
-        data: getDateArray(prevMonth, { min, max, isoWeek }),
-      },
-      ...middleMonths,
-      {
-        month: nextMonth.format('YYYY-MM'),
-        data: getDateArray(nextMonth, { min, max, isoWeek }),
-      },
-    ];
-  }, []);
-
-  const initMonth = getMonthString(!range ? initSelectedDate : initSelectedDate[0]);
-
-  const [selectedDate, setSelectedDate] = useState(initSelectedDate);
+  const [selectedDate, setSelectedDate] = useState(value);
   const [month, setMonth] = useState(initMonth);
-  const [months, setMonths] = useState([]);
   const [columnWidth, setColumnWidth] = useState(0);
   const [translateX, setTranslateX] = useState(0);
   const [animateTo, setAnimateTo] = useState('');
-
-  useEffect(() => {
-    setMonths(getMonthArray(initMonth));
-  }, []);
+  // 鼠标hover的日期
+  const [hoveringDate, setHoveringDate] = useState(null);
 
   const pickerContainerRef = useRef(null);
 
@@ -103,30 +64,12 @@ const DatePicker = (props) => {
     setColumnWidth(pickerContainerRef.current.offsetWidth / calendarNumber);
   }, []);
 
-  useEffect(() => {
-    if (value !== selectedDate) {
-      setSelectedDate({
-        selectedDate: value,
-      });
-      const diffMonth = dayjs(value).diff(month, 'month', true);
-      // 不是在当前月份的情况，需要滚动到上月，或者下个月
-      if (diffMonth < 0) {
-        translateTo(ARROW_PREV);
-      }
-      if (diffMonth > calendarNumber) {
-        translateTo(ARROW_NEXT);
-      }
-    }
-  }, [value]);
-
   const handleTransitionEnd = () => {
     if (animateTo === ARROW_PREV) {
       const prevMonth = dayjs(month).subtract(1, 'month');
-
       setAnimateTo('');
       setTranslateX(0);
       setMonth(getMonthString(prevMonth));
-      setMonths(getMonthArray(prevMonth));
     }
 
     if (animateTo === ARROW_NEXT) {
@@ -134,7 +77,6 @@ const DatePicker = (props) => {
       setAnimateTo('');
       setTranslateX(0);
       setMonth(getMonthString(nextMonth));
-      setMonths(getMonthArray(nextMonth));
     }
   };
 
@@ -149,19 +91,33 @@ const DatePicker = (props) => {
     transition: `${translateX !== 0 ? 'transform 0.4s ease' : 'none'}`,
   };
 
-  const {
-    months: newMonths,
-    onDateEnter,
-    onDateLeave,
-    onDateClick,
-  } = usePickerAction({
-    months,
-    onChange,
-    value,
-    range,
-    showOutside,
-    selectable,
-  });
+   /**
+   * 获取每个日历需要渲染的数据
+   */
+  const months = useMemo(() => {
+    console.log('get month', value?.[0]?.format('YYYY-MM-DD'), month);
+    const prevMonth = dayjs(month).subtract(1, 'month');
+    const middleMonths = [];
+    for (let i = 0; i < calendarNumber; i += 1) {
+      const midMonth = dayjs(month).add(i, 'month');
+      middleMonths.push({
+        month: midMonth.format('YYYY-MM'),
+        data: getDateArray(midMonth, { min, max, isoWeek, range, value, hoveringDate }),
+      });
+    }
+    const nextMonth = dayjs(month).add(calendarNumber, 'month');
+    return [
+      {
+        month: prevMonth.format('YYYY-MM'),
+        data: getDateArray(prevMonth, { min, max, isoWeek, range, value, hoveringDate }),
+      },
+      ...middleMonths,
+      {
+        month: nextMonth.format('YYYY-MM'),
+        data: getDateArray(nextMonth, { min, max, isoWeek, range, value, hoveringDate }),
+      },
+    ];
+  }, [value, month, hoveringDate]);
 
   return (
     <div className={wrapCls} ref={pickerContainerRef}>
@@ -184,7 +140,7 @@ const DatePicker = (props) => {
           style={transformStyle}
         >
           {
-            newMonths.map((m) => (
+            months.map((m) => (
               <div
                 key={m.month}
                 style={{
@@ -212,7 +168,7 @@ const DatePicker = (props) => {
         })}
       >
         {
-          newMonths.map((m) => (
+          months.map((m) => (
             <div
               key={m.month}
               style={{
@@ -226,11 +182,7 @@ const DatePicker = (props) => {
                 className={prefixClassObject({
                   'picker-calendar-week': true,
                 })}
-                {
-                  ...pick(props, [
-                    'isoWeek',
-                  ])
-                }
+                { ...pick(props, ['isoWeek']) }
               />
             </div>
           ))
@@ -246,7 +198,7 @@ const DatePicker = (props) => {
         onTransitionEnd={handleTransitionEnd}
       >
         {
-          newMonths.map((m) => (
+          months.map((m) => (
             <div
               key={m.month}
               style={{
@@ -261,9 +213,6 @@ const DatePicker = (props) => {
                   'picker-calendar-body': true,
                 })}
                 calendarData={m.data}
-                onDateEnter={onDateEnter}
-                onDateLeave={onDateLeave}
-                onDateClick={onDateClick}
                 {
                   ...pick(props, [
                     'range',
@@ -273,6 +222,9 @@ const DatePicker = (props) => {
                     'itemRender',
                   ])
                 }
+                onHoverChange={(date) => {
+                  setHoveringDate(date);
+                }}
               />
             </div>
           ))

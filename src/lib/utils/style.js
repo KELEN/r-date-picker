@@ -2,6 +2,12 @@ import classNames from 'classnames';
 
 const CSS_PREFIX = 'rdp__';
 
+/**
+ * 给className拼接前缀
+ * @param {*} cls
+ * @param {*} prefix
+ * @returns
+ */
 export const prefixClassObject = (cls = {}, prefix = CSS_PREFIX) => {
   const keys = Object.keys(cls);
 
