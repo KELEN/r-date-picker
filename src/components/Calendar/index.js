@@ -44,6 +44,25 @@ class Calendar extends React.PureComponent {
       containerWidth: this.container.offsetWidth
     })
   }
+
+  componentDidUpdate() {
+    const {
+      containerWidth,
+      containerHeight,
+    } = this.state;
+
+    const {
+      offsetWidth,
+      offsetHeight,
+    } = this.container;
+
+    if (containerWidth !== offsetWidth || containerHeight !== offsetHeight) {
+      this.setState({
+        containerHeight: offsetHeight,
+        containerWidth: offsetWidth
+      })
+    }
+  }
   
   componentWillUnmount() {
     window.removeEventListener('resize', this.resizeHandle)

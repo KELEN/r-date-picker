@@ -1,11 +1,12 @@
 {
   "name": "r-date-picker",
-  "version": "0.0.33",
+  "version": "0.0.34",
   "description": "react date picker",
   "main": "index.js",
   "scripts": {
     "start": "start-storybook --quiet",
-    "build:cjs": "babel src/ -d lib/",
+    "dev": "babel --watch src/ -d lib/",
+    "build": "babel src/ -d lib/",
     "build-storybook": "build-storybook -c .storybook -o .out",
     "deploy-storybook": "storybook-to-ghpages"
   },
@@ -40,6 +41,7 @@
     "style-loader": "^0.23.1"
   },
   "dependencies": {
+    "babel-watch": "^7.6.0",
     "classname": "0.0.0",
     "moment": "^2.24.0",
     "moment-range": "^4.0.2",
