@@ -137,7 +137,6 @@ class Calendar extends React.PureComponent {
   }
 
   monthChange(date) {
-    console.log(date.format('YYYY-MM-DD'))
     this.setState({
       mode: 'date',
       defaultValue: date
@@ -160,17 +159,14 @@ class Calendar extends React.PureComponent {
       maxDate,
       renderPrevBtn,
       renderNextBtn,
-      dateOnly
+      dateOnly,
+      intl: { formatMessage },
     } = this.props
 
     const hidePrevBtn = this.checkIfHidePrevBtn(defaultValue, minDate)
     const hideNextBtn = this.checkIfHideNextBtn(defaultValue, maxDate)
 
     const year = defaultValue.get('year'), month = defaultValue.get('month') + 1
-
-    const TitleFormat = injectIntl(({year, month, day, intl}) => {
-      return `${year}${intl.formatMessage({id: 'year'})}${month}${intl.formatMessage({ id: 'month' })}`
-    })
 
     return (
       <div
@@ -189,7 +185,7 @@ class Calendar extends React.PureComponent {
           onNextClick={ this.onNextClick }
         >
           <span onClick={ () => !dateOnly && this.changeMode('month') }>
-            <TitleFormat year={ year } month={ month } />
+            { `${year}${formatMessage({id: 'year'})}${month}${formatMessage({ id: 'month' })}` }
           </span>
         </CalendarHeader>
         <CalendarBody
@@ -213,6 +209,7 @@ class Calendar extends React.PureComponent {
               style={{
                 height: containerHeight
               }}
+              minDate={ minDate }
               defaultValue={ defaultValue }
               onMonthChange={ this.monthChange }
             />
@@ -246,8 +243,8 @@ Calendar.defaultProps = {
   startDate: null,
   endDate: null,
   defaultValue: moment(),
-  dateOnly: false
+  dateOnly: true
 }
 
 
-export default Calendar
+export default injectIntl(Calendar);

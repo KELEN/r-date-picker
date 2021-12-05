@@ -55,7 +55,6 @@ DatePicker.defaultProps = {
   defaultValue: moment(),
   defaultDate: null,
   ranges: [],
-  dateOnly: false
 }
 
 export default EnhanceCalendar(DatePicker)

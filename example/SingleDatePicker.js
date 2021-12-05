@@ -12,13 +12,9 @@ export default class SimpleDatePicker extends React.Component {
       minDate: null,
       maxDate: null
     }
-    this.setMinDate = this.setMinDate.bind(this)
-    this.setMaxDate = this.setMaxDate.bind(this)
-    this.setLimit = this.setLimit.bind(this)
-    this.resetLimit = this.resetLimit.bind(this)
   }
 
-  resetLimit() {
+  resetLimit = () => {
     this.setState({
       minDate: null,
       maxDate: null,
@@ -26,19 +22,19 @@ export default class SimpleDatePicker extends React.Component {
     })
   }
 
-  setMinDate() {
+  setMinDate = () => {
     this.setState({
-      minDate: moment('2019-02-12')
+      minDate: moment().subtract(5, 'day'),
     })
   }
 
-  setMaxDate() {
+  setMaxDate = () => {
     this.setState({
-      maxDate: moment('2019-05-01')
+      maxDate: moment().add(20, 'day'),
     })
   }
 
-  setLimit() {
+  setLimit = () => {
     this.setState({
       disabledDates: [ '2019-03-15', '2019-03-21' ]
     })
@@ -67,7 +63,7 @@ export default class SimpleDatePicker extends React.Component {
             maxDate={ maxDate && moment(maxDate) }
             disabledDates={ disabledDates }
             defaultDate={ selectedDate }
-            onDateChange={ (event, date) => this.setState({ selectedDate: date }) }
+            onDateChange={ (date) => this.setState({ selectedDate: date }) }
           />
         </div>
         <div className="fl">
@@ -78,7 +74,7 @@ export default class SimpleDatePicker extends React.Component {
             disabledDates={ disabledDates }
             defaultDate={ selectedDate }
             dateOnly
-            onDateChange={ (event, date) => this.setState({ selectedDate: date }) }
+            onDateChange={ (date) => this.setState({ selectedDate: date }) }
           />
         </div>
       </div>

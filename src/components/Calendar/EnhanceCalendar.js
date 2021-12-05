@@ -37,7 +37,7 @@ const EnhanceCalendar = (WrapComponent, options = {}) => {
 		 * @param {*} event
 		 * @param {*} date
 		 */
-		onHoveringDateChange(event, date) {
+		onHoveringDateChange(date, event) {
 			const {startDate, endDate, isHovering} = this.state
 			const {onHoveringDateChange} = this.props
 			if (range && isHovering) {
@@ -56,7 +56,7 @@ const EnhanceCalendar = (WrapComponent, options = {}) => {
 					})
 				}
 			}
-			onHoveringDateChange && onHoveringDateChange(event, date)
+			onHoveringDateChange && onHoveringDateChange(date, event)
 		}
 
 		/**
@@ -64,7 +64,7 @@ const EnhanceCalendar = (WrapComponent, options = {}) => {
 		 * @param {*} event
 		 * @param {*} date
 		 */
-		onDateChange(event, date) {
+		onDateChange(date, event) {
 			const {startDate, endDate} = this.state
 			const {onDateChange, onDateRangeChange} = this.props
 			if (range) {
@@ -107,7 +107,7 @@ const EnhanceCalendar = (WrapComponent, options = {}) => {
 					startDate: date
 				})
 			}
-			onDateChange && onDateChange(event, date)
+			onDateChange && onDateChange(date, event)
 		}
 
 		render() {

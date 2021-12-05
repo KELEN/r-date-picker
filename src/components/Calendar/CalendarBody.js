@@ -157,19 +157,19 @@ class CalendarBody extends React.PureComponent {
     const {
       onDateClick
     } = this.props;
-    onDateClick && onDateClick(e, date);
+    onDateClick && onDateClick(date, e);
   }
 
   handleMouseDown(e, date) {
     const { 
       onDateChange
     } = this.props
-    onDateChange && onDateChange(e, date)
+    onDateChange && onDateChange(date, e)
   }
 
   handleMouseEnter(e, date) {
     const { onHoveringDateChange } = this.props
-    onHoveringDateChange && onHoveringDateChange(e, date)
+    onHoveringDateChange && onHoveringDateChange(date, e)
   }
 
   transitionEndHandle(e) {

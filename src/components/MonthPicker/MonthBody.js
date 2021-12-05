@@ -9,7 +9,9 @@ class MonthBody extends React.Component {
 
   render() {
     const {
-      month
+      month,
+      minDate,
+      onMonthClick,
     } = this.props
 
     const MonthRow = (props) => {
@@ -23,7 +25,7 @@ class MonthBody extends React.Component {
                 'rdp__months-item-active': Number(month) === Number(num)
               })
               return (
-                <div key={num} className={ monthItemCls } onClick={() => this.props.onMonthClick(num) }>
+                <div key={num} className={ monthItemCls } onClick={() => onMonthClick(num) }>
                   { num }
                 </div>
               )

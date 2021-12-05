@@ -18,19 +18,19 @@ class MonthPicker extends React.Component {
     }
   }
 
-  onPrevClick() {
+  onPrevClick = () => {
     this.setState({
       defaultValue: this.state.defaultValue.subtract(1, 'year')
     })
   }
 
-  onNextClick() {
+  onNextClick = () => {
     this.setState({
       defaultValue: this.state.defaultValue.add(1, 'year')
     })
   }
 
-  onMonthClick(num) {
+  onMonthClick = (num) => {
     const {
       onMonthChange
     } = this.props
@@ -55,7 +55,8 @@ class MonthPicker extends React.Component {
 
     const {
       className,
-      style
+      style,
+      minDate,
     } = this.props
 
     const cls = `rdp__month-container ${className}`
@@ -63,13 +64,14 @@ class MonthPicker extends React.Component {
     return (
       <div className={ cls } style={ style }>
         <CalendarHeader
-          onPrevClick={ this.onPrevClick.bind(this) }
-          onNextClick={ this.onNextClick.bind(this) }
+          onPrevClick={ this.onPrevClick }
+          onNextClick={ this.onNextClick }
         >
           { defaultValue.format('YYYY') }
         </CalendarHeader>
         <MonthBody
-          onMonthClick={ this.onMonthClick.bind(this) }
+          minDate={minDate}
+          onMonthClick={ this.onMonthClick }
           month={ defaultValue.format('M') }
         />
       </div>
@@ -78,11 +80,13 @@ class MonthPicker extends React.Component {
 }
 
 MonthPicker.propTypes = {
+  minDate: PropTypes.oneOfType([PropTypes.string, PropTypes.instanceOf(moment)]),
   defaultValue: PropTypes.object,
   onMonthChange: PropTypes.func
 }
 
 MonthPicker.defaultProps = {
+  minDate: null,
   defaultValue: moment(),
   onMonthChange: noop
 }
