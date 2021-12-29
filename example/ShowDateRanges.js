@@ -11,8 +11,8 @@ export default class extends React.Component {
   constructor() {
     super()
     this.state = {
-    	defaultDate: moment(),
-    	ranges: [[moment('2019-03-21'), moment('2019-03-25')], [moment('2019-03-10'), moment('2019-03-10')], [moment('2019-03-1'), moment('2019-03-4')]],
+    	// defaultDate: moment(),
+    	ranges: [[moment().subtract(4, 'days'), moment()], [moment().add(3, 'days'), moment().add(10, 'days')]],
     }
 
     this.rangeChange = this.rangeChange.bind(this)
@@ -42,9 +42,12 @@ export default class extends React.Component {
       <div>
 	      <h3>显示范围: </h3>
         <ul>
-	        <li>2019-03-21~2019-03-25</li>
-	        <li>2019-03-10~2019-03-10</li>
-	        <li>2019-03-01~2019-03-04</li>
+	        <li>
+            { ranges[0][0].format('YYYY-MM-DD') } ~ { ranges[0][1].format('YYYY-MM-DD') }
+          </li>
+          <li>
+            { ranges[1][0].format('YYYY-MM-DD') } ~ { ranges[1][1].format('YYYY-MM-DD') }
+          </li>
         </ul>
         <DatePicker
           onDateRangeChange={ this.rangeChange }

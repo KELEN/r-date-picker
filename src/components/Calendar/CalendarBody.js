@@ -11,14 +11,19 @@ class CalendarBody extends React.PureComponent {
   constructor(props) {
     super(props)
 
+    const {
+      defaultValue,
+      ranges,
+    } = props;
+
     this.state = {
-      allDays: this.getAllDays(props.defaultValue),
+      allDays: this.getAllDays(defaultValue),
       moveNext: false,
       movePrev: false
     }
 
-    if (props.ranges) {
-	    this.checkInRange = checkInRange(props.ranges)
+    if (ranges) {
+	    this.checkInRange = checkInRange(ranges)
     }
 
     this.renderCurrMonthDays = this.renderCurrMonthDays.bind(this)

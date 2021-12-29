@@ -54,7 +54,6 @@ const propTypes = {
 const defaultProps = {
   hidePrevBtn: false,
   hideNextBtn: false,
-  defaultValue: PropTypes.object
 }
 
 CalendarHeader.propTypes = propTypes

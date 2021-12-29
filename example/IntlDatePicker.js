@@ -29,7 +29,9 @@ export default class IntlDatePicker extends React.Component {
           <option value="cn">中文</option>
           <option value="en">英文</option>
         </select>
-        <DatePicker language={ this.state.lang } />
+        <DatePicker language={ this.state.lang }
+          headerFormat={'MM/YYYY'}
+         />
       </div>
     )
   }

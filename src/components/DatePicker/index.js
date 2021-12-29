@@ -47,7 +47,9 @@ DatePicker.propTypes = {
   defaultDate: PropTypes.oneOfType([ PropTypes.object, PropTypes.array ]),
   // init visible current month, default is current month
   defaultValue: PropTypes.object,
-  // set range
+  /**
+   * 日期范围
+   */
   ranges: PropTypes.array
 }
 

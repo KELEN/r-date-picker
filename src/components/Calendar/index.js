@@ -180,12 +180,13 @@ class Calendar extends React.PureComponent {
       renderNextBtn,
       dateOnly,
       intl: { formatMessage },
+      headerFormat,
     } = this.props
 
     const hidePrevBtn = this.checkIfHidePrevBtn(defaultValue, minDate)
     const hideNextBtn = this.checkIfHideNextBtn(defaultValue, maxDate)
 
-    const year = defaultValue.get('year'), month = defaultValue.get('month') + 1
+    const year = defaultValue.get('year'), month = defaultValue.get('month') + 1;
 
     return (
       <div
@@ -197,14 +198,13 @@ class Calendar extends React.PureComponent {
         <CalendarHeader
           renderNextBtn={ renderNextBtn }
           renderPrevBtn={ renderPrevBtn }
-          defaultValue={ defaultValue }
           hidePrevBtn={ hidePrevBtn }
           hideNextBtn={ hideNextBtn }
           onPrevClick={ this.onPrevClick }
           onNextClick={ this.onNextClick }
         >
           <span onClick={ () => !dateOnly && this.changeMode('month') }>
-            { `${year}${formatMessage({id: 'year'})}${month}${formatMessage({ id: 'month' })}` }
+            { moment(defaultValue).format(headerFormat) }
           </span>
         </CalendarHeader>
         <CalendarBody
@@ -253,7 +253,11 @@ Calendar.propType = {
   // month change event
   onMonthChange: PropTypes.func,
   // date select only, without month select
-  dateOnly: PropTypes.bool
+  dateOnly: PropTypes.bool,
+  /**
+   * 头部日期格式化
+   */
+  headerFormat: PropTypes.string,
 }
 
 Calendar.defaultProps = {
@@ -262,7 +266,11 @@ Calendar.defaultProps = {
   startDate: null,
   endDate: null,
   defaultValue: moment(),
-  dateOnly: true
+  dateOnly: true,
+  /**
+   * 默认是 YYYY-MM
+   */
+  headerFormat: 'YYYY-MM'
 }
 
 

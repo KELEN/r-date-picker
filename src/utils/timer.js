@@ -13,6 +13,8 @@ export function checkInRange(ranges) {
 	})
 	return function(date) {
 		const inRange = mRanges.find(range => {
+      range.start = range.start.startOf('day')
+      range.end = range.end.endOf('day')
 			return range.contains(date)
 		})
 		return {
