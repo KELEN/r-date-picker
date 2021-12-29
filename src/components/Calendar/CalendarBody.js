@@ -129,11 +129,20 @@ class CalendarBody extends React.PureComponent {
     return [prevMonthDays,currMonthDays, nextMonthDays]
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentDidUpdate(prevProps) {
 
-    if (!isSameDay(nextProps.defaultValue, this.props.defaultValue)) {
+    const {
+      defaultValue,
+      isAnimating,
+    } = this.props;
+
+    const {
+      defaultValue: prevDefaultValue
+    } = prevProps;
+
+    if (!isSameDay(defaultValue, prevDefaultValue)) {
       // next date no equal current date recalculate days
-      if (nextProps.defaultValue.isBefore(this.props.defaultValue)) {
+      if (defaultValue.isBefore(prevDefaultValue)) {
         // prev
         this.setState({
           movePrev: true,
@@ -141,7 +150,7 @@ class CalendarBody extends React.PureComponent {
         })
       }
 
-      if (nextProps.defaultValue.isAfter(this.props.defaultValue)) {
+      if (defaultValue.isAfter(prevDefaultValue)) {
         // next
         this.setState({
           movePrev: false,
@@ -150,9 +159,9 @@ class CalendarBody extends React.PureComponent {
       }
 
       // set current month not by prev or next btn
-      if (!nextProps.isAnimating) {
+      if (!isAnimating) {
         this.setState({
-          allDays: this.getAllDays(nextProps.defaultValue)
+          allDays: this.getAllDays(defaultValue)
         })
       }
     }
@@ -232,7 +241,8 @@ class CalendarBody extends React.PureComponent {
       disabledDates,
       selectable,
       bodyWidth,
-      labels
+      labels,
+      showOutsideDays,
     } = this.props
 
 
@@ -251,8 +261,8 @@ class CalendarBody extends React.PureComponent {
 	        'rdp__days-item-active--range-connect': item.isInRange,
         })
 
-        const allowDownEvent = !item.isDisable && item.inMonth && selectable
-        const allowHoverEvent = range && item.inMonth && !item.isDisable
+        const allowDownEvent = !item.isDisable && item.inMonth && selectable;
+        const allowHoverEvent = range && item.inMonth && !item.isDisable;
 
         return (
           <div
@@ -263,7 +273,7 @@ class CalendarBody extends React.PureComponent {
             onClick={ () => this.handleClick(event, item.date) }
             onMouseDown={ () => allowDownEvent && this.handleMouseDown(event, item.date) }
             onMouseEnter={ () => allowHoverEvent && this.handleMouseEnter(event, item.date) }>
-            { itemRender ? itemRender(item) : item.num  }
+            { itemRender ? itemRender(item) : ((item.inMonth && !showOutsideDays) ? item.num : null) }
           </div>
         )
       })
@@ -307,9 +317,9 @@ class CalendarBody extends React.PureComponent {
       if (arr.length) {
         rowArray.push(arr)
       }
-      return rowArray.map((rowDays, idx) => {
+      return rowArray.map((rowDays) => {
         return (
-          <div className="rdp__days-row" key={idx}>
+          <div className="rdp__days-row" key={rowDays.key}>
             { renderRowDays(rowDays) }
           </div>
         )
@@ -317,6 +327,7 @@ class CalendarBody extends React.PureComponent {
     }
 
     const renderAllDays = (allDays) => {
+      console.log(allDays);
       return allDays.map((pageDays, idx) => {
         // base on key format is { YYYYMMDD }
         const key = Object.keys(pageDays)[0]
@@ -383,17 +394,37 @@ const propTypes = {
   onDateChange: PropTypes.func,               // date change event
   isAnimating: PropTypes.bool.isRequired,     // if body is animating
   onDateRangeChange: PropTypes.func,          // day range change event
-  range: PropTypes.bool,                      // select day range
-  itemRender: PropTypes.func,                 // day item render function
-  selectable: PropTypes.bool,                 // if selectable
-  onDateClick: PropTypes.func                 // date click event
+  /**
+   * 是否选择范围
+   */
+  range: PropTypes.bool,
+  /**
+   * 自定义渲染日期
+   */
+  itemRender: PropTypes.func,
+  /**
+   * 是否可选择
+   */
+  selectable: PropTypes.bool, 
+  /**
+   * 日期点击事件
+   */
+  onDateClick: PropTypes.func,
+  /**
+   * 是否显示不在当前月份的日期
+   */
+   showOutsideDays: PropTypes.bool,
 }
 
 const defaultProps = {
   isAnimating: false,
   selectable: true,
   disabledDates: [],
-  range: false    // select range date
+  range: false,
+  /**
+   * 默认不展示不在当前月份的日期
+   */
+   showOutsideDays: false,
 }
 
 CalendarBody.propTypes = propTypes

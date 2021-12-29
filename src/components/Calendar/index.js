@@ -126,8 +126,8 @@ class Calendar extends React.PureComponent {
     }
   }
 
-  componentWillReceiveProps(nextProps) {
-    const { minDate: nextMinDate, maxDate: nextMaxDate, defaultValue: nextdefaultValue } = nextProps
+  componentDidUpdate() {
+    const { minDate: nextMinDate, maxDate: nextMaxDate, defaultValue: nextdefaultValue } = this.props;
     const { defaultValue } = this.state
 
     if (nextMinDate && isMonthBefore(defaultValue, nextMinDate)) {
@@ -258,6 +258,10 @@ Calendar.propType = {
    * 头部日期格式化
    */
   headerFormat: PropTypes.string,
+  /**
+   * 是否显示不在当前月份的日期
+   */
+  showOutsideDays: PropTypes.bool,
 }
 
 Calendar.defaultProps = {
@@ -270,7 +274,11 @@ Calendar.defaultProps = {
   /**
    * 默认是 YYYY-MM
    */
-  headerFormat: 'YYYY-MM'
+  headerFormat: 'YYYY-MM',
+  /**
+   * 默认不展示不在当前月份的日期
+   */
+  showOutsideDays: false,
 }
 
 
