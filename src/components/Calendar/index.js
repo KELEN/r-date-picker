@@ -62,6 +62,27 @@ class Calendar extends React.PureComponent {
         containerWidth: offsetWidth
       })
     }
+
+    const { minDate: nextMinDate, maxDate: nextMaxDate, defaultValue: nextdefaultValue } = this.props;
+    const { defaultValue } = this.state
+
+    if (nextMinDate && isMonthBefore(defaultValue, nextMinDate)) {
+      this.setState({
+        defaultValue: nextMinDate
+      })
+    }
+
+    if (nextMaxDate && isMonthAfter(defaultValue, nextMaxDate)) {
+      this.setState({
+        defaultValue: nextMaxDate
+      })
+    }
+
+    if (nextMaxDate && nextMinDate && isSameDay(nextMaxDate, nextMinDate)) {
+      this.setState({
+        defaultValue: nextMaxDate
+      })
+    }
   }
   
   componentWillUnmount() {
@@ -123,29 +144,6 @@ class Calendar extends React.PureComponent {
           defaultValue: nextMonth
         })
       }
-    }
-  }
-
-  componentDidUpdate() {
-    const { minDate: nextMinDate, maxDate: nextMaxDate, defaultValue: nextdefaultValue } = this.props;
-    const { defaultValue } = this.state
-
-    if (nextMinDate && isMonthBefore(defaultValue, nextMinDate)) {
-      this.setState({
-        defaultValue: nextMinDate
-      })
-    }
-
-    if (nextMaxDate && isMonthAfter(defaultValue, nextMaxDate)) {
-      this.setState({
-        defaultValue: nextMaxDate
-      })
-    }
-
-    if (nextMaxDate && nextMinDate && isSameDay(nextMaxDate, nextMinDate)) {
-      this.setState({
-        defaultValue: nextMaxDate
-      })
     }
   }
 
