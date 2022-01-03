@@ -317,9 +317,9 @@ class CalendarBody extends React.PureComponent {
       if (arr.length) {
         rowArray.push(arr)
       }
-      return rowArray.map((rowDays) => {
+      return rowArray.map((rowDays, index) => {
         return (
-          <div className="rdp__days-row" key={rowDays.key}>
+          <div className="rdp__days-row" key={index}>
             { renderRowDays(rowDays) }
           </div>
         )
@@ -327,7 +327,6 @@ class CalendarBody extends React.PureComponent {
     }
 
     const renderAllDays = (allDays) => {
-      console.log(allDays);
       return allDays.map((pageDays, idx) => {
         // base on key format is { YYYYMMDD }
         const key = Object.keys(pageDays)[0]
