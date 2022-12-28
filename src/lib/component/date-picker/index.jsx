@@ -88,14 +88,14 @@ const DatePicker = (props) => {
 
   const transformStyle = {
     transform: `translateX(${translateX}px)`,
-    transition: `${translateX !== 0 ? 'transform 0.4s ease' : 'none'}`,
+    transition: `${translateX !== 0 ? 'transform 0.4s ease-in-out' : 'none'}`,
   };
 
    /**
    * 获取每个日历需要渲染的数据
    */
   const months = useMemo(() => {
-    console.log('get month', value?.[0]?.format('YYYY-MM-DD'), month);
+    // console.log('get month', value?.[0]?.format('YYYY-MM-DD'), month);
     const prevMonth = dayjs(month).subtract(1, 'month');
     const middleMonths = [];
     for (let i = 0; i < calendarNumber; i += 1) {
@@ -106,6 +106,7 @@ const DatePicker = (props) => {
       });
     }
     const nextMonth = dayjs(month).add(calendarNumber, 'month');
+
     return [
       {
         month: prevMonth.format('YYYY-MM'),
@@ -118,6 +119,8 @@ const DatePicker = (props) => {
       },
     ];
   }, [value, month, hoveringDate]);
+
+  console.log(months);
 
   return (
     <div className={wrapCls} ref={pickerContainerRef}>

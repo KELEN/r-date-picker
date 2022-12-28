@@ -1,0 +1,67 @@
+.airbnb-calendar {
+  width: 752px;
+
+  .rdp__nav-button {
+    border: none;
+  }
+
+  .rdp__picker-calendar-header {
+    font-size: 16px;
+    font-weight: bold;
+  }
+
+  .rdp__calendar-cell-start,
+  .rdp__calendar-cell-end {
+    text-align: center;
+    position: relative;
+    border: 0px;
+    color: rgb(34, 34, 34);
+    padding: 0px;
+    background: rgb(247, 247, 247);
+    .airbnb-date-cell {
+      background: rgb(34, 34, 34);
+      color: #FFF;
+    }
+  }
+
+  .airbnb-date-cell {
+    font-size: 14px;
+    line-height: 18px;
+    font-weight: bold;
+    border-radius: 50%;
+    display: block;
+    width: 100%;
+    height: 100%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid transparent;
+    &:hover {
+      border-color: rgb(34, 34, 34);
+    }
+  }
+
+  .rdp__calendar-cell {
+    width: 48px;
+    height: 48px;
+  }
+
+  .rdp__calendar-cell-start {
+    border-top-left-radius: 50%;
+    border-bottom-left-radius: 50%;
+  }
+
+  .rdp__calendar-cell-end {
+    border-top-right-radius: 50%;
+    border-bottom-right-radius: 50%;
+  }
+
+  .rdp__calendar-cell-connect {
+    text-align: center;
+    position: relative;
+    border: 0px;
+    color: rgb(34, 34, 34);
+    padding: 0px;
+    background: rgb(247, 247, 247);
+  }
+}

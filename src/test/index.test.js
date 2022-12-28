@@ -1,7 +1,5 @@
-import configDayjs from '../lib/utils/dayjs';
+import { getDateArray } from '../lib/utils/dayjs';
 
-test('iso week day', () => {
-  const dayjs = configDayjs({
-    isoWeek: true,
-  })
-})
+test('isoweek getDateArray', () => {
+  // console.log(getDateArray('2023-01').length);
+});

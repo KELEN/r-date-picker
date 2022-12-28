@@ -29,7 +29,7 @@ export default {
   },
 };
 
-export const SingleDatePicker = (args) => {
+export const SingleDatePicker = () => {
   const [value, setValue] = useState(dayjs());
   return (
     <div>
@@ -40,8 +40,23 @@ export const SingleDatePicker = (args) => {
       <DatePicker
         className="container"
         range={false}
-        min={dayjs().subtract(1, 'day')}
-        max={dayjs().add(6, 'day')}
+        // min={dayjs().subtract(1, 'day')}
+        // max={dayjs().add(6, 'day')}
+        value={value}
+        onChange={(val) => {
+          setValue(val);
+        }}
+      />
+      <h1>
+        周日作为第一天:
+        { value.format('YYYY-MM-DD') }
+      </h1>
+      <DatePicker
+        className="container"
+        range={false}
+        isoWeek={false}
+        // min={dayjs().subtract(1, 'day')}
+        // max={dayjs().add(6, 'day')}
         value={value}
         onChange={(val) => {
           setValue(val);

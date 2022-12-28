@@ -6,7 +6,6 @@ import {
   isoWeeks,
 } from '@/utils/constants';
 import {
-  prefixClass,
   prefixClassObject,
 } from '@/utils/style';
 

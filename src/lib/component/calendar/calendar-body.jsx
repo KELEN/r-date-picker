@@ -72,17 +72,27 @@ const CalendarBody = (props) => {
 };
 
 CalendarBody.propTypes = {
-  // 自定义样式
+  /**
+   * 外部的className
+   */
   className: PropTypes.string,
-  // 日期数据
+  /**
+   * 日历数据
+   */
   calendarData: PropTypes.arrayOf(
     PropTypes.arrayOf(PropTypes.shape()),
   ).isRequired,
-  // 自定义渲染
+  /**
+   * 自定义单元格渲染
+   */
   itemRender: PropTypes.func,
-  // 是否显示上下月的日期
+  /**
+   * 当前日历是否显示上下月的日期，自动填充单元格内容
+   */
   showOutside: PropTypes.bool,
-  // 样式
+  /**
+   * 内联样式
+   */
   style: PropTypes.shape(),
 };
 

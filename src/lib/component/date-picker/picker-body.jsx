@@ -116,30 +116,47 @@ const PickerBody = React.memo((props) => {
 });
 
 PickerBody.propTypes = {
-  // 自定义样式
+  /**
+   * 自定义className
+   */
   className: PropTypes.string,
-  // 日期数据
+  /**
+   * 需要渲染的日期数据
+   */
   calendarData: PropTypes.arrayOf(
     PropTypes.arrayOf(PropTypes.shape()),
   ).isRequired,
-  // 自定义渲染
+  /**
+   * 自定义渲染项
+   */
   itemRender: PropTypes.func,
-  // 设置的值
+  /**
+   * 日期值
+   */
   value: PropTypes.oneOfType([
     dateType,
     PropTypes.arrayOf(dateType),
   ]),
-  // 选择日期
+  /**
+   * 选中日期回调
+   */
   onChange: PropTypes.func,
-  // 是否选择范围
+  /**
+   * 是否显示范围
+   */
   range: PropTypes.bool,
-  // 是否显示上下月的日期
+  /**
+   * 显示当前月份的其他日期
+   */
   showOutside: PropTypes.bool,
-  // 样式
+  /**
+   * 内联样式
+   */
   style: PropTypes.shape(),
-  onDateClick: PropTypes.func,
-  onDateEnter: PropTypes.func,
-  onDateLeave: PropTypes.func,
+  /**
+   * 鼠标移动回调事件
+   */
+  onHoverChange: PropTypes.func.isRequired,
 };
 
 PickerBody.defaultProps = {
@@ -147,14 +164,9 @@ PickerBody.defaultProps = {
   itemRender: null,
   onChange: null,
   value: undefined,
-  min: null,
-  max: null,
   range: false,
   showOutside: true,
   style: {},
-  onDateClick: null,
-  onDateEnter: null,
-  onDateLeave: null,
 };
 
 export default PickerBody;

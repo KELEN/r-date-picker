@@ -1,6 +1,6 @@
 {
   "name": "r-date-picker",
-  "version": "0.0.30",
+  "version": "0.0.31",
   "description": "基于react的日历选择组件，支持单选，多选",
   "author": "Kelen",
   "repository": {
@@ -29,7 +29,7 @@
     "webpack-merge": "^5.7.3"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "npm run storybook",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
@@ -53,6 +53,7 @@
   "devDependencies": {
     "@babel/core": "^7.14.0",
     "@babel/eslint-parser": "^7.13.14",
+    "@babel/plugin-transform-modules-commonjs": "^7.20.11",
     "@storybook/addon-actions": "^6.2.8",
     "@storybook/addon-essentials": "^6.2.8",
     "@storybook/addon-links": "^6.2.8",

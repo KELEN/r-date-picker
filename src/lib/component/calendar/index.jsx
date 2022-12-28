@@ -37,8 +37,6 @@ const Calendar = (props) => {
 
   const [calendarData, setCalendarData] = useState([]);
 
-  console.log(props);
-
   useEffect(() => {
     const data = getDateArray(defaultDate, {
       isoWeek,
@@ -92,6 +90,8 @@ Calendar.propTypes = {
   min: dateType,
   max: dateType,
   isoWeek: PropTypes.bool,
+  value: PropTypes.string,
+  range: PropTypes.bool,
 };
 
 Calendar.defaultProps = {
@@ -100,6 +100,8 @@ Calendar.defaultProps = {
   isoWeek: false,
   min: null,
   max: null,
+  value: null,
+  range: false,
 };
 
 export default Calendar;

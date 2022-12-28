@@ -22,6 +22,9 @@ const CalendarHeader = React.memo((props) => {
 });
 
 CalendarHeader.propTypes = {
+  /**
+   * 默认日期
+   */
   defaultDate: dateType.isRequired,
 };
 

@@ -60,14 +60,14 @@ export const getDateArray = (month = dayjs().format('YYYY-MM-01'), {
   value,
   hoveringDate, // 鼠标悬浮日期，在选择范围的时候，需要用到
 } = {}) => {
-  const offsetIndex = isoWeek ? -1 : 0;
+  const offsetIndex = isoWeek ? 0 : 1;
 
   const currentMonth = dayjs(dayjs(month).format('YYYY-MM-01'));
 
   const startOfMonth = currentMonth.startOf('month');
   const endOfMonth = currentMonth.endOf('month');
-  const startIndex = startOfMonth.day() + offsetIndex;
-  const endIndex = endOfMonth.day() + offsetIndex;
+  const startIndex = (startOfMonth.day() === 0 ? 7 : startOfMonth.day()) + offsetIndex;
+  const endIndex = (endOfMonth.day() === 0 ? 7 : endOfMonth.day()) + offsetIndex;
   const daysInMonth = currentMonth.daysInMonth();
 
   // 单个选中
@@ -108,10 +108,11 @@ export const getDateArray = (month = dayjs().format('YYYY-MM-01'), {
   };
 
   const prependDates = [];
-  for (let i = 1; i < startIndex + 1; i += 1) {
+  for (let i = 1; i < startIndex; i += 1) {
     const date = startOfMonth.subtract(i, 'day');
     prependDates.unshift({
       date,
+      dateStr: date.format('YYYY-MM-DD'),
       inMonth: false,
       selected: checkSelected(date), // 只有一个日期
       pickStart: checkPickStart(date),
@@ -126,6 +127,7 @@ export const getDateArray = (month = dayjs().format('YYYY-MM-01'), {
     const date = startOfMonth.add(i, 'day');
     dates.push({
       date,
+      dateStr: date.format('YYYY-MM-DD'),
       inMonth: true,
       selected: checkSelected(date), // 只有一个日期
       pickStart: checkPickStart(date),
@@ -136,19 +138,17 @@ export const getDateArray = (month = dayjs().format('YYYY-MM-01'), {
   }
 
   const appendDates = [];
+  const TOTAL_COUNT = 6 * 7; // 最大行数
 
-  const rows = Math.floor((startIndex + daysInMonth - 1) / 7);
+  const currentCount = (startIndex + daysInMonth - 1);
 
-  const MAX_ROW = 6; // 最大行数
-
-  if (rows < MAX_ROW) {
-    const diffRows = MAX_ROW - rows;
-
-    const appendNum = diffRows * 7 - (endIndex + 1);
+  if (currentCount < TOTAL_COUNT) {
+    const appendNum = TOTAL_COUNT - currentCount;
     for (let i = 1; i <= appendNum; i += 1) {
       const date = endOfMonth.add(i, 'day');
       appendDates.push({
         date,
+        dateStr: date.format('YYYY-MM-DD'),
         inMonth: false,
         selected: checkSelected(date), // 只有一个日期
         pickStart: checkPickStart(date),
