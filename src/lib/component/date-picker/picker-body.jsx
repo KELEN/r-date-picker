@@ -115,6 +115,8 @@ const PickerBody = React.memo((props) => {
   );
 });
 
+PickerBody.displayName = "PickerBody";
+
 PickerBody.propTypes = {
   /**
    * 自定义className

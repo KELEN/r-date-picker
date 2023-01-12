@@ -49,6 +49,8 @@ const PickerHeader = React.memo((props) => {
   );
 });
 
+PickerHeader.displayName = 'PickerHeader';
+
 PickerHeader.propTypes = {
   onNavClick: PropTypes.func,
   children: PropTypes.element.isRequired,

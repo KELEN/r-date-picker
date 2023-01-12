@@ -2,7 +2,6 @@ import React, {
   useEffect,
   useState,
   useRef,
-  useCallback,
   useMemo,
 } from 'react';
 import PropTypes from 'prop-types';
@@ -23,29 +22,23 @@ import {
 } from '@/utils/constants';
 import pick from 'lodash.pick';
 import dayjs from 'dayjs';
-import usePickerAction from '@/hooks/usePickerAction';
 import PickerHeader from './picker-header';
 import CalendarWeek from '../calendar/calendar-week';
 import PickerBody from './picker-body';
 
 const DatePicker = (props) => {
   const {
-    defaultDate,
     value,
     range,
     calendarNumber,
     className,
-    showOutside,
-    onChange,
     min,
     max,
-    selectable,
     isoWeek,
   } = props;
 
   const initMonth = getMonthString(!range ? value : value?.[0]);
 
-  const [selectedDate, setSelectedDate] = useState(value);
   const [month, setMonth] = useState(initMonth);
   const [columnWidth, setColumnWidth] = useState(0);
   const [translateX, setTranslateX] = useState(0);
@@ -120,7 +113,6 @@ const DatePicker = (props) => {
     ];
   }, [value, month, hoveringDate]);
 
-  console.log(months);
 
   return (
     <div className={wrapCls} ref={pickerContainerRef}>

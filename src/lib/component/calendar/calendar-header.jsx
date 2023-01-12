@@ -1,4 +1,6 @@
-import React from 'react';
+import React, {
+  memo
+} from 'react';
 import {
   prefixClass,
 } from '@/utils/style';
@@ -9,7 +11,7 @@ import {
   getDateString,
 } from '@/utils/dayjs';
 
-const CalendarHeader = React.memo((props) => {
+const CalendarHeader = memo((props) => {
   const {
     defaultDate,
   } = props;
@@ -20,6 +22,8 @@ const CalendarHeader = React.memo((props) => {
     </div>
   );
 });
+
+CalendarHeader.displayName = "CalendarHeader";
 
 CalendarHeader.propTypes = {
   /**

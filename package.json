@@ -3,6 +3,8 @@
   "version": "0.0.31",
   "description": "基于react的日历选择组件，支持单选，多选",
   "author": "Kelen",
+  "main": "dist/index.js",
+  "module": "dist/index.esm.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/KELEN/r-date-picker"
@@ -22,18 +24,18 @@
     "lodash.chunk": "^4.2.0",
     "lodash.pick": "^4.4.0",
     "prop-types": "^15.7.2",
-    "react": "^17.0.1",
-    "react-dom": "^17.0.1",
+    "react": "^16.8.0",
+    "react-dom": "^16.8.0",
     "react-scripts": "4.0.1",
     "web-vitals": "^0.2.4",
     "webpack-merge": "^5.7.3"
   },
   "scripts": {
     "start": "npm run storybook",
-    "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "lint": "eslint src/**/*.js src/**/*.jsx",
+    "build": "rollup -c --bundleConfigAsCjs",
     "storybook": "start-storybook -p 6006 -s public",
     "build-storybook": "build-storybook -s public",
     "deploy-storybook": "storybook-to-ghpages"
@@ -54,6 +56,11 @@
     "@babel/core": "^7.14.0",
     "@babel/eslint-parser": "^7.13.14",
     "@babel/plugin-transform-modules-commonjs": "^7.20.11",
+    "@rollup/plugin-alias": "^4.0.2",
+    "@rollup/plugin-babel": "^6.0.3",
+    "@rollup/plugin-commonjs": "^24.0.0",
+    "@rollup/plugin-node-resolve": "^15.0.1",
+    "@rollup/plugin-terser": "^0.3.0",
     "@storybook/addon-actions": "^6.2.8",
     "@storybook/addon-essentials": "^6.2.8",
     "@storybook/addon-links": "^6.2.8",
@@ -70,6 +77,18 @@
     "eslint-plugin-react": "^7.23.2",
     "eslint-plugin-react-hooks": "^4.2.0",
     "eslint-webpack-plugin": "^2.5.4",
+    "postcss": "^8.4.20",
+    "rollup": "^3.9.1",
+    "rollup-plugin-peer-deps-external": "^2.2.4",
+    "rollup-plugin-postcss": "^4.0.2",
     "svg-url-loader": "^7.1.1"
+  },
+  "volta": {
+    "node": "16.14.2",
+    "npm": "8.5.0"
+  },
+  "peerDependencies": {
+    "react": ">=16.8.0",
+    "react-dom": ">=16.8.0"
   }
 }

@@ -3,13 +3,11 @@ import React, {
 } from 'react';
 import dayjs from 'dayjs';
 import {
-  Calendar,
   DatePicker,
 } from '../../lib/component';
 import './airbnb.less';
 
 import './index.less';
-import { number } from 'prop-types';
 
 export default {
   title: 'Calendar/Custom Style',

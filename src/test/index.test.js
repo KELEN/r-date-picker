@@ -1,5 +1,3 @@
-import { getDateArray } from '../lib/utils/dayjs';
-
 test('isoweek getDateArray', () => {
   // console.log(getDateArray('2023-01').length);
 });
